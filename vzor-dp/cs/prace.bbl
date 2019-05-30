@@ -1,0 +1,179 @@
+\begin{thebibliography}{21}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Alberts~B(2002)]{Alberts02}
+{\sc Alberts~B, Johnson~A, L. J. a.~k.} (2002).
+\newblock \emph{Molecular Biology of the Cell}.
+\newblock 4th edition. Garland Science, New York.
+\newblock ISBN 0-8153-3218-1.
+
+\bibitem[Biesiada a~kol.(2016)Biesiada, Purzycka, Szachniuk, Blazewicz a
+  Adamiak]{Biesiada2016}
+{\sc Biesiada, M., Purzycka, K.~J., Szachniuk, M., Blazewicz, J. {\rm a}
+  Adamiak, R.~W.} (2016).
+\newblock \emph{Automated RNA 3D Structure Prediction with RNAComposer}, pages
+  199--215.
+\newblock Springer New York, New York, NY.
+\newblock ISBN 978-1-4939-6433-8.
+\newblock \doi{10.1007/978-1-4939-6433-8_13}.
+\newblock URL \url{https://doi.org/10.1007/978-1-4939-6433-8_13}.
+
+\bibitem[Boniecki a~kol.(2015)Boniecki, Lach, Dawson, Tomala, Lukasz,
+  Soltysinski, Rother a Bujnicki]{SimRNA}
+{\sc Boniecki, M.~J., Lach, G., Dawson, W.~K., Tomala, K., Lukasz, P.,
+  Soltysinski, T., Rother, K.~M. {\rm a} Bujnicki, J.~M.} (2015).
+\newblock {SimRNA: a coarse-grained method for RNA folding simulations and 3D
+  structure prediction}.
+\newblock \emph{Nucleic Acids Research}, {\bf 44}\penalty0 (7), \penalty0
+  e63--e63.
+\newblock ISSN 0305-1048.
+\newblock \doi{10.1093/nar/gkv1479}.
+\newblock URL \url{https://doi.org/10.1093/nar/gkv1479}.
+
+\bibitem[Crick(1970)]{Crick70}
+{\sc Crick, F.} (1970).
+\newblock Central dogma of molecular biology.
+\newblock \emph{Nature}, {\bf 227}\penalty0 (2), \penalty0 561--563.
+
+\bibitem[Das~R.(2010)]{Das10}
+{\sc Das~R., Karanicolas~J., B.~D.} (2010).
+\newblock Atomic accuracy in predicting and designing noncanonical rna
+  structure.
+\newblock \emph{Nature methods}, \penalty0 (7), \penalty0 291--294.
+
+\bibitem[Eddy(2004)]{Eddy04}
+{\sc Eddy, S.} (2004).
+\newblock Genome regulation by long noncoding rnas.
+\newblock \emph{Nature Biotechnology}, \penalty0 (22).
+
+\bibitem[Felden(2007)]{Felden07}
+{\sc Felden, B.} (2007).
+\newblock Current opinion in microbiology.
+\newblock \emph{Current opinion in microbiology}, \penalty0 (10), \penalty0
+  286--291.
+
+\bibitem[Flores a~kol.(2011)Flores, Sherman, M~Bruns, Eastman a
+  Altman]{RNABuilder}
+{\sc Flores, S., Sherman, M., M~Bruns, C., Eastman, P. {\rm a} Altman, R.}
+  (2011).
+\newblock Fast flexible modeling of rna structure using internal coordinates.
+\newblock \emph{IEEE/ACM transactions on computational biology and
+  bioinformatics / IEEE, ACM}, {\bf 8}, \penalty0 1247--57.
+\newblock \doi{10.1109/TCBB.2010.104}.
+
+\bibitem[Frellsen a~kol.(2009)Frellsen, Moltke, Thiim, Mardia, Ferkinghoff-Borg
+  a Hamelryck]{Frellsen09}
+{\sc Frellsen, J., Moltke, I., Thiim, M., Mardia, K.~V., Ferkinghoff-Borg, J.
+  {\rm a} Hamelryck, T.} (2009).
+\newblock A probabilistic model of rna conformational space.
+\newblock \emph{PLOS Computational Biology}, {\bf 5}\penalty0 (6), \penalty0
+  1--11.
+\newblock \doi{10.1371/journal.pcbi.1000406}.
+\newblock URL \url{https://doi.org/10.1371/journal.pcbi.1000406}.
+
+\bibitem[Jenny~Gu(2009)]{Jenny09}
+{\sc Jenny~Gu, P. E.~B.} (2009).
+\newblock \emph{Structural Bioinformaticsl}.
+\newblock 2th edition. Wiley-Blackwell, New Jerseyl.
+\newblock ISBN 978-0-470-18105-8.
+
+\bibitem[Krupovic a~kol.(2018)Krupovic, Blomberg, Coffin, Dasgupta, Fan,
+  Geering, Gifford, Harrach, Hull, Johnson, Kreuze, Lindemann, Llorens,
+  Lockhart, Mayer, Muller, Olszewski, Pappu, Pooggin, Richert-P{\"o}ggeler,
+  Sabanadzovic, Sanfa{\c c}on, Schoelz, Seal, Stavolone, Stoye, Teycheney,
+  Tristem, Koonin a Kuhn]{Krupovice18}
+{\sc Krupovic, M., Blomberg, J., Coffin, J.~M., Dasgupta, I., Fan, H., Geering,
+  A.~D., Gifford, R., Harrach, B., Hull, R., Johnson, W., Kreuze, J.~F.,
+  Lindemann, D., Llorens, C., Lockhart, B., Mayer, J., Muller, E., Olszewski,
+  N.~E., Pappu, H.~R., Pooggin, M.~M., Richert-P{\"o}ggeler, K.~R.,
+  Sabanadzovic, S., Sanfa{\c c}on, H., Schoelz, J.~E., Seal, S., Stavolone, L.,
+  Stoye, J.~P., Teycheney, P.-Y., Tristem, M., Koonin, E.~V. {\rm a} Kuhn,
+  J.~H.} (2018).
+\newblock Ortervirales: New virus order unifying five families of
+  reverse-transcribing viruses.
+\newblock \emph{Journal of Virology}, {\bf 92}\penalty0 (12).
+\newblock ISSN 0022-538X.
+\newblock \doi{10.1128/JVI.00515-18}.
+\newblock URL \url{https://jvi.asm.org/content/92/12/e00515-18}.
+
+\bibitem[Moore(1999)]{Moore99}
+{\sc Moore, P.~B.} (1999).
+\newblock \emph{The RNA World}.
+\newblock 2th edition. Cold Spring Harbor Laboratory, New Haven.
+\newblock ISBN ISBN 0-87969-561-7.
+
+\bibitem[Needleman S.~B.(1970)]{Needleman70}
+{\sc Needleman S.~B., W. C.~D.} (1970).
+\newblock A general method applicable to the search for similarities in the
+  amino acid sequence of two proteins.
+\newblock \emph{Journal of Molecular Biology}, \penalty0 (48), \penalty0
+  443--453.
+
+\bibitem[Noller(1984)]{Noller84}
+{\sc Noller, H.} (1984).
+\newblock Structure of ribosomal rna.
+\newblock \emph{Annual Review of Biochemistry}, \penalty0 (53), \penalty0
+  119--162.
+
+\bibitem[Qian a~kol.(2007)Qian, Raman, Das, Bradley, McCoy, Read a
+  Baker]{Qian2007}
+{\sc Qian, B., Raman, S., Das, R., Bradley, P., McCoy, A.~J., Read, R.~J. {\rm
+  a} Baker, D.} (2007).
+\newblock High-resolution structure prediction and the crystallographic phase
+  problem.
+\newblock \emph{Nature}, {\bf 450}\penalty0 (7167), \penalty0 259.
+\newblock \doi{10.1038/nature06249}.
+\newblock URL \url{https://app.dimensions.ai/details/publication/pub.1001896118
+  and http://europepmc.org/articles/pmc2504711?pdf=render}.
+\newblock Exported from https://app.dimensions.ai on 2019/05/26.
+
+\bibitem[Rother a~kol.(2011)Rother, Rother, Puton a Bujnicki]{ModeRNA}
+{\sc Rother, M., Rother, K., Puton, T. {\rm a} Bujnicki, J.~M.} (2011).
+\newblock {RNA tertiary structure prediction with ModeRNA}.
+\newblock \emph{Briefings in Bioinformatics}, {\bf 12}\penalty0 (6), \penalty0
+  601--613.
+\newblock ISSN 1477-4054.
+\newblock \doi{10.1093/bib/bbr050}.
+\newblock URL \url{https://doi.org/10.1093/bib/bbr050}.
+
+\bibitem[Rother~K(2011)]{Rother11}
+{\sc Rother~K, Rother~M, B. M. P. T. B.~J.} (2011).
+\newblock Rna and protein 3d structure modeling: similarities and differences.
+\newblock \emph{Journal of Molecular Modeling}, \penalty0 (10), \penalty0
+  2325--2336.
+
+\bibitem[Ryu(2017)]{Ryu17}
+{\sc Ryu, W.-S.} (2017).
+\newblock Chapter 2 - virus structure.
+\newblock In {\sc Ryu, W.-S.}, editor, \emph{Molecular Virology of Human
+  Pathogenic Viruses}, pages 21 -- 29. Academic Press, Boston.
+\newblock ISBN 978-0-12-800838-6.
+\newblock \doi{https://doi.org/10.1016/B978-0-12-800838-6.00002-3}.
+\newblock URL
+  \url{http://www.sciencedirect.com/science/article/pii/B9780128008386000023}.
+
+\bibitem[Schudoma~C.(2010)]{Schudoma10}
+{\sc Schudoma~C., May~P., N. V. W.~D.} (2010).
+\newblock Sequence-structure relationships in rna loops: establishing the basis
+  for loop homology modeling.
+\newblock \emph{Nucleic Acids Research}, \penalty0 (38), \penalty0 970--980.
+
+\bibitem[Sharma a~kol.(2008)Sharma, Ding a Dokholyan]{iFoldRNA}
+{\sc Sharma, S., Ding, F. {\rm a} Dokholyan, N.~V.} (2008).
+\newblock {iFoldRNA: three-dimensional RNA structure prediction and folding}.
+\newblock \emph{Bioinformatics}, {\bf 24}\penalty0 (17), \penalty0 1951--1952.
+\newblock ISSN 1367-4803.
+\newblock \doi{10.1093/bioinformatics/btn328}.
+\newblock URL \url{https://doi.org/10.1093/bioinformatics/btn328}.
+
+\bibitem[Smith T.~F.(1981)]{Smith81}
+{\sc Smith T.~F., W. M.~S.} (1981).
+\newblock Identification of common molecular subsequences.
+\newblock \emph{Journal of Molecular Biology}, \penalty0 (147), \penalty0
+  195--197.
+
+\end{thebibliography}
