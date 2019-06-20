@@ -34,7 +34,7 @@ Princíp tohoto typu predikcie je veľmi podobný, ako ten v ab initio metóde a
 
 
 \begin{figure}%[p]\centering
-\includegraphics[width=\textwidth]{../img/needlemanwunsch}
+\includegraphics[width=\textwidth]{../img/str_reprezentace_uhly}
 \caption{Reprezentácia RNA fragmentu pomocou siedmych uhlov. \cite{Frellsen09} }
 \label{obr02:reptesentation}
 \end{figure}
@@ -51,7 +51,7 @@ Zarovnanie dvoch sekvencií slúži na získanie informácie o tom, či su dané
 
 \begin{figure}%[p]\centering
 \includegraphics[width=\textwidth]{../img/needlemanwunsch}
-\caption{Needleman–Wunsch algorithm (2014) Wikipedia dostupné na https://en.wikipedia.org/wiki/Needleman–Wunsch\_algorithm 27.05.2019. Príklad jedného z troch najlepších zarovnaní dvoch sekvencií: \newline GCATG-CU \newline G-ATTACA}
+\caption{Needleman–Wunsch algorithm (2014) Wikipedia dostupné na \url{https://en.wikipedia.org/wiki/Needleman–Wunsch\_algorithm} 27.05.2019. Príklad jedného z troch najlepších zarovnaní dvoch sekvencií: \newline GCATG-CU \newline G-ATTACA}
 \label{obr03:aln}
 \end{figure}
 
@@ -124,3 +124,26 @@ Zjednodušený algoritmus, ktorým ModeRNA predikuje štruktúru \cite{Rother11}
 \item Modelovanie indelov vložením fragmentov štruktúr z knižnice obsahujúcej 131 316 fragmentov dĺžky 2-19 nukleotidov. ModeRNA najprv rýchlym filtrovaním podľa vzdialeností  prekrývajúcich sa atómov fragmentu a template-u vyberie 50 najvhodnejších kandidátov, pokúsi sa ich vložiť do medzery a pre každého kandidáta spočíta skóre, pričom vyberie jediného s najlepším skóre a  vloží ho do medzery.
 \item V prípade, že predikovaná štruktúra (backbone) nie je spojitá ModeRNA sa ju pokúsi opraviť.
 \end{itemize}
+
+
+\section{FARFAR}
+
+FARFAR je algoritmus de novo predikcie RNA implementovaný spolu s ďalšími bioinformatickými algoritmami a nástrojmi v balíčku Rosetta. My ho používame na predikovanie krátkych nekonzervovaných úsekov v našom algoritme.  
+
+
+\indent Nástroj je shopný predikovať štruktúru iba z primárnej sekvencie. 
+
+
+\indent Algoritmus pracuje tak, že nedeterministicky generuje kandidátske štruktúry z ktorých vyberie tú s najnižšou voľnou energiou. Keďže sa jedná o algoritmus typu Monte Carlo dve rôzne spustenie algoritmu môžu generovať rôzne výsledky a platí, že čím viac kandidátskych štruktúr vygenerujeme, tým zvyšujeme šancu na vygenerovanie čo najlepšej štruktúry.
+
+
+\indent Z pohľadu výkonnosti platí, že čím viac nukleotidov predikujeme (včetne tých pevne daných) tým predikcia dlhšie trvá. Pre presnejšiu predstavu sme urobili porovnanie, pričom sme predikovali nekonzervovaný úsek dlhý 9 nukleotidov. Pri zahrnutí zvyšných 129 konzervovaných nukleotidov do predikcie trvalo vygenerovanie jednej štruktúry približne 13 minút. Pri totožných podmienkach a parametroch s jedinou zmenou a to, že sme do predikcie vybrali len 41 okolitých konzervovaných nukleotidov trvala predikcia jednej kandidátskej štruktúry v priemere menej ako 6 minút.
+
+
+\indent Očakávaná presnosť predikcie je priamo úmerná dĺžke neznámeho predikovaného úseku. Autori algoritmu uvádzajú, že pri predikcií štruktúr dĺžky 6 až 13 nukleotidov je priemerná RMSD menšia ako 2 Å. Pri štruktúrach dlhých 13-23 nukleotidov predstavovala priemerná RMSD už 6,5 Å.
+
+
+\indent Je však takisto možné dať mu na vstup pdb súbor s koordinátami niektorých nukleotidov a zakázať mu tieto nukleotidy modifikovať. 
+Takisto je možné mu dodať pdb súbor s nukleotidmi a dovoliť mu, aby ho algoritmus bral ako fixovaný kus štruktúry, ktorým môže ľubovoľne  pohybovať  oproti zvyšku štruktúry.
+Posledná pre nás využiteľná možnosť je dodať algoritmu sekundárnu štruktúru target molekuly. Toouto štruktúrou sa potom algoritmus pri predikcií riadi a zmenšujeje sa tak prehľadávaný priestor.
+

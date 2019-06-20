@@ -1,175 +1,112 @@
-%%% Fiktivní kapitola s ukázkami tabulek, obrázků a kódu
+\chapter{Algoritmus z bakalárskej práce}
 
-\chapter{Tabulky, obrázky, programy}
+V tejto práci naväzujeme a ďalej vylepšujeme algoritmus, ktorý bol vytvorený v rámci bakalárskej práce. Preto v tejto kapitole uvedieme princípy fungovania a stav implementácie algoritmu tak, ako bol popísaný v bakalárskej práci.
+Jedná sa o algoritmus založený na princípe homológneho modelovania, čo znamená, že predikujeme terciárnu RNA štruktúru na základe primárnej sekvencie molekuly označovanej ako target a známej terciárnej štruktúry a sekvencie inej RNA  molekuly označovanej ako template.
 
-Používání tabulek a grafů v~odborném textu má některá společná
-pravidla a~některá specifická. Tabulky a grafy neuvádíme přímo do
-textu, ale umístíme je buď na samostatné stránky nebo na vyhrazené
-místo v~horní nebo dolní části běžných stránek. \LaTeX\ se o~umístění
-plovoucích grafů a tabulek postará automaticky.
+\section{Používané typy súborov}
+V algoritme opakovane pracujeme s určitými typmi textových súborov. Sú to súbory s príponami fasta, secstr, pdb a aln.
 
-Každý graf a tabulku
-očíslujeme a umístíme pod ně legendu. Legenda má popisovat obsah grafu
-či tabulky tak podrobně, aby jim čtenář rozuměl bez důkladného
-studování textu práce.
+\indent Súbory typu fasta slúžia na ukladanie sekvencií. Pozostávajú z dvoch riadkov, v prvom je identifikátor sekvencie pozostávajúci z jej názvu a chain-u (jedna sekvencia máva  často viacero chains) a v ďalších riadkoch sú za sebou zoradené jednotlivé nukleotidy A, C, G, U. V prípade, že je nejaký nukleotid v rade neznámy, bežne namiesto jeho typu úvádza písmeno N alebo X.
 
-Na každou tabulku a graf musí být v~textu odkaz
-pomocí jejich čísla. Na příslušném místě textu pak shrneme ty
-nejdůležitější závěry, které lze z~tabulky či grafu učinit. Text by
-měl být čitelný a srozumitelný i~bez prohlížení tabulek a grafů a
-tabulky a grafy by měly být srozumitelné i~bez podrobné četby textu.
 
-Na tabulky a grafy odkazujeme pokud možno nepřímo v~průběhu běžného
-toku textu; místo \emph{\uv{Tabulka~\ref{tab03:Nejaka} ukazuje, že
-    muži jsou v~průměru o~$9,9\,\rm kg$ těžší než ženy}} raději napíšeme
-\emph{\uv{Muži jsou o~$9,9\,\rm kg$ těžší než ženy (viz
-    Tabulka~\ref{tab03:Nejaka})}}.
+ \indent Súbory secstr nám slúžia na ukladanie informácií o sekundárnej štruktúre molekuly. Sú tvorené kombináciou rôznych typov zátvoriek, ktoré popisujú sekundárnu štruktúru tak, že medzi nukleotidmi odpovedajúcimi zátvorkam existuje chemická väzba - takéto dva nukleotisy sa tiež nazývajú base pair. To znamená, že sa v terciárnej štruktúre budú nachádzať blízko pri sebe. Bodka v sekundárnej štruktúre znamená, že nukleotid netvorí base pair so žiadnym ďalším nukleotidom. Rôzne typy zátvoriek  ako [] , \{\}, <> reprezentujú pseudouzly.
 
-\section{Tabulky}
+
+\indent Súbory typu pdb uchovávajú okrem iného informácie o jednotlivých atómoch molekuly. V každom riadku sú uložené informácie o presných koordinátoch atómu v 3D priestore, typ atómu v rámci nukleotidu, chain do ktorej atóm patrí a index nukleotidu, ktorému patrí. Pdb súbory často nie sú kompletné, chýbajú v nich atómy alebo celé nukleotidy. Takisto sa stáva, že indexy nukleotidov v pdb súboroch a fasta súboroch nesúhlasia.
+
+
+\indent Súbory s príponou aln označujú výstup zarovnania dvoch sekvencií z programu EMBOSS Needle. Súbor obsahuje presné zarovnanie sekvenciií, skóre zarovnania, percentuálny pomer medzier v zarovnaní (gaps) a percentuálny pomer korektne zarovnaných nukleotidov označený ako similarity. 
+
+
+\section{Kostra algoritmu}
+
+V nasledujúcom zozname uvázdame postupnosť hlavných krokov algoritmu.
+\begin{itemize}
+\item Predpríprava a validácia vstupných súborov: template sekvencia, target sekvencia a štruktúra.
+\item Alignemnt: Zarovnanie target a template sekvencií.
+\item Sliding window: Algoritmus posuvného okienka na zarovnaní.
+\item Treating indels: Vyriešenie medzier v zarovnaní.
+\item Kopírovanie a mapovanie konzervovaných nukleotidov z target štruktúry do predikovanej template štruktúry.
+\item Vyčlenenie predikcie príliš dlhých medzier v target štruktúre.
+\item Príprava vstupu pre FARFAR.
+\item Predikcia nekonzervovaných úsekov pomocou algoritmu FARFAR.
+\item Zloženie predikovaných úsekov a dlhých medzier do finálnej štruktúry.
+\end{itemize}
+
+\section{Popis algoritmu}
+Ako vstup algoritmus dostane target sekvenciu a template sekvenciu aj štruktúru. Na výstupe očakávame terciárnu štruktúru target molekuly RNA.
+
+
+\indent  Ako prvý krok algoritmus skontroluje, či sú sekvencia vo fasta súbore a štruktúra v pdb súbore rovnako indexované. Nukleotidy v pdb súbore sú očíslované, ale vo fasta súbore číslo nukleotidu odpovedá pozícií nukleotidu v súbore. Kontrolujeme to prechodom cez pdb súbor tak, že indexom nukleotidu z pdb zaindexujeme do fasta súboru a typ nukleotidu musí byť v oboch súboroch na tejto pozícií zhodný. V prípade, že zhodný nie je skúšame ešte posunúť fasta sekvenciu pridaním dummy nukleotidov na začiatok sekvencie (pre prípad, že by začiatok sekvencie v súbore chýbal). Ak sa nám nepodarí ani takýmto spôsobom dosiahnuť aby sa typy nukleotidov v rovnakých indexoch zhodovali, označíme target za nevhodný pre predikciu a algoritmus končí neúspechom.
+
+
+\indent V druhom kroku urobíme globálne zarovnanie (alignment) target a template sekvencií v programe Emboss Needle. Na vytvorené zarovnanie použijeme algoritmus posuvného okienka (sliding window) a pre každú pozíciu určíme percentuálnu mieru okolitých úspešne zarovnaných nukleotidov spadajúcich do okienka. V prípade, že získaná hodnota je vyššia ako parametrom určená hranica, označíme príslušnú pozíciu v zarovnaní ako konzervovanú. 
+
+
+\indent V treťom kroku sa zaoberáme medzerami (indels), ktoré vznikli v terget alebo template sekvencií pri zarovnaní. Inak povedané, do oboch sekvencií algoritmus zarovnania mohol vložiť ľubovoľne medzery, tak aby získal zarovnanie s čo najlepším skóre, prípadne na seba mohol zarovnať nezhodujúce sa nukleotidy \ref{tab3.1}. 
 
 \begin{table}[b!]
-
 \centering
-%%% Tabulka používá následující balíčky:
-%%%   - booktabs (\toprule, \midrule, \bottomrule)
-%%%   - dcolumn (typ sloupce D: vycentrovaná čísla zarovnaná na
-%%%     desetinnou čárku
-%%%     Všimněte si, že ve zdrojovém kódu jsou desetinné tečky, ale
-%%%     tisknou se čárky.
-%%% Dále používáme příkazy \pulrad a \mc definované v makra.tex
-
-\begin{tabular}{l@{\hspace{1.5cm}}D{.}{,}{3.2}D{.}{,}{1.2}D{.}{,}{2.3}}
+\begin{tabular}{ccccc}
 \toprule
- & \mc{} & \mc{\textbf{Směrod.}} & \mc{} \\
-\pulrad{\textbf{Efekt}} & \mc{\pulrad{\textbf{Odhad}}} & \mc{\textbf{chyba}$^a$} &
-\mc{\pulrad{\textbf{P-hodnota}}} \\
+Sekvencia  & konzervované  & nekonzervované & gap & gap \\
 \midrule
-Abs. člen     & -10.01 & 1.01 & \mc{---} \\
-Pohlaví (muž) & 9.89   & 5.98 & 0.098 \\
-Výška (cm)    & 0.78   & 0.12 & <0.001 \\
+tamplate  & G  & A & - & U \\
+target  & G  & G & C & - \\
 \bottomrule
-\multicolumn{4}{l}{\footnotesize \textit{Pozn:}
-$^a$ Směrodatná chyba odhadu metodou Monte Carlo.}
 \end{tabular}
-
-\caption{Maximálně věrohodné odhady v~modelu M.}\label{tab03:Nejaka}
-
+\caption{Prehľad štyroch situácií, ktoré môžu nastať na každej pozícií v zarovnaní dvoch sekvencií.}\label{tab3.1}
 \end{table}
 
-U~\textbf{tabulek} se doporučuje dodržovat následující pravidla:
+To znamená, že medzery v inak konzervovanom úseku template sekvencie by vo výsledku nenechali miesto na doplnenie nukleotidov z target sekvencie zarovnaných oproti týmto medzerám z template sekvencie. 
+Naopak, medzery v target sekvencií zarovnané oproti nukleotidom v template sekvencií v inak konzervovanom úseku by mohli spôsobiť medzeru v predikovanie štruktúre, nakoľko by sme z fragmentu konzervovanej štruktúry len odmazali nejaké nukleotidy a ničím ich nedoplnili. \ref{obr3.1:indels}
 
-\begin{itemize} %% nebo compactitem z balíku paralist
-\item Vyhýbat se svislým linkám. Silnějšími vodorovnými linkami
-  oddělit tabulku od okolního textu včetně legendy, slabšími
-  vodorovnými linkami oddělovat záhlaví sloupců od těla tabulky a
-  jednotlivé části tabulky mezi sebou. V~\LaTeX u tuto podobu tabulek
-  implementuje balík \texttt{booktabs}. Chceme-li výrazněji oddělit
-  některé sloupce od jiných, vložíme mezi ně větší mezeru.
-\item Neměnit typ, formát a význam obsahu políček v~tomtéž sloupci
-  (není dobré do téhož sloupce zapisovat tu průměr, onde procenta).
-\item Neopakovat tentýž obsah políček mnohokrát za sebou. Máme-li
-  sloupec \textit{Rozptyl}, který v~prvních deseti řádcích obsahuje
-  hodnotu $0,5$ a v~druhých deseti řádcích hodnotu $1,5$, pak tento
-  sloupec raději zrušíme a vyřešíme to jinak. Například můžeme tabulku
-  rozdělit na dvě nebo do ní vložit popisné řádky, které informují
-o~nějaké proměnné hodnotě opakující se v~následujícím oddíle tabulky
-  (např. \emph{\uv{Rozptyl${}=0,5$}} a níže \emph{\uv{Rozptyl${}=
-      1,5$}}).
-\item Čísla v~tabulce zarovnávat na desetinnou čárku.
-\item V~tabulce je někdy potřebné používat zkratky, které se jinde
-nevyskytují. Tyto zkratky můžeme vysvětlit v~legendě nebo
-v~poznámkách pod tabulkou. Poznámky pod tabulkou můžeme využít i
-k~podrobnějšímu vysvětlení významu  některých sloupců nebo hodnot.
-\end{itemize}
-
-\section{Obrázky}
-
-Několik rad týkajících se obrázků a grafů.
-
-\begin{itemize}
-\item Graf by měl být vytvořen ve velikosti, v~níž bude použit
-  v~práci. Zmenšení příliš velkého grafu vede ke špatné čitelnosti
-  popisků.
-\item Osy grafu musí být řádně popsány ve stejném jazyce, v~jakém je
-  psána práce (absenci diakritiky lze tolerovat). Kreslíme-li graf
-  hmotnosti proti výšce, nenecháme na nich popisky \texttt{ht} a
-  \texttt{wt}, ale osy popíšeme \emph{Výška [cm]} a~\emph{Hmotnost
-    [kg]}. Kreslíme-li graf funkce $h(x)$, popíšeme osy $x$ a $h(x)$.
-  Každá osa musí mít jasně určenou škálu.
-\item Chceme-li na dvourozměrném grafu vyznačit velké množství bodů,
-  dáme pozor, aby se neslily do jednolité černé tmy. Je-li bodů mnoho,
-  zmenšíme velikost symbolu, kterým je vykreslujeme, anebo vybereme
-  jen malou část bodů, kterou do grafu zaneseme. Grafy, které obsahují
-  tisíce bodů, dělají problémy hlavně v~elektronických dokumentech,
-  protože výrazně zvětšují velikost souborů.
-\item Budeme-li práci tisknout černobíle, vyhneme se používání barev.
-  Čáry roz\-li\-šu\-je\-me typem (plná, tečkovaná, čerchovaná,\ldots), plochy
-  dostatečně roz\-díl\-ný\-mi intensitami šedé nebo šrafováním. Význam
-  jednotlivých typů čar a~ploch vysvětlíme buď v~textové legendě ke
-  grafu anebo v~grafické legendě, která je přímo součástí obrázku.
-\item Vyhýbejte se bitmapovým obrázkům o~nízkém rozlišení a zejména
-  JPEGům (zuby a kompresní artefakty nevypadají na papíře pěkně).
-  Lepší je vytvářet obrázky vektorově a vložit do textu jako PDF.
-\end{itemize}
-
-\section{Programy}
-
-Algoritmy, výpisy programů a popis interakce s~programy je vhodné
-odlišit od ostatního textu. Jednou z~možností je použití {\LaTeX}o\-vé\-ho balíčku
-\texttt{fancyvrb} (fancy verbatim), pomocí něhož je v~souboru \texttt{makra.tex}
-nadefinováno prostředí \texttt{code}. Pomocí něho lze vytvořit
-např. následující ukázky.
-
-\begin{code}
-> mean(x)
-[1] 158.90
-> objekt$prumer
-[1] 158.90
-\end{code}
-%$
-Menší písmo:
-\begin{code}[fontsize=\footnotesize]
-> mean(x)
-[1] 158.90
-> objekt$prumer
-[1] 158.90
-\end{code}
-%$
-Bez rámečku:
-\begin{code}[frame=none]
-> mean(x)
-[1] 158.90
-> objekt$prumer
-[1] 158.90
-\end{code}
-%$
-Užší rámeček:
-\begin{code}[xrightmargin=20em]
-> mean(x)
-[1] 158.90
-> objekt$prumer
-[1] 158.90
-\end{code}
-%$
-
-\begin{figure}[p]\centering
-\includegraphics[width=140mm, height=140mm]{../img/ukazka-obr01}
-% Příponu není potřeba explicitně uvádět, pdflatex automaticky hledá pdf.
-% Rozměry také není nutné uvádět.
-\caption{Náhodný výběr z~rozdělení $\mathcal{N}_2(\boldsymbol{0},\,I)$.}
-\label{obr03:Nvyber}
-
+\begin{figure}%[p]\centering
+\includegraphics[width=\textwidth]{../img/aln-problems}
+\caption{Problémy, ktoré môžu nasať v štruktúre pri vložení medzier do target alebo template časti zarovnania. Prvý riadok zobrazuje komplikácie pri pokuse vložiť nukleotidy do celistvej štruktúry (teda v zarovnaní boli pridané medzery do target sekvencie). Druhý riadok ukazuje opačný problém a to vynechanie dvoch nukleotidov a roztrhnutie štruktúry (zodpovedá to vložením medzier to target sekvencie). Tretí riadok odpovedá situácií rovnakej situácií ako druhý, ale odstránenie nukleotidov zo štruktúry nespôsobuje problém, pretože odstránené nukleotidy tvorili loop, ktorý môžeme bez problémov odobrať.}
+\label{obr3.1:indels}
 \end{figure}
 
-\begin{figure}[p]\centering
-\includegraphics[width=140mm, height=140mm]{../img/ukazka-obr02}
-\caption{Hustoty několika normálních rozdělení.}
-\label{obr03:Nhust}
+Oba tieto problémy riešime tak, že nukleotidy v určitom okolí takýchto úsekov označíme za nekonzervované a budú dopredikované algoritmom FARFAR.
+Taktiež označíme za nekonzervované tie nukleotidy, ktoré boli zarovnané na nezhodujúci sa typ nukleotidu. 
+
+
+\indent V štvrtom kroku skopírujeme konzervované časti template štruktúry do predikovanej target štruktúry. Vzhľadom na to, že v zarovnaní môžu byť rôzne vložené medzery do target aj template sekvencie musíme premapovať indexy nukleotidov z template štruktúry tak, aby odpovedali nukleotidom, na ktorých miesto sú vložené v target sekvencií. Toto urobíme jednoducho vďaka informáciam zo zarovnania. Takto získame target štruktúru s medzerami, ktoré potrebujeme dopredikovať.
+
+
+\indent V piatom kroku identifikujeme dlhé nekonzervované úseky a vyčleníme ich následnu predikciu do samostatných behov algoritmu FARFAR. 
+Prvý dôvod je, že takto sa môže FARFAR zamerať iba na predikciu dlhého úseku a tým znížime celkovú výpočetnú náročnosť. Takisto môžeme zmeniť jeho parametry, ako napríklad zvýšiť počet samplovaných modelov, prípade zvýšiť celkový čas predikcie. 
+Ďalší dôvod prečo dopredikovanie nekonzervovaných úsekov takto delíme je, že algoritmus FARFAR sa nedokáže dobre vysporiadať s predikciami príliš dlhých štruktúri, aj keď je časť nukleotidov pevne daná. Z toho dôvodu rozdeľujeme dlhé štruktúry na úseky dĺžky 300 nukleotidov na základe ich poradia v sekvencii. Takéto delenie spôsobuje ďalší problém a to, že nukleotidy, ktoré sú od seba vzdialené v sekvencií môžu byť blízko pri sebe v terciárnej štruktúre. 
+Naše riešenie teda vyberei tieto dlhé nekonzervované úseky spolu s okolitými nukleotidmi, ktoré ležia v guli so stredom určeným úsečkou spájajúcou posledný konzervovaný nukleotid pred nekonzervovaným úsekom s prvým konzervovaným nukleotidom za nekonzervovaným úsekom vzhľadom na ich poradie v sekvencii. Polomer tejto gule je určený experimentálne ako 0,75 násobok dĺžky úsečky, kedy by mala obsiahnuť všetky relevantné nukleotidy. \ref{obr3.2:sphere}
+
+\begin{figure}%[p]\centering
+\includegraphics[width=\textwidth]{../img/sphere}
+\caption{Schématické nakreslenie sféry so stredom v bode S, ktorý je stredom úsečky spájajúcej dve krajné konzervované nukleotidy medzery v štruktúre. Všetky nukleotidy, ktoré padnú do bledomodrej gule, budú použíte pri predikcií daného úseku.}
+\label{obr3.2:sphere}
 \end{figure}
 
-\begin{figure}[p]\centering
-\includegraphics[width=140mm, height=198mm]{../img/ukazka-obr03}
-\caption{Hustoty několika normálních rozdělení.}
-\label{obr03:Nhust:podruhe}
+\indent V šiestom kroku pripravíme vstupné dáta pre algoritmus FARFAR. To zahŕňa prípadné rozdelenie na úseky po 300 nukleotidov spomenuté v predchádzajúcom odstavci a prepísanie informácií o tom, ktoré nukleotidy sú pevne dané a ktoré treba dopredikovať do vstupného súboru. Takisto tu určíme parametre pre jednotlivé predikcie ako napríklad počet vygenerovaných štruktúr.  
 
-\end{figure}
+
+\indent
+V siedmom kroku všetky takto pripravené časti predikcie spustíme a počkáme na výsledok. Toto je najpomalšia časť algoritmu, kedy FARFAR potrebuje čas minimálne pár hodín až niekoľko desiatok hodín, aby dokázal predikovať dlhšie nepredikované úseky. Tie sú napriek tomu najväčšou slabinou nášho algoritmu podľa výsledkov získaných v bakalárskej práci.
+
+
+\indent V poslednom ôsmom kroku najprv konvertujeme úseky z internej reprezentácie FARFARu do klasických pdb súborov a tie spojíme do výsledku.  
+
+
+\section{Popis implementácie}
+Algoritmus bol implementovaný prevažne v programovacom jazyku Python 2.7. s využitím knižnice BioPython, ktorá zjednodušuje prácu so štandardnými súbormi používanými v bioinformatike, ako napríklad pdb a fasta. Okrem toho používame bash scripty na manipuláciu so súbormi a spustenie predikcie vo FARFAR.
+
+
+\indent Algoritmus bol rozdelený na tri časti. Prvá pozostávalazo spustenia predikcie dopredu pripravených dvojíc na lokálnom PC s operačným systémom Window. To obsiahlo algoritmus  po siedmy krok, teda bola pipravená target štruktúra do stavu, kedy treba dopredikovať nekonzervované úseky algoritmom FARFAR. Následne boli takto pripravené vstupy pre FARFAR skopírované na servery organizácie Metacentrum používajúci operačný systém unixového typu s dávkovým spracovaním úloh, kde mohli bežať paralelne viaceré predikcie za pomoci FARFAR naraz. To je veľmi dvôležité, pretože de novo predikcia nekonzervovaných úsekov bola najdlhšie trvajúca časť algoritmu a  predikcia jednej štruktúry mohla obsahovať niekoľko takýchto de novo predikcií. Po skončení FARFAR predikcií nekonzervovaných úsekov boli výsledky skopírované späť na lokálny PC a tam boli v treťom kroku vyhodnotené výsledky. 
+
+
+\indent Časová náročnosťť celého algoritmu, je závislá hlavne od nekonzevovaný úsekov, ktoré treba predikovať. Časť predikcie po algoritmus FARFAR beží v rádoch desiatok sekúnd. Pre FARFAR sme okrem pár problémových predikcií, používali obmedzenie predikcie časom 24 hodinami prípadne 100 štruktúrami. Počet a kvalita kandidátskych štruktúr, ktoré za tento čas algoritmus stihne vygenerovať záleží na počte nekonzervovaných úsekov, ich dĺžke (problematické sú hlavne dlhé nekonzervované úseky) a dĺžke celej predikovanej štruktúry včetne konzervovaných nukleotidov. Záverečné získanie výsledkov a porovnanie s experimentálne získanými štruktúrami prebieha opäť v rádoch desiatok sekúnd.
+
+
+\section{Hlavné problémy algoritmu a jeho implementácie}
+Najväčším problémom v našom algoritme, ktorý sme identifikovali na základe výsledkov bakalárskej práce je predikcia dlhších nekonzervovaných úsekov \ref{obr3.3:loop 3DIg_X_3DOU_A}. Preto by sme potrebovali minimalizovať takéto úseky, prípadne pomôcť algoritmu FARFAR zmenšiť prehľadávaný priestror pri generovaní kandidátskych štruktúr. To by potom mohlo pomôcť rýchlosti predikcie kandidátskych štruktúr FARFAR-om a zníži jeho chybovosť.
+
+
+\indent Takisto by sme chceli do väčšej miery automatizovať predikciu, presúnť ju celú na jedno prostrede a zbaviť sa tak nutnosti manuálneho kopírovania súborov. Okrem toho by sme ccheli predstaviť alternatívnu možnosť vstupných parametrov, kedy by nebolo treba určiť target aj template molekuly, ale stačilo by určiť target sekvenciu a algoritmus by sám našiel vhodnú štruktúru, ktorá by mohla slúžiť ako target. 
