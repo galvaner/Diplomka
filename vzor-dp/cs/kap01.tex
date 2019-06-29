@@ -1,17 +1,17 @@
 
 
 \chapter{RNA štruktúra}
-V tejto práci sa venujeme automatickej predikcií priestorovej štruktúry ribonukleovej kyseliny, 
-preto sa budeme v prvej kapitole venovať jej významu z biologického hľadiska. 
-Ďalej preberieme možnosti, akým spôsobom a aké podrobné informácie o štruktúre RNA dokáže súčastná veda získať experimentálnym spôsobom a aká je motivácia pre počítačovú predikciu RNA.   
-Nakoniec uvedieme možnosti, ako RNA štruktúru reprezentovať vo formáte textových súborov a aké informácie o štruktúre jednotlive typy súborov uchovávajú. 
+V tejto práci sa venujeme automatickej predikcii priestorovej štruktúry ribonukleovej kyseliny, 
+preto sa budeme v prvej kapitole zaoberať jej významom z biologického hľadiska. 
+Ďalej preberieme možnosti, akým spôsobom a aké podrobné informácie o štruktúre RNA dokáže súčasná veda získať experimentálnym spôsobom a aká je motivácia pre počítačovú predikciu RNA.   
+Nakoniec uvedieme možnosti, ako RNA štruktúru reprezentovať vo formáte textových súborov a aké informácie o štruktúre jednotlivé typy súborov uchovávajú. 
 
 \section{RNA}
 Ribonukleová kyselina slúži na prenos alebo uchovávanie genetickej informácie vo všetkých živých organizmoch. Najznámejšia je jej úloha v Centrálnej dogme molekulárnej biológie \cite{Crick70}, kde slúži pri syntéze proteínov z DNA na prenášanie genetickej informácie.
 
 
-\indent RNA je tiež, ako DNA tvorená štyrmi typmi nukleotidov (báz). Sú to adenín (A), guanín (G), cytozín (C) a uracyl (U).  Na rozdiel od RNA sa v DNA namiesto uracylu vyskytuje báza tymín (T). Jednotlivé nukleotidy sú chemicky naviazané na cukre - ribóze, ktorý ich spája do vlákna (v prípade DNA sa jedná o deoxiribózu).
-Dĺžka vlákna môže byť v závislosti od typu RNA od jednotiek až po tisíce nukleotidov. Pre DNA následne platí, že sa vodíkovými väzbami spájajú dve komplementárne vlákna do špirály, čo čiastočne určuje pravidelný tvar molekuly v priestore. RNA sa však vyskytuje hlavne v  jednovláknovej forme, pričom sa vlákno spája vodíkovými väzbami samo so sebou, čo prináša veľkú variabilitu v tvare molekuly. Platí, že vodíkovými väzbami sa navájom viažu nukleotidy cytozínu a guanínu, adenínu a uracylu, guanínom a uracylom.
+\indent RNA je rovnako ako DNA tvorená štyrmi typmi nukleotidov (báz). Sú to adenín (A), guanín (G), cytozín (C) a uracil (U).  Narozdiel od RNA sa v DNA namiesto uracilu vyskytuje báza tymín (T). Jednotlivé nukleotidy sú chemicky naviazané na cukor - ribózu, ktorý ich spája do vlákna (v prípade DNA sa jedná o deoxyribózu).
+Dĺžka vlákna môže byť v závislosti na type RNA od niekoľkých jednotiek až po tisíce nukleotidov. Pre DNA následne platí, že sa vodíkovými väzbami spájajú dva komplementárne reťazce do špirály, čo čiastočne určuje pravidelný tvar molekuly v priestore. RNA sa však vyskytuje hlavne v  jednovláknovej forme, pričom sa vlákno spája vodíkovými väzbami samo so sebou, a to na rôznych miestach, čo prináša veľkú variabilitu v tvare molekuly. Platí, že tromi vodíkovými väzbami sa navájom viažu nukleotidy cytozín a guanín, a dvomi väzbami nukleotidy adenín a uracil (prípadne tymín v DNA).
 %\begin{figure}[p]\centering
 %\includegraphics{../img/dna_6ijv}
 %\caption{Príklad štruktúry molekuly DNA.}
@@ -19,7 +19,7 @@ Dĺžka vlákna môže byť v závislosti od typu RNA od jednotiek až po tisíc
 %\end{figure}
 
 \section{Druhy a funkcie RNA}
-Okrem prenosu genetickej informácie pri syntéze proteínov, ktorý pozostáva z replikácie DNA, transkripcie DNA do RNA a nakoniec translácie z RNA do proteínu, pričom sa využívajú rôzne typy RNA, zastáva RNA aj iné funkcie. Slúži napríklad na uchovávanie genetickej informácie niektorých jednoduchých organizmov ako sú vírusy. Tie môžu na uchovanie genetickej informácie používať jednovláknovú RNA, dvojvláknovú RNA a v prípade retrovírusov špeciálny typ RNA, ktorý je schopný prepisovať genetickú informáciu z RNA do DNA procesom reverznej transkriptázy a vložiť tak svoju genetickú informáciu do génu napadnutej bunky. Medzi tieto vírusy patrí napríklad známy vírus HIV.  \cite{Krupovice18}
+Okrem prenosu genetickej informácie pri syntéze proteínov, ktorý pozostáva z replikácie DNA, transkripcie DNA do RNA a nakoniec translácie z RNA do samotnej primárnej štruktúry proteínu (pričom sa využívajú rôzne typy RNA), zastáva RNA aj iné funkcie. Slúži napríklad na uchovávanie genetickej informácie niektorých jednoduchých organizmov ako sú vírusy. Tie môžu na uchovanie genetickej informácie používať jednovláknovú RNA, dvojvláknovú RNA a v prípade retrovírusov špeciálny typ RNA, ktorý je schopný prepisovať genetickú informáciu z RNA do DNA procesom reverznej transkriptázy a vložiť tak svoju genetickú informáciu do genomu napadnutej bunky. Medzi tieto vírusy patrí napríklad známy vírus HIV.  \cite{Krupovice18}
 
 
 \indent Prehľad niektorých typov RNA:
@@ -43,34 +43,31 @@ Okrem prenosu genetickej informácie pri syntéze proteínov, ktorý pozostáva 
 \end{itemize}
 \end{itemize}
 
-\indent Messenger RNA (mRNA) vzniká pri prepise (transkripcií) DNA v jadre bunky. Najprv je vytvorená pre-mRNA, ktorá obsahuje aj nekódujúce úseky. V ďalšom kroku sa z nej ešte v jadre bunky pomocou procesu nazývaného splicing, odstránia exóny (nekódujúce úseky)  za pomoci snRNA, ktorá rozpoznáva sekvenciu báz AGGU označujúcu prechod medzi intrónom  a exónom. Následne mRNA putuje von z jadra jeho pórami do cytoplazmy, kde sa naviaže na ribozóm. \cite{Alberts02}
+\indent Messenger RNA (mRNA) vzniká pri prepise (transkripcii) DNA v jadre bunky. Najprv je vytvorená pre-mRNA, ktorá obsahuje aj nekódujúce úseky. V ďalšom kroku sa z nej ešte v jadre bunky procesom nazývanzým splicing odstránia intróny (nekódujúce úseky) za pomoci snRNA. snRNA rozpoznáva sekvenciu báz AGGU označujúcu prechod medzi intrónom  a exónom. Následne mRNA putuje cez póry v jadrovej membráne von do cytoplazmy, kde sa naviaže na ribozóm. \cite{Alberts02}
 
 
-\indent Ribozóm obsahuje ribozomálnu RNA, ktorá sa zúčastňuje translácie  (prekladu) mRNA na kódovanú bielkovinu. Okrem toho je to typicky najčastejšie sa vyskytujúca RNA v bunke, pričom jej dĺžka môže byť niekoľko tisíc nukleotidov.
+\indent Ribozóm obsahuje ribozomálnu RNA (rRNA), ktorá sa zúčastňuje translácie (prekladu) mRNA do primárnej skevencie kódovanej bielkoviny. Okrem toho je to typicky najčastejšie sa vyskytujúca RNA v bunke, pričom jej dĺžka môže byť až niekoľko tisíc nukleotidov.
 
 
-\indent Prenosová tRNA sa nachádza v cytoplazme bunky a jej fubkcia spočíva v dopravení správnej aminokyseliny do procesu translácie.
+\indent Prenosová tRNA sa nachádza v cytoplazme bunky a jej funkcia spočíva v dopravení správnej aminokyseliny do procesu translácie. Každá aminokyselina má svojú vlastnú špecifickú tRNA, na ktorú je naviazaná aminoacyl-tRNA syntetázou, a následne dopravená na miesto syntézy.
 
 
-\indent  Niektoré typy RNA plnia regulačnú funkciu. Napríklad mikro RNA (miRNA)
-zabraňuje procesu translácie mRNA tým, že sa na ňu naviaže a zabráni jej spojeniu s ribozómom. snoRNA zas hrá úlohu pri modifikácii
-ostatných typov RNA - hlavne rRNA, tRNA a snRNA.
+\indent  Niektoré typy RNA plnia regulačnú funkciu. Napríklad mikro RNA (miRNA) zabraňuje procesu translácie mRNA tým, že sa na ňu naviaže a zabráni jej spojeniu s ribozómom. snoRNA zas hrá úlohu pri modifikácii ostatných typov RNA - hlavne rRNA, tRNA a snRNA.
 
 
-\indent Sekvencie lncRNA mávajú typicky dĺžku okolo 200 nukleotidov a jeden zo známych zástupcov je gén XIST, ktorý sa
-uplatňuje pri procese inaktivácie chromozómu X. \cite{Rinn a Chang, 2012}
+\indent Sekvencie lncRNA mávajú typicky dĺžku okolo 200 nukleotidov a jeden zo známych zástupcov je gén XIST, ktorý sa uplatňuje pri procese inaktivácie chromozómu X. \cite{Rinn a Chang, 2012}
 
 
 \section{Reprezentácia a práca s RNA}
-Fyzicky je RNA v bunke vlastne len mnoho atómov vodíka, kyslíka, uhlíka, fosforu usporiadaných v priestore vďaka chemickým a fyzikálnym väzbám a vlastnostiam atómov. Pre to, aby sme ich mohli spracovávať pomocou počítača potrebujeme vhodnú reprezentáciu štruktúry.
-Typ reprezentácie závisí od toho, aké informácie o štruktúre chceme mať k dispozícií a takisto aké informácie sme schopní získať. Principiálne môžeme rozdeliť reprezentáciu RNA štruktúr na nasledujúce štyri úrovne:
+Fyzicky je RNA v bunke vlastne len mnoho atómov vodíka, kyslíka, uhlíka, dusíka a fosforu usporiadaných v priestore vďaka chemickým a fyzikálnym interakciám a vlastnostiam atómov. Pre to, aby sme ich mohli spracovávať pomocou počítača, potrebujeme vhodnú reprezentáciu štruktúry.
+Typ reprezentácie závisí od toho, aké informácie o štruktúre chceme mať k dispozícii a takisto aké informácie sme schopní získať. Principiálne môžeme rozdeliť reprezentáciu RNA štruktúr na nasledujúce štyri úrovne:
 
 
 \begin{itemize}
 \item Primárna
 \item Sekundárna
 \item Terciárna
-\item Kvarciárna
+\item Kvartérna
 \end{itemize}
 
 
