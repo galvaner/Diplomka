@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.5.15)  29 MAY 2019 22:57
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.5.15)  28 JUN 2019 01:02
 entering extended mode
 **./prace.tex
 (prace.tex
@@ -705,7 +705,7 @@ Package hyperref Info: Option `breaklinks' set `true' on input line 123.
 \c@veta=\count123
 \c@definice=\count124
 ) (prace.aux (titulka.aux) (uvod.aux) (kap01.aux) (kap02.aux)
-(kap03.aux) (kap04.aux) (zaver.aux) (literatura.aux))
+(kap03.aux) (kap04.aux) (kap05.aux) (kap06.aux) (zaver.aux) (literatura.aux))
 \openout1 = `prace.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 129.
@@ -792,7 +792,7 @@ LaTeX Info: Redefining \nameref on input line 129.
 
  (titulka.tex
 Package hyperref Info: Option `pageanchor' set `false' on input line 6.
-<../img/logo-cs.pdf, id=106, 506.4591pt x 156.49065pt>
+<../img/logo-cs.pdf, id=190, 506.4591pt x 156.49065pt>
 File: ../img/logo-cs.pdf Graphic file (type pdf)
 <use ../img/logo-cs.pdf>
 Package pdftex.def Info: ../img/logo-cs.pdf  used on input line 10.
@@ -846,18 +846,18 @@ Package hyperref Info: Option `pageanchor' set `true' on input line 55.
 
 ] [3
 
-]) (prace.toc)
+]) (prace.toc [1
+
+
+
+])
 \tf@toc=\write6
 \openout6 = `prace.toc'.
 
- [1
-
-
-
-]
+ [2]
 \openout2 = `uvod.aux'.
 
- (uvod.tex) [2
+ (uvod.tex) [3
 
 
 ]
@@ -870,226 +870,255 @@ LaTeX Font Info:    Try loading font information for TS1+lmr on input line 27.
 ("C:\Users\rgalv\AppData\Local\Programs\MiKTeX 2.9\tex/latex/lm\ts1lmr.fd"
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-[3
+[4
 
 
 
 ]
 
-Package natbib Warning: Citation `Rinn a Chang' on page 4 undefined on input li
+Package natbib Warning: Citation `Rinn a Chang' on page 5 undefined on input li
 ne 61.
 
 
-Package natbib Warning: Citation `2012' on page 4 undefined on input line 61.
+Package natbib Warning: Citation `2012' on page 5 undefined on input line 61.
 
-[4]
-<../img/secondary_structure.png, id=193, 660.96938pt x 434.37282pt>
+[5]
+<../img/secondary_structure.png, id=302, 660.96938pt x 434.37282pt>
 File: ../img/secondary_structure.png Graphic file (type png)
 <use ../img/secondary_structure.png>
 Package pdftex.def Info: ../img/secondary_structure.png  used on input line 84.
 
 (pdftex.def)             Requested size: 412.56496pt x 271.13768pt.
- [5 <../img/secondary_structure.png>]
-<../img/ecoli_rna_example.png, id=207, 773.89125pt x 592.46344pt>
+ [6 <../img/secondary_structure.png>]
+<../img/ecoli_rna_example.png, id=316, 773.89125pt x 592.46344pt>
 File: ../img/ecoli_rna_example.png Graphic file (type png)
 <use ../img/ecoli_rna_example.png>
 Package pdftex.def Info: ../img/ecoli_rna_example.png  used on input line 102.
 (pdftex.def)             Requested size: 412.56496pt x 315.84834pt.
- [6 <../img/ecoli_rna_example.png>]
-<../img/x-ray.jpg, id=219, 356.23354pt x 145.81912pt>
+ [7 <../img/ecoli_rna_example.png>]
+<../img/x-ray.jpg, id=328, 356.23354pt x 145.81912pt>
 File: ../img/x-ray.jpg Graphic file (type jpg)
 <use ../img/x-ray.jpg>
 Package pdftex.def Info: ../img/x-ray.jpg  used on input line 132.
 (pdftex.def)             Requested size: 412.56496pt x 168.88329pt.
 )
-[7 <../img/x-ray.jpg>]
+[8 <../img/x-ray.jpg>]
 \openout2 = `kap02.aux'.
 
  (kap02.tex
 Kapitola 2.
-<../img/zones_of_aln.png, id=233, 706.89093pt x 427.5975pt>
+<../img/zones_of_aln.png, id=342, 706.89093pt x 427.5975pt>
 File: ../img/zones_of_aln.png Graphic file (type png)
 <use ../img/zones_of_aln.png>
 Package pdftex.def Info: ../img/zones_of_aln.png  used on input line 15.
 (pdftex.def)             Requested size: 412.56496pt x 249.55957pt.
-[8
+[9
 
 
 
 ]
-<../img/needlemanwunsch.png, id=248, 385.44pt x 385.44pt>
-File: ../img/needlemanwunsch.png Graphic file (type png)
-<use ../img/needlemanwunsch.png>
-Package pdftex.def Info: ../img/needlemanwunsch.png  used on input line 37.
-(pdftex.def)             Requested size: 412.56496pt x 412.56375pt.
- [9 <../img/zones_of_aln.png>] [10 <../img/needlemanwunsch.png>]
+<../img/str_reprezentace_uhly.png, id=358, 763.35187pt x 396.7322pt>
+File: ../img/str_reprezentace_uhly.png Graphic file (type png)
+<use ../img/str_reprezentace_uhly.png>
+Package pdftex.def Info: ../img/str_reprezentace_uhly.png  used on input line 3
+7.
+(pdftex.def)             Requested size: 412.56496pt x 214.41985pt.
+ [10 <../img/zones_of_aln.png>]
 
 Package natbib Warning: Citation `Emboss' on page 11 undefined on input line 50
 .
 
+<../img/needlemanwunsch.png, id=375, 385.44pt x 385.44pt>
 File: ../img/needlemanwunsch.png Graphic file (type png)
 <use ../img/needlemanwunsch.png>
 Package pdftex.def Info: ../img/needlemanwunsch.png  used on input line 53.
 (pdftex.def)             Requested size: 412.56496pt x 412.56375pt.
-
-Underfull \hbox (badness 1281) in paragraph at lines 54--54
-\T1/lmr/m/n/12 https://en.wikipedia.org/wiki/NeedlemanWunsch_algorithm 27.05.2
-019. Prí-
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 54.
+("C:\Users\rgalv\AppData\Local\Programs\MiKTeX 2.9\tex/latex/lm\t1lmtt.fd"
+File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+Underfull \hbox (badness 5331) in paragraph at lines 54--54
+[]\T1/lmr/m/n/12 Obrázek 2.3: []NeedlemanWunsch al-go-ri-thm (2014) Wi-ki-pe-d
+ia do-stupné
  []
 
-[11] [12]
-<../img/template-vs-denovo.jpg, id=288, 611.28375pt x 498.86375pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 54--54
+\T1/lmr/m/n/12 na []$\T1/lmtt/m/n/12 https : / / en . wikipedia . org / wiki / 
+Needleman \ T1 \ textendashWunsch _
+ []
+
+[11 <../img/str_reprezentace_uhly.png>] [12 <../img/needlemanwunsch.png>]
+<../img/template-vs-denovo.jpg, id=398, 611.28375pt x 498.86375pt>
 File: ../img/template-vs-denovo.jpg Graphic file (type jpg)
 <use ../img/template-vs-denovo.jpg>
 Package pdftex.def Info: ../img/template-vs-denovo.jpg  used on input line 82.
 (pdftex.def)             Requested size: 412.56496pt x 336.68805pt.
- [13 <../img/template-vs-denovo.jpg>]
+
+[13] [14 <../img/template-vs-denovo.jpg>]
 Overfull \hbox (3.05957pt too wide) in paragraph at lines 124--125
 \T1/lmr/m/n/12 tro-va-ním pod©a vz-di-a-le-ností pre-krý-vaj-úcich sa ató-mov f
 rag-mentu a template-|
  []
 
-) [14]
+[15]) [16]
 \openout2 = `kap03.aux'.
 
  (kap03.tex
 Kapitola 3.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 52.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 52.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 52.
-LaTeX Font Info:    Try loading font information for T1+lmtt on input line 66.
-("C:\Users\rgalv\AppData\Local\Programs\MiKTeX 2.9\tex/latex/lm\t1lmtt.fd"
-File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
-[15
+[17
 
 
 
-] [16]
-<../img/ukazka-obr01.pdf, id=347, 433.62pt x 433.62pt>
-File: ../img/ukazka-obr01.pdf Graphic file (type pdf)
-<use ../img/ukazka-obr01.pdf>
-Package pdftex.def Info: ../img/ukazka-obr01.pdf  used on input line 156.
-(pdftex.def)             Requested size: 398.3596pt x 398.3596pt.
-<../img/ukazka-obr02.pdf, id=348, 433.62pt x 433.62pt>
-File: ../img/ukazka-obr02.pdf Graphic file (type pdf)
-<use ../img/ukazka-obr02.pdf>
-Package pdftex.def Info: ../img/ukazka-obr02.pdf  used on input line 165.
-(pdftex.def)             Requested size: 398.3596pt x 398.3596pt.
-<../img/ukazka-obr03.pdf, id=349, 433.62pt x 614.295pt>
-File: ../img/ukazka-obr03.pdf Graphic file (type pdf)
-<use ../img/ukazka-obr03.pdf>
-Package pdftex.def Info: ../img/ukazka-obr03.pdf  used on input line 171.
-(pdftex.def)             Requested size: 398.3596pt x 563.39606pt.
-) [17] [18 <../img/ukazka-obr01.pdf>] [19 <../img/ukazka-obr02.pdf>]
-[20 <../img/ukazka-obr03.pdf>]
+] [18]
+<../img/aln-problems.png, id=463, 596.98032pt x 609.77812pt>
+File: ../img/aln-problems.png Graphic file (type png)
+<use ../img/aln-problems.png>
+Package pdftex.def Info: ../img/aln-problems.png  used on input line 65.
+(pdftex.def)             Requested size: 412.56496pt x 421.40797pt.
+<../img/sphere.png, id=465, 630.85687pt x 411.03563pt>
+File: ../img/sphere.png Graphic file (type png)
+<use ../img/sphere.png>
+Package pdftex.def Info: ../img/sphere.png  used on input line 83.
+(pdftex.def)             Requested size: 412.56496pt x 268.80695pt.
+ [19] [20 <../img/aln-problems.png>]
+
+LaTeX Warning: Reference `obr3.3:loop 3DIg_X_3DOU_A' on page 21 undefined on in
+put line 109.
+
+[21 <../img/sphere.png>]) [22]
 \openout2 = `kap04.aux'.
 
  (kap04.tex
 Kapitola 4.
-) [21
+[23
+
+
+
+]
+Overfull \hbox (23.16904pt too wide) in paragraph at lines 21--22
+\T1/lmr/m/n/12 vpy-thon scrip-toch. Preto sme vy-tvo-rili kon-fi-gu-ra£ný sú-bo
+r Pre-dic-tor/scripts/config.py,|
+ []
+
+<../img/config.png, id=492, 743.77875pt x 353.06906pt>
+File: ../img/config.png Graphic file (type png)
+<use ../img/config.png>
+Package pdftex.def Info: ../img/config.png  used on input line 24.
+(pdftex.def)             Requested size: 412.56496pt x 195.84789pt.
+[24 <../img/config.png>] [25]) [26]
+\openout2 = `kap05.aux'.
+
+ (kap05.tex
+Kapitola 5.
+) [27
+
+
+
+]
+\openout2 = `kap06.aux'.
+
+ (kap06.tex
+Kapitola 6.
+) [28
 
 
 
 ]
 \openout2 = `zaver.aux'.
 
- (zaver.tex) [22
+ (zaver.tex) [29
 
 
 
 ]
 \openout2 = `literatura.aux'.
 
- (literatura.tex (prace.bbl [23
+ (literatura.tex (prace.bbl [30
 
 
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 124--133
+Underfull \hbox (badness 10000) in paragraph at lines 136--145
 \T1/lmr/m/n/12 URL []$\T1/lmtt/m/n/12 https : / / app . dimensions . ai / detai
 ls / publication / pub .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 124--133
+Underfull \hbox (badness 10000) in paragraph at lines 136--145
 \T1/lmtt/m/n/12 1001896118andhttp : / / europepmc . org / articles / pmc2504711
  ? pdf = render$[]\T1/lmr/m/n/12 .
  []
 
-)) [24] (prace.lof
-Overfull \hbox (292.86772pt too wide) in paragraph at lines 9--9
+)) [31] (prace.lof
+Overfull \hbox (10.91682pt too wide) in paragraph at lines 9--9
  [][] [][]\T1/lmr/m/n/12 NeedlemanWunsch al-go-ri-thm (2014) Wi-ki-pe-dia do-s
-tupné na https://en.wikipedia.org/wiki/NeedlemanWunsch_algorithm |
+tupné na []$\T1/lmtt/m/n/12 https : |
+ []
+
+
+Overfull \hbox (51.07172pt too wide) in paragraph at lines 9--9
+ \T1/lmtt/m/n/12 / / en . wikipedia . org / wiki / Needleman \ T1 \ textendashW
+unsch _ algorithm$[] |
  []
 
 )
 \tf@lof=\write7
 \openout7 = `prace.lof'.
 
- [25
+ [32
 
 
 ] (prace.lot)
 \tf@lot=\write8
 \openout8 = `prace.lot'.
 
- [26
+ [33
 
-] [27
+] [34
 
 ]
 P\v {r}\'{\i }loha A.
-[28
+[35
 
 ]
 
 Package natbib Warning: There were undefined citations.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 176.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 176.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 178.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 178.
 (prace.aux (titulka.aux) (uvod.aux) (kap01.aux) (kap02.aux) (kap03.aux)
-(kap04.aux) (zaver.aux) (literatura.aux))
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 176.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 176.
+(kap04.aux) (kap05.aux) (kap06.aux) (zaver.aux) (literatura.aux))
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 178.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 178.
 Package rerunfilecheck Info: File `prace.out' has not changed.
-(rerunfilecheck)             Checksum: 1E4E220582C1A36552C7628661B86918;3602.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 176.
+(rerunfilecheck)             Checksum: 43436C4CBF0FB225DD70AB1BD70253F0;7733.
+
+
+LaTeX Warning: There were undefined references.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 178.
  ) 
 Here is how much of TeX's memory you used:
- 15806 strings out of 492945
- 223814 string characters out of 3126252
- 291931 words of memory out of 3000000
- 19255 multiletter control sequences out of 15000+200000
- 96243 words of font info for 83 fonts, out of 3000000 for 9000
+ 15855 strings out of 492945
+ 224855 string characters out of 3126252
+ 294899 words of memory out of 3000000
+ 19258 multiletter control sequences out of 15000+200000
+ 59550 words of font info for 53 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 37i,14n,37p,1162b,2327s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 37i,14n,37p,1535b,2327s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Users/rgalv/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.en
-c}{C:/Users/rgalv/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/lm-rm.en
-c}{C:/Users/rgalv/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathi
-t.enc}{C:/Users/rgalv/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/lm-m
-athsy.enc}{C:/Users/rgalv/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/
-lm-ts1.enc}<C:/Users/rgalv/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public
-/lm/lmbx12.pfb><C:/Users/rgalv/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pu
-blic/lm/lmcsc10.pfb><C:/Users/rgalv/AppData/Local/Programs/MiKTeX 2.9/fonts/typ
-e1/public/lm/lmmi12.pfb><C:/Users/rgalv/AppData/Local/Programs/MiKTeX 2.9/fonts
-/type1/public/lm/lmmi7.pfb><C:/Users/rgalv/AppData/Local/Programs/MiKTeX 2.9/fo
-nts/type1/public/lm/lmmi8.pfb><C:/Users/rgalv/AppData/Local/Programs/MiKTeX 2.9
-/fonts/type1/public/lm/lmr10.pfb><C:/Users/rgalv/AppData/Local/Programs/MiKTeX 
-2.9/fonts/type1/public/lm/lmr12.pfb><C:/Users/rgalv/AppData/Local/Programs/MiKT
-eX 2.9/fonts/type1/public/lm/lmr17.pfb><C:/Users/rgalv/AppData/Local/Programs/M
-iKTeX 2.9/fonts/type1/public/lm/lmr8.pfb><C:/Users/rgalv/AppData/Local/Programs
-/MiKTeX 2.9/fonts/type1/public/lm/lmri10.pfb><C:/Users/rgalv/AppData/Local/Prog
-rams/MiKTeX 2.9/fonts/type1/public/lm/lmri12.pfb><C:/Users/rgalv/AppData/Local/
-Programs/MiKTeX 2.9/fonts/type1/public/lm/lmsy10.pfb><C:/Users/rgalv/AppData/Lo
-cal/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmtt10.pfb><C:/Users/rgalv/AppDat
-a/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmtt12.pfb>
-Output written on prace.pdf (32 pages, 1535957 bytes).
+c}{C:/Users/rgalv/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ts1.e
+nc}<C:/Users/rgalv/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmbx
+12.pfb><C:/Users/rgalv/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/
+lmcsc10.pfb><C:/Users/rgalv/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/publi
+c/lm/lmr12.pfb><C:/Users/rgalv/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pu
+blic/lm/lmr17.pfb><C:/Users/rgalv/AppData/Local/Programs/MiKTeX 2.9/fonts/type1
+/public/lm/lmri12.pfb><C:/Users/rgalv/AppData/Local/Programs/MiKTeX 2.9/fonts/t
+ype1/public/lm/lmtt12.pfb>
+Output written on prace.pdf (39 pages, 1683514 bytes).
 PDF statistics:
- 589 PDF objects out of 1000 (max. 8388607)
- 91 named destinations out of 1000 (max. 500000)
- 263 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 694 PDF objects out of 1000 (max. 8388607)
+ 141 named destinations out of 1000 (max. 500000)
+ 436 words of extra memory for PDF output out of 10000 (max. 10000000)
 

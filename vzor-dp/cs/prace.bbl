@@ -1,4 +1,4 @@
-\begin{thebibliography}{21}
+\begin{thebibliography}{23}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -10,6 +10,11 @@
 \newblock \emph{Molecular Biology of the Cell}.
 \newblock 4th edition. Garland Science, New York.
 \newblock ISBN 0-8153-3218-1.
+
+\bibitem[Berman(2000)]{PDB00}
+{\sc Berman, H.~M., W. J. F. Z. G. G. B. N. W. H. a. S. I.~N.} (2000).
+\newblock The protein data bank.
+\newblock \emph{Nucleic Acids Research}, pages 235{242}, number = {28}.
 
 \bibitem[Biesiada a~kol.(2016)Biesiada, Purzycka, Szachniuk, Blazewicz a
   Adamiak]{Biesiada2016}
@@ -74,6 +79,13 @@
   1--11.
 \newblock \doi{10.1371/journal.pcbi.1000406}.
 \newblock URL \url{https://doi.org/10.1371/journal.pcbi.1000406}.
+
+\bibitem[{Galvanek} a~kol.(2016){Galvanek}, {Hoksza} a {Pánek}]{7822808}
+{\sc {Galvanek}, R., {Hoksza}, D. {\rm a} {Pánek}, J.} (2016).
+\newblock Template-based prediction of rna tertiary structure.
+\newblock In \emph{2016 IEEE International Conference on Bioinformatics and
+  Biomedicine (BIBM)}, pages 1897--1900.
+\newblock \doi{10.1109/BIBM.2016.7822808}.
 
 \bibitem[Jenny~Gu(2009)]{Jenny09}
 {\sc Jenny~Gu, P. E.~B.} (2009).

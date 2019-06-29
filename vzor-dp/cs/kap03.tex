@@ -20,18 +20,18 @@ V algoritme opakovane pracujeme s určitými typmi textových súborov. Sú to s
 
 \section{Kostra algoritmu}
 
-V nasledujúcom zozname uvázdame postupnosť hlavných krokov algoritmu.
-\begin{itemize}
+V nasledujúcom zozname uvázdame postupnosť hlavných krokov algoritmu.\label{3-kostra}
+\begin{enumerate}
 \item Predpríprava a validácia vstupných súborov: template sekvencia, target sekvencia a štruktúra.
 \item Alignemnt: Zarovnanie target a template sekvencií.
 \item Sliding window: Algoritmus posuvného okienka na zarovnaní.
 \item Treating indels: Vyriešenie medzier v zarovnaní.
-\item Kopírovanie a mapovanie konzervovaných nukleotidov z target štruktúry do predikovanej template štruktúry.
+\item Kopírovanie a mapovanie konzervovaných nukleotidov z target štruktúry do predikovanej template štruktúry. \label{3-map}
 \item Vyčlenenie predikcie príliš dlhých medzier v target štruktúre.
 \item Príprava vstupu pre FARFAR.
 \item Predikcia nekonzervovaných úsekov pomocou algoritmu FARFAR.
 \item Zloženie predikovaných úsekov a dlhých medzier do finálnej štruktúry.
-\end{itemize}
+\end{enumerate}
 
 \section{Popis algoritmu}
 Ako vstup algoritmus dostane target sekvenciu a template sekvenciu aj štruktúru. Na výstupe očakávame terciárnu štruktúru target molekuly RNA.
