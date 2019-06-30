@@ -71,10 +71,10 @@ Typ reprezentácie závisí od toho, aké informácie o štruktúre chceme mať 
 \end{itemize}
 
 
-\indent Primárna štruktúra je najviac zjednodušená reprezentácia RNA. Určuje len poradie a typ jednotlivých nukleotidov v RNA štruktúre a ďalej ju budeme v práci tiež označovať ako sekvenciu. V počítači ju reprezentujeme ako textový súbor typu fasta, ktorý má na prvom riadku identifikáciu štruktúry (názov, chain) a v ďalších riadkoch sú to len písmena A, G, C, U určujúce presné poradie nukleotidov. V prípade, že typ nukleotidu na niektorej pozícií je neznámy používame písmeno X alebo N. Primárna sekvencia RNA takisto slúži ako jeden zo vstupov pre náš prediktor a definuje sekvenciu štruktúry, ktorú cheme získať.
+\indent Primárna štruktúra je najviac zjednodušená reprezentácia RNA. Určuje len poradie a typ jednotlivých nukleotidov v RNA štruktúre a ďalej ju budeme v práci tiež označovať ako sekvenciu. V počítači ju reprezentujeme ako textový súbor typu fasta, ktorý má v prvom riadku identifikáciu štruktúry (názov, chain) a v ďalších riadkoch sú to len písmena A, G, C, U určujúce presné poradie nukleotidov. V prípade, že typ nukleotidu na niektorej pozícii je neznámy, používame písmeno X alebo N. Primárna sekvencia RNA takisto slúži ako jeden zo vstupov pre náš prediktor a definuje sekvenciu štruktúry, ktorú cheme získať.
 
 
-\indent Sekundárna štruktúra zachytáva vodíkové väzby medzi jednotlivými nukleotidmi vo vlákne RNA. Dva nukleoidy, ktoré sú spojené vodíkovou väzbou označujeme ako base pair. Vďaka spájaniu jednotlivých nukleotidov vieme v sekundárnej štruktúre pozorovať rôzne podštruktúry, ako napríklad helix, loop, pseudoknot, hairpin loop, internal loop, branch loop , stem a ďalšie \ref{obr01:secstru}. Sekundárnu štruktúru budeme v tejto práci používať na pomoc pri predikcii terciárnej štruktúry, nakoľko nám dáva informáciu o nukleotidoch, ktoré sú spojené vodíkovou väzbou a teda sa nachádzajú blízko pri sebe. Sekundárnu štruktúru molekuly budeme reprezentovať ako textový súbor, kde bodka značí, že na nukleotid danej pozícii nie je spárovaný žiadnou väzbou,base pair spojený vodíkovou väzbou je značený ako valídne uzátvorkovanie jednoduchými zátvorkami a pseudoknot býva reprezentovaný hranatými zátvorkami.  
+\indent Sekundárna štruktúra zachytáva vodíkové väzby medzi jednotlivými nukleotidmi vo vlákne RNA. Dva nukleoidy, ktoré sú spojené vodíkovou väzbou, označujeme ako base pair. Vďaka spájaniu jednotlivých nukleotidov vieme v sekundárnej štruktúre pozorovať rôzne podštruktúry, ako napríklad helix, loop, pseudoknot, hairpin loop, internal loop, branch loop, stem a ďalšie \ref{obr01:secstru}. Sekundárnu štruktúru budeme v tejto práci používať na pomoc pri predikcii terciárnej štruktúry, nakoľko nám dáva informáciu o nukleotidoch, ktoré sú spojené vodíkovou väzbou, a teda sa nachádzajú blízko pri sebe. Sekundárnu štruktúru molekuly budeme reprezentovať ako textový súbor, kde bodka značí, že nukleotid danej pozície nie je viazaný žiadnou väzbou, base pair spojený vodíkovou väzbou je značený ako valídne uzátvorkovanie jednoduchými zátvorkami a pseudoknot býva reprezentovaný hranatými zátvorkami.  
 
 
 \begin{figure}%[p]\centering
@@ -87,17 +87,15 @@ Typ reprezentácie závisí od toho, aké informácie o štruktúre chceme mať 
 \indent Zmyslom terciárnej štruktúry je popísať presné rozloženie jednotlivých atómov v trojdimenzionálnom priestore za pomoci koordinátov. V našej práci je hlavným cieľom tieto koordináty určiť za predpokladu znalosti primárnej sekvencie a terciárnych štruktúr ďalších RNA molekúl, ktoré sa pokúšame pri predikcii použiť ako vzory. 
 
 
-\indent Kvarciárna štruktúra RNA popisuje vzťahy medzi celými molekulami RNA -
-napríklad interakcie medzi jednotlivými molekulami RNA v ribozómoch \cite{Noller84} a taktiež vzťahy medzi RNA a molekulami bielkovín.
+\indent Kvartérna štruktúra RNA popisuje vzťahy medzi celými molekulami RNA - napríklad interakcie medzi jednotlivými molekulami RNA v ribozómoch \cite{Noller84} a taktiež vzťahy medzi RNA a molekulami bielkovín.
 
 \section{Význam a získavanie terciárnej štruktúry}
-Štruktúra RNA priamo súvisí s funkciou, ktorú vykonáva.Tvar štruktúry \ref{obr02:ecoli} určuje, ktoré enzýmy sa na ňu dokážu pripájanať a prípadne ju modifikovať a s ktorými bielkovinami a nukleovými kyselinami sa dokáže viazať. Bolo preukázané, že váčšina časti RNA štruktúry, ktoré sú schopné sa viazať s inými molekulami nie sú súčasťou žiadneho base pair-u a teda sú v sekundárnej štruktúre označené ako nespárované \cite{Schudoma10}. Zmena
-terciárnej štruktúry, ktorá vedie ku strate pôvodnej funkcie molekuly, sa nazýva denaturácia.
+Štruktúra RNA priamo súvisí s funkciou, ktorú vykonáva. Tvar štruktúry \ref{obr02:ecoli} určuje, ktoré enzýmy sa na ňu dokážu pripájať, prípadne ju modifikovať, a s ktorými bielkovinami a nukleovými kyselinami sa dokáže viazať. Bolo preukázané, že väčšina častí RNA štruktúry, ktoré sú schopné sa viazať s inými molekulami, nie sú súčasťou žiadneho base pair-u, a teda sú v sekundárnej štruktúre označené ako nespárované \cite{Schudoma10}. Zmena terciárnej štruktúry, ktorá vedie ku strate pôvodnej funkcie molekuly, sa nazýva denaturácia.
 
 %daj tu obrázok
 \begin{figure}%[p]\centering
 \includegraphics[width=\textwidth]{../img/ecoli_rna_example}
-\caption{Príklad terciárnej štruktúry RNA nacházajúcej sa v baktérii  escherichia coli.}
+\caption{Príklad terciárnej štruktúry RNA nacházajúcej sa v baktérii Escherichia coli.}
 \label{obr02:ecoli}
 \end{figure}
 
@@ -122,7 +120,7 @@ Bolo vyvinutých viacero experimentálnych metód, pomocou ktorých môžeme zí
 \end{itemize}
 
 
-\indent X-ray crystallography (rentgenova kryštalografia) funguje principiálne tak, že sa molekula najprv zkryštalyzuje a následne sa nasvieti rentgenovým lúčom. Z kryštálu je lúč odrazený a pritom rozdelený na viacero lúčov. Zmeraním týchto uhlova intenzity odrazených lúčov je následne možné určiť pozície jednotlivých atómov v molekule. Momentálne je to jesna z najpoužívanejších metód na získanie mnohých makromolekulárnych štruktúr. Rozlíšenie získanej štruktúry sa pohybuje okolo 2.0 Å. \ref{obr03:x-ray}
+\indent X-ray crystallography (rentgenová kryštalografia) funguje principiálne tak, že sa molekula najprv zkryštalyzuje a následne sa nasvieti rentgenovým lúčom. Z kryštálu je lúč odrazený a pritom rozdelený na viacero lúčov. Zmeraním uhlov odrazu a intenzity odrazených lúčov je následne možné určiť pozície jednotlivých atómov v molekule. Momentálne je to jedna z najpoužívanejších metód získavania mnohých makromolekulárnych štruktúr. Rozlíšenie získanej štruktúry sa pohybuje okolo 2.0 Å. \ref{obr03:x-ray}
 
 
 \begin{figure}%[p]\centering
@@ -132,10 +130,10 @@ Bolo vyvinutých viacero experimentálnych metód, pomocou ktorých môžeme zí
 \end{figure}
 
 
-\indent Cryo-electron microscopy metóda využíva zmrazenie molekuly v substancií, ktorá je následne pozorovaná elektrónovým mikroskopom. Princíp metódy je známy približne od roku 1970, ale až donedávna pomocou nej nebolo možné získať tak presné vysledky, ako pomocou rentgenovej kryštalografie. Na druhej strane dĺžka skúmanej štruktúry nie je pri tejto metóde tak limitujúcim faktorom. V roku 2017 bola udelená nobelová cena za chémiu  J. Dubochetovi, J. Frankovi a  R. Hendersonovi za vyvinutie metódy, ktorou sa dá získať atómová štruktúra molekuly s vysokým rozlíšením.
+\indent Cryo-electron microscopy metóda využíva zmrazenie molekuly v substancii, ktorá je následne pozorovaná elektrónovým mikroskopom. Princíp tejto metódy je známy približne od roku 1970, ale až donedávna nebolo možné pomocou nej získať tak presné vysledky ako pomocou rentgenovej kryštalografie. Na druhej strane, dĺžka skúmanej štruktúry nie je pri tejto metóde tak limitujúcim faktorom. V roku 2017 bola udelená Nobelova cena za chémiu  J. Dubochetovi, J. Frankovi a  R. Hendersonovi za vyvinutie metódy, ktorou sa dá získať atómová štruktúra molekuly s vysokým rozlíšením.
 
 
 \indent Metóda Nuclear Magnetic Resonance je založená na pôsobení statického magnetického poľa na jadrá atómov v molekule. Je vhodná hlavne na získavanie kratších štruktúr.
 
 
-\indent Experimentálne prístupy sa od seba navzájom líšia presnosťou výsledku, dĺžkou štruktúry s ktorou sú schopné pracovať, ale ich hlavnám problémom je, že sú stále časovo náročné a drahé. Pretože získanie primárnej štruktúry RNA a proteinov je oveľa ľahšia úloha, začali byť skúmané aj možnosti, ako predikovať sekundárnu a terciárnu štruktúru za pomoci počítača, čomu sa budeme v našej práci venovať.
+\indent Experimentálne prístupy sa od seba navzájom líšia presnosťou výsledku, dĺžkou štruktúry, s ktorou sú schopné pracovať, ale ich hlavnou nevýhodou je, že sú stále časovo náročné a drahé. Pretože získavanie primárnej štruktúry RNA a proteínov je oveľa ľahšia úloha, začali byť skúmané aj možnosti, ako predikovať sekundárnu a terciárnu štruktúru za pomoci počítača, čomu sa budeme v našej práci venovať.
