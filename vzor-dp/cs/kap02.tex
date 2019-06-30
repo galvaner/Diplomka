@@ -56,26 +56,26 @@ Zarovnanie dvoch sekvencií slúži na získanie informácie o tom, či sú dan�
 \end{figure}
 
 
-\indent Okrem globálneho poznáme aj presné lokálne zarovnanie vyriešené algoritmom Smith–Waterman \cite{Smith81}. Tento algoritmu pracuje taktiež na princípe dynamického programovania a vyhľadáva zarovnanie dvoch subsekvencií s najlepím skóre. Používa sa na nájdenie podobných regiónoch medzi dvomi sekvenciami.
+\indent Okrem globálneho poznáme aj presné lokálne zarovnanie vyriešené algoritmom Smith–Waterman \cite{Smith81}. Tento algoritmus pracuje taktiež na princípe dynamického programovania a vyhľadáva zarovnanie dvoch subsekvencií s najlepím skóre. Používa sa na nájdenie podobných regiónov medzi dvomi sekvenciami.
 
 
 \section{Homológne modelovanie}
 Tvrdenie zo začiatku kapitoly, ktoré hovorí, že štruktúra si zachováva podobný tvar aj napriek tomu, že jej sekvencia postupne mutuje, umožňuje zmysluplne predikovať štruktúru na základe vzoru.  
 
 
-\indent Homológne  modelovanie používa na modelovanie neznámej štruktúry zo sekvencie ešte jednu vzorovú sekvenciu (template), ktorej štruktúra je známa, teda získaná za pomoci nejakej experimentálnej metódy. Predikovanú štruktúru zvykneme nazývať cieľ (target).
+\indent Homológne modelovanie používa na modelovanie neznámej štruktúry zo sekvencie ešte jednu vzorovú sekvenciu (template), ktorej štruktúra je známa, teda získaná za pomoci nejakej experimentálnej metódy. Predikovanú štruktúru zvykneme nazývať cieľ (target).
 
 
-\indent Prvým krokom je teda určenie vhodnej template štruktúry, pomocou ktorej budeme predikovať target štruktúru. Druhým krokom je globálne zarovnanie oboch sekvencií a získanie konzervovaných úsekov, teda úsekov v ktorých by mali byť obe štruktúry veľmi podobné. Konzervované úseky môžu byť po nejakých úpravách prenesené do cieľovej štruktúry. Z princípu vyplýva, že čím podobnejšie sekvencie budú máť target a template štruktúry, tým viac konzervovaných úsekov bude existovať a tým jednoduchšia a presnejšia by mala predikcia byť.
+\indent Prvým krokom je teda určenie vhodnej template štruktúry, pomocou ktorej budeme predikovať target štruktúru. Druhým krokom je globálne zarovnanie oboch sekvencií a získanie konzervovaných úsekov, teda úsekov, v ktorých by mali byť obe štruktúry veľmi podobné. Konzervované úseky môžu byť po nejakých úpravách prenesené do cieľovej štruktúry. Z princípu vyplýva, že čím podobnejšie sekvencie budú máť target a template štruktúry, tým viac konzervovaných úsekov bude existovať a tým jednoduchšia a presnejšia by mala predikcia byť.
 
 
-\indent V treťom kroku musia byť dopredikované nekonzervované (chýbajúce úseky) cieľovej štruktúry. Existujú viacero prístupov. Jedným z nich je knižnica fragmentov, kde sa do chýbajúcej medzery v cieľovej štruktúre snažíme vhodne umiestniť fragment štruktúry z knižnice, ďalším je napríklad dopredikovanie medzery ab initio alebo de novo algoritmami.
+\indent V treťom kroku musia byť dopredikované nekonzervované (chýbajúce úseky) cieľovej štruktúry. Existuje viacero prístupov. Jedným z nich je knižnica fragmentov, kde sa do chýbajúcej medzery v cieľovej štruktúre snažíme vhodne umiestniť fragment štruktúry z knižnice, ďalším je napríklad dopredikovanie medzery ab initio alebo de novo algoritmami.
 
 
-\indent Takto hotový model sa nakoniec môže optimalizovať použitím algoritmu na minimalizovanie voľnej energie, alebo sa riešia kolízie medzi jednotlivými nukleotidami.
+\indent Takto hotový model sa nakoniec môže optimalizovať použitím algoritmu na minimalizovanie voľnej energie, alebo sa riešia kolízie medzi jednotlivými nukleotidmi.
 
 
-\indent Hlavnou výhodou homológneho modelovania je, že je možné ho použiť na dlhé štruktúry. Problémom môže byť vybrať správnu template štruktúru a dopredikovanie nekonzervovaných úsekov. \ref{obr04:porovnanie}
+\indent Hlavnou výhodou homológneho modelovania je, že je možné ho použiť na dlhé štruktúry. Problémom môže byť výber správnej template štruktúry a dopredikovanie nekonzervovaných úsekov. \ref{obr04:porovnanie}
 
 
 \begin{figure}%[p]\centering
@@ -121,8 +121,8 @@ Zjednodušený algoritmus, ktorým ModeRNA predikuje štruktúru \cite{Rother11}
 \begin{itemize}
 \item Skopírovanie zarovnaných nukleotidov.
 \item Substitúcia nukleotidov, ktoré boli zarovnané na iný nukleotid.
-\item Modelovanie indelov vložením fragmentov štruktúr z knižnice obsahujúcej 131 316 fragmentov dĺžky 2-19 nukleotidov. ModeRNA najprv rýchlym filtrovaním podľa vzdialeností  prekrývajúcich sa atómov fragmentu a template-u vyberie 50 najvhodnejších kandidátov, pokúsi sa ich vložiť do medzery a pre každého kandidáta spočíta skóre, pričom vyberie jediného s najlepším skóre a  vloží ho do medzery.
-\item V prípade, že predikovaná štruktúra (backbone) nie je spojitá ModeRNA sa ju pokúsi opraviť.
+\item Modelovanie indelov vložením fragmentov štruktúr z knižnice obsahujúcej 131 316 fragmentov dĺžky 2-19 nukleotidov. ModeRNA najprv rýchlym filtrovaním podľa vzdialeností  prekrývajúcich sa atómov fragmentu a template-u vyberie 50 najvhodnejších kandidátov, pokúsi sa ich vložiť do medzery a pre každého kandidáta spočíta skóre. Následne vyberie jediného s najlepším skóre a vloží ho do medzery.
+\item V prípade, že predikovaná štruktúra (backbone) nie je spojitá, ModeRNA sa ju pokúsi opraviť.
 \end{itemize}
 
 
@@ -131,19 +131,19 @@ Zjednodušený algoritmus, ktorým ModeRNA predikuje štruktúru \cite{Rother11}
 FARFAR je algoritmus de novo predikcie RNA implementovaný spolu s ďalšími bioinformatickými algoritmami a nástrojmi v balíčku Rosetta. My ho používame na predikovanie krátkych nekonzervovaných úsekov v našom algoritme.  
 
 
-\indent Nástroj je shopný predikovať štruktúru iba z primárnej sekvencie. 
+\indent Nástroj je schopný predikovať štruktúru iba z primárnej sekvencie. 
 
 
-\indent Algoritmus pracuje tak, že nedeterministicky generuje kandidátske štruktúry z ktorých vyberie tú s najnižšou voľnou energiou. Keďže sa jedná o algoritmus typu Monte Carlo dve rôzne spustenie algoritmu môžu generovať rôzne výsledky a platí, že čím viac kandidátskych štruktúr vygenerujeme, tým zvyšujeme šancu na vygenerovanie čo najlepšej štruktúry.
+\indent Algoritmus pracuje tak, že nedeterministicky generuje kandidátske štruktúry, z ktorých vyberie tú s najnižšou voľnou energiou. Keďže sa jedná o algoritmus typu Monte Carlo, dve rôzne spustenia algoritmu môžu generovať rôzne výsledky a platí, že čím viac kandidátskych štruktúr vygenerujeme, tým viac máme šancí na vygenerovanie čo najlepšej štruktúry.
 
 
-\indent Z pohľadu výkonnosti platí, že čím viac nukleotidov predikujeme (včetne tých pevne daných) tým predikcia dlhšie trvá. Pre presnejšiu predstavu sme urobili porovnanie, pričom sme predikovali nekonzervovaný úsek dlhý 9 nukleotidov. Pri zahrnutí zvyšných 129 konzervovaných nukleotidov do predikcie trvalo vygenerovanie jednej štruktúry približne 13 minút. Pri totožných podmienkach a parametroch s jedinou zmenou a to, že sme do predikcie vybrali len 41 okolitých konzervovaných nukleotidov trvala predikcia jednej kandidátskej štruktúry v priemere menej ako 6 minút.
+\indent Z pohľadu výkonnosti platí, že čím viac nukleotidov predikujeme (včetne tých pevne daných) tým predikcia dlhšie trvá. Pre presnejšiu predstavu sme urobili porovnanie, pričom sme predikovali nekonzervovaný úsek dlhý 9 nukleotidov. Pri zahrnutí zvyšných 129 konzervovaných nukleotidov do predikcie trvalo vygenerovanie jednej štruktúry približne 13 minút. Pri totožných podmienkach a parametroch s jedinou zmenou, a to, že sme do predikcie vybrali len 41 okolitých konzervovaných nukleotidov, trvala predikcia jednej kandidátskej štruktúry v priemere menej ako 6 minút.
 
 
 \indent Očakávaná presnosť predikcie je priamo úmerná dĺžke neznámeho predikovaného úseku. Autori algoritmu uvádzajú, že pri predikcií štruktúr dĺžky 6 až 13 nukleotidov je priemerná RMSD menšia ako 2 Å. Pri štruktúrach dlhých 13-23 nukleotidov predstavovala priemerná RMSD už 6,5 Å.
 
 
 \indent Je však takisto možné dať mu na vstup pdb súbor s koordinátami niektorých nukleotidov a zakázať mu tieto nukleotidy modifikovať. 
-Takisto je možné mu dodať pdb súbor s nukleotidmi a dovoliť mu, aby ho algoritmus bral ako fixovaný kus štruktúry, ktorým môže ľubovoľne  pohybovať  oproti zvyšku štruktúry.
-Posledná pre nás využiteľná možnosť je dodať algoritmu sekundárnu štruktúru target molekuly. Toouto štruktúrou sa potom algoritmus pri predikcií riadi a zmenšujeje sa tak prehľadávaný priestor.
+Takisto je možné mu dodať pdb súbor s nukleotidmi a dovoliť mu, aby ho algoritmus bral ako fixovaný kus štruktúry, ktorým môže ľubovoľne pohybovať oproti zvyšku štruktúry.
+Posledná pre nás využiteľná možnosť je dodať algoritmu sekundárnu štruktúru target molekuly. Touto štruktúrou sa potom algoritmus pri predikcii riadi a zmenšuje sa tak prehľadávaný priestor.
 
