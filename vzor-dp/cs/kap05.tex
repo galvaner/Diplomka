@@ -3,7 +3,7 @@
 Ako prvé opatrenie, na zlepšenie rýchlosti a presnosti predikovania nekonzerovvaných úsekov sme navrhli najprv riešiť jednoduchší problém a to predikciu sekundárnej štruktúry targetu a pomocou nej neskôr predikovať terciárnu štruktúru nekonzervovaných úsekov, vďaka čomu predpokladáme, že by sa mohol výrazne zmenšiť prehľadávaný priestor pri generovaní kandidátskych štruktúr algoritmom FARFAR. Principiálne teda najprv komparatívnym modelovaním napredikujeme sekundárnu target štruktúru a tú potom poskytneme ako vstup algoritmu FARFAR, ktorý ju použije pri predikcii terciárnej target štruktúry. Tento postup a jeho výsledky sme popísali aj v článku \cite{8218009}.
 
 \section{Príprava dát}
-
+Keďže 
 
 
 \section{Predikcia sekundárnej štruktúry}
@@ -12,7 +12,43 @@ Ako prvé opatrenie, na zlepšenie rýchlosti a presnosti predikovania nekonzero
 \section{Integrácia do existujúceho algoritmu}
 
 
-\section{Experiment}
+\section{Experiment a Výsledky}
+Za účelom overenia, vplyvu pridania predikcie sekundárnej štruktury do pôvodného algoritmu, sme urobili rovnaké testovanie nad rovnakými dátami, ako pri porovnávaní pôvodného algoritmu s ModeRNA. Skúšali sme napredikovať všetky páry s podobnosťou medzi 60\% - 90\% a dĺžkou 50-100 a 101-500 nukleotidov najprv pôvodnou verziou algoritmu Trooper, verziou algoritmu vylepšenou o predikciu sekundárnej štruktúry a referenčnou predikciou ModeRNA. 
 
 
-\section{Výsledky}
+\indent  Výsledky a porovnanie predikcií uvádzame v tabuľke \ref{tab5.1}. Z výsledkov vidíme, že pridanie predikcie sekundárnej štruktúry spôsobilo, že priemerná RMSD pre štruktúry s dĺžkou medzi 50-100 nukleotidov a 413 úspešne napredikovaných pároch sa zhoršila z 5,80Å na 8,23Å, čo približne zodpovedá výsledku 8,53Å, ktoré na predikcii rovnakých štruktúr dosiahla ModeRNA. Pri predikcií štruktúr dĺžky 101-500 nukleotidov a 98 úspešne napredikovaných pároch sa naopak priemerné výsledky predikcie s pridaním predikcie sekundárnej štruktýry výrazne zlepšili a to z 6,91Å na 3,46Å, čo je mierne lepšie ako výsledky ModeRNA, ktorá pri rovnakých podmienkach dosiahla priemer 3,72Å. 
+\begin{table}[b!]
+\centering
+\begin{tabular}{ccccc}
+\toprule
+Veľkosť & Počet párov & Trooper bez SS & Trooper s SS & ModeRNA\\
+\midrule
+50-100  & 413 & 5,80  & 8,23 & 8,53\\
+101-500  & 98 & 6,91  & 3,46 & 3,72\\
+\bottomrule
+50-500  &  511 & 5,95  & 7,31 & 7,61\\
+\end{tabular}
+\caption{Porovnanie priemernej RMSD predikcie RNA nástrojmi Trooper, Trooper s predikciou sekundárnej štruktúry a ModeRNA. }\label{tab5.1}
+\end{table}
+
+
+\indent Z výsledkov je teda zrejmé, že pridanie predikcie sekundárnej štruktúry a jej poskytnutie algoritmu FARFAR v niektorých prípadoch výsledky zlepšilo a v niektorých zhoršilo.Prečo boli zlepšené práve dlhšie štruktúry by mohlo byť vysvetliteľné tým, že môžu obsahovať dlhé nekonzervované úseky, ktorých predikcia je pre FARFAR náročnejšia. Príklad z obrázka \ref{obr5.1} práve podporuje takúto teóriu, kedy vidíme, že pôvodná predikcia FARFAR bez sekundárnej štruktúry napredikovala nekonzervovaný úsek zle, ale po pridaní sekundárnej štruktúry sa FARFAR-u podarilo úsek napredikovať oveľa presnejšie.
+\begin{figure}%[p]\centering
+\includegraphics[width=\textwidth]{../img/struct1}
+\caption{Modrá štruktúra je experimentálne získana štruktúra molekuly 3DIG:X s dĺžkou 175 nukleotidov. Červená štruktúra je predikovaná algoritmom Trooper bez použitia sekundárnej štruktúry s výslednou RMSD na úrovni 14,44Å. Zelená štruktúra je predikcia urobená algoritmom Trooper s výslednou RMSD 4,44Å. PRe obe predikcie, bol použitý rovnaký template a to štruktúra 3DOU:A.}
+\label{obr5.1}
+\end{figure}
+
+
+\indent Ďalej sme ešte skúmali značné zhoršenie výsledkov v triede štruktúr veľkostí 50-100 nukleotidov z RMSD 5,8Å na 8,23Å. Zastávame hypotézu, že by to mohlo byť spôsobené nesprávnou sekundárnou štruktúrou donanou algoritmu FARFAR, pretože inak boli podmienky oboch predikcií rovnaké a teda by sa priemerné výsledky nemali  od seba značne líšiť.
+
+
+\indent Správnosť predikovanej sekundárnej štruktúry vieme popísať a klasifikovať štyrma mierami: true positives (správne určený existujúci base-pair), true negatives (správne určený nespárovaný nukleotid), false positives (nesprávne určený base-pair) a nakoniec false negative (v štruktúre by mal existovať base-pair, ale nie je napredikovaný). Z týchto štyroch ukazateľov sú prvé dva pozitívne a druhé dva negatívne. Pritom ale FARFAR-u môže uškodiť iba prípad false negative, pretože ten mu indikuje, že má v predikcii spárovať (a teda umiestniť blízko seba) dva nukleotidy. Prípady s false negatives by predikciu FARFAR-u nemal zlepšiť, ale ani zhoršiť, pretože nekladú žiadnu podmienku na spárovanie nukleotidov. 
+
+
+\indent Zamerali sme sa predto na prípady false positives v predikovaných sekundárnych štruktúrach a analyzovali sme koreláciu medzi zhoršením, prípadne zlepšením predikcie algoritmu Trooper bez sekundárnej štruktúry a algoritmu Trooper s predikciou sekundárnej štruktúry vzhľadom na počet false positives v napredikovanej sekundárnej štruktúre určenej dodanej ako vstup algoritmu FARFAR. Výsledok je graficky znázornený na obrázku \ref{obr5.2} a podporuje našu hypotézu o tom, že čím viac vzrastal počet false positives v predikovanej sekundárnej štruktúre, tým bolo pravdepodobnejšie, že predikcia so sekundárnou štruktúrou sa oproti predikcii bez sekundárnej štruktúry zhorší. Preto si myslíme, že zhoršenie v niektorých preikciách bolo spôsobené hlavne zle napredikovanou sekundárnou štruktúrou.
+\begin{figure}%[p]\centering
+\includegraphics[width=\textwidth]{../img/corelation}
+\caption{Závislosť medzi rozdielom výsledkov predikcie s a bez sekundárnej štruktúry a počtom false positive base-pairs v napredikovanej sekundárnej štruktúre. Červené body sú jednotlivé záznamy a čiarkovanou čiarou je zobrazená lineárna regresia týchto bodov.}
+\label{obr5.1}
+\end{figure}
