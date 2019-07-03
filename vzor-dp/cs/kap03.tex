@@ -25,7 +25,7 @@ V nasledujúcom zozname uvázdame postupnosť hlavných krokov algoritmu.\label{
 \item Predpríprava a validácia vstupných súborov: template sekvencia, target sekvencia a štruktúra.
 \item Alignemnt: Zarovnanie target a template sekvencií.
 \item Sliding window: Algoritmus posuvného okienka na zarovnaní.
-\item Treating indels: Vyriešenie medzier v zarovnaní.
+\item Treating indels: Vyriešenie medzier v zarovnaní. \label{3-indels}
 \item Kopírovanie a mapovanie konzervovaných nukleotidov z target štruktúry do predikovanej template štruktúry. \label{3-map}
 \item Vyčlenenie predikcie príliš dlhých medzier v target štruktúre.
 \item Príprava vstupu pre FARFAR.
@@ -106,6 +106,12 @@ Algoritmus bol implementovaný prevažne v programovacom jazyku Python 2.7. s vy
 
 
 \section{Hlavné problémy algoritmu a jeho implementácie}
-Najväčším problémom v našom algoritme, ktorý sme identifikovali na základe výsledkov bakalárskej práce je predikcia dlhších nekonzervovaných úsekov \ref{obr3.3:loop 3DIg_X_3DOU_A}. Preto by sme potrebovali minimalizovať takéto úseky, prípadne pomôcť algoritmu FARFAR zmenšiť prehľadávaný priestror pri generovaní kandidátskych štruktúr. To by potom mohlo pomôcť rýchlosti predikcie kandidátskych štruktúr FARFAR-om a zlepšiť jeho presnosť.
+Najväčším problémom v našom algoritme, ktorý sme identifikovali na základe výsledkov bakalárskej práce je predikcia dlhších nekonzervovaných úsekov \ref{obr3.3:badPredictedRegion}. Preto by sme potrebovali minimalizovať takéto úseky, prípadne pomôcť algoritmu FARFAR zmenšiť prehľadávaný priestror pri generovaní kandidátskych štruktúr. To by potom mohlo pomôcť rýchlosti predikcie kandidátskych štruktúr FARFAR-om a zlepšiť jeho presnosť.
 
 \indent Takisto by sme chceli do väčšej miery automatizovať predikciu, presúnť ju celú na jedno prostrede a zbaviť sa tak nutnosti manuálneho kopírovania súborov. Okrem toho by sme ccheli predstaviť alternatívnu možnosť vstupných parametrov, kedy by nebolo treba určiť target aj template molekuly, ale stačilo by určiť target sekvenciu a algoritmus by sám našiel vhodnú štruktúru, ktorá by mohla slúžiť ako template. 
+
+\begin{figure}%[p]\centering
+\includegraphics[width=\textwidth]{../img/badPredictedRegion}
+\caption{Na obrázku vidíme zarovnanie experimenntálne získanej (3DIG) štruktúry a jej predikcie, napredikovanou našim algoritmom vytvoreným v bakalárskej práci. V pravej hornej časti obrázka vidíme, že algoritmu FARFAR sa nepodarilo správne napredikovať nekonzervovaný úsek.}
+\label{obr3.3:badPredictedRegion}
+\end{figure}

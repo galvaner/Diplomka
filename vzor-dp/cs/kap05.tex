@@ -3,14 +3,35 @@
 Ako prvé opatrenie, na zlepšenie rýchlosti a presnosti predikovania nekonzerovvaných úsekov sme navrhli najprv riešiť jednoduchší problém a to predikciu sekundárnej štruktúry targetu a pomocou nej neskôr predikovať terciárnu štruktúru nekonzervovaných úsekov, vďaka čomu predpokladáme, že by sa mohol výrazne zmenšiť prehľadávaný priestor pri generovaní kandidátskych štruktúr algoritmom FARFAR. Principiálne teda najprv komparatívnym modelovaním napredikujeme sekundárnu target štruktúru a tú potom poskytneme ako vstup algoritmu FARFAR, ktorý ju použije pri predikcii terciárnej target štruktúry. Tento postup a jeho výsledky sme popísali aj v článku \cite{8218009}.
 
 \section{Príprava dát}
-Keďže 
+Pretože algoritmus doplníme o komparatívne predikovanie sekundárnej štruktúry, bude algoritmus okrem sekvencie target molekuly a sekvencie aj terciárnej štruktúry template molekuly potrebovať na vstupe aj sekundárnu štruktúru tmeplate molekuly. Štruktúru očakávame v dot-bracket notácii. Sekundárnu štruktúru by bolo možné získať z terciárnej aj počas predikcie, ale vzhľadom na to, že by si užívateľ chcel dodať inú sekundárnu štruktúru sme sa rozholi, že sekundárna štruktúra bude dodaná ako ďalší vstupný parameter.
+
+
+\indent Získať dáta sme sa rozhodli ich určením z terciárnej štruktúry programom DSSR (Defining the Secondary Structures of RNA) so software balíku x3DNA \cite{x3dna}. Na hromadné extrahovanie štruktúr sme si potom vytvorili dva krátke scripty, ktoré sa nachádzajú v \url{MyTools/PredictSecondaryStructures/}. DSSR vytvára v sekundárnej štruktúre base-pairs vyznačené jednoduchými zátvorkami, ako aj pseudo uzly vyznačené hránatými zátvorkami \ref{obr5.0}. Z dôvodu implementačných komplikácií a zladenia s algoritmom FARFAR sme sa rozhodli pracovať iba so sekundárnou štruktúrou označujúcou base-pairs a  preto pseudouzly neberieme v úvahu.
+\begin{figure}%[p]\centering
+\includegraphics[width=\textwidth]{../img/dssr}
+\caption{Príklad súboru sekundárnej štruktúry získanej progrmaom DSSR zo štruktúry terciárnej. V prvom riadku sú príslušné typu nukleotudov a v druhom riadku je samotná sekundárna štruktúra v  dot-bracket reprezentácií.}
+\label{obr5.0}
+\end{figure}
 
 
 \section{Predikcia sekundárnej štruktúry}
+Sekundárnu štruktúru predikujeme rovnakým spôsobom, ako štruktúru terciárnu, teda komparatívnym modelovaním. Ako vstup potrebuje algoritmus dostať sekvenciu target molekuly a sekvenciu aj sekundárnu štruktúru template molekuly. 
+
+
+\indent  Používame rovnakú target štruktúru ako pre terciárnu predikciu, čo znamená, že po ošetrenie medzier v zarovnaní \ref{3-indels}, teda vlastne po získanie konzervovaných úsekov v zarovnaní. Následne potrebujeme na zarovnanie namapovať sekundárnu template štruktúru. Tu musíme riešiť situáciu, že ak práve jeden nukleotid z base-pair nie je konzervovaný a druhý je, musíme v sekundárnej štruktúre preznačiť oba nukleotidy ako nespárované. Tiež to môžeme chápať tak, že sekundárnu štruktúru udržujeme stále správne uzátvorkovanú, čo znamená, že zátvorky rovnakého typu sa navzájom nekrížia a máme rovnaký počet pravých aj ľavých zátvoriek v sekundárnej štruktúre.
+
+
+\indent Namapovaním sekundárnej štruktúry na alignment získame neúplnú sekundárnu štruktúru target molekuly. Túto následne predáme spolu s target sekvenciou nástroju RNAfold \cite{RNAfold}, ktorý predikuje sekundárnu štruktúru vzhľadom na obmedzenia plynúce z dodanej sekundárnej štruktúry. Dĺžka predikcie sa pohybuje v rádoch jednotiek až desiatok sekúnd, takže to nepredstavuje židne citeľné spomalenie celého algoritmu. 
 
 
 \section{Integrácia do existujúceho algoritmu}
+Do konfiguračného súboru sme pridali nastavenie, ktoré určuje, či algoritmus pracuje aj so sekundárnou štruktúrou, alebo nie.
 
+
+\indent Z pohľadu začlenenia do algoritmu sa sekundárna štruktúra predikuje po kroku \ref{3-map}, ktorý mapuje terciárnu template štruktúru na alignment. V ďalšom kroku, ktorý ošetruje dlhé medzery už namapovanú sekundárnu štruktúru používame na to, aby sme k fragmentom terciárnej štruktúry slúžiacej ako template pre FARFAR vybrali aj fragmenty sekundárnej štruktúry. Vzhľadom na to, že FARFAR-u musíme dať validnú sekundárnu štruktúru v dot-bracket notácii v prípade, ak je do predikcie dlhého nekonzervovaného úseku vybraný z base-paru v sekundárnej štruktúre práve jeden nukleotid, musíme pridať aj druhý, aby sme zachovali validitu sekundárnej štruktúry. To isté musíme riešiť v ďalšom kroku, keď pripravujeme predikciu zvyšku štruktúry už bez dlhých nekonzervovaných úsekov. 
+
+
+\indent Nakoniec bolo treba upraviť shell scripty tak, aby nakopírovali na správne miesta súbory so sekundárnymi štruktúrami a v parametri predať príslušný template súbor so sekundárnou štruktúrou algoritmu FARFAR.
 
 \section{Experiment a Výsledky}
 Za účelom overenia, vplyvu pridania predikcie sekundárnej štruktury do pôvodného algoritmu, sme urobili rovnaké testovanie nad rovnakými dátami, ako pri porovnávaní pôvodného algoritmu s ModeRNA. Skúšali sme napredikovať všetky páry s podobnosťou medzi 60\% - 90\% a dĺžkou 50-100 a 101-500 nukleotidov najprv pôvodnou verziou algoritmu Trooper, verziou algoritmu vylepšenou o predikciu sekundárnej štruktúry a referenčnou predikciou ModeRNA. 

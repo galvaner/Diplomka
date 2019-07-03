@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.5.15)  28 JUN 2019 01:02
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.5.15)  3 JUL 2019 23:33
 entering extended mode
 **./prace.tex
 (prace.tex
@@ -705,7 +705,11 @@ Package hyperref Info: Option `breaklinks' set `true' on input line 123.
 \c@veta=\count123
 \c@definice=\count124
 ) (prace.aux (titulka.aux) (uvod.aux) (kap01.aux) (kap02.aux)
-(kap03.aux) (kap04.aux) (kap05.aux) (kap06.aux) (zaver.aux) (literatura.aux))
+(kap03.aux) (kap04.aux) (kap05.aux
+
+LaTeX Warning: Label `obr5.1' multiply defined.
+
+) (kap06.aux) (zaver.aux) (literatura.aux))
 \openout1 = `prace.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 129.
@@ -792,7 +796,7 @@ LaTeX Info: Redefining \nameref on input line 129.
 
  (titulka.tex
 Package hyperref Info: Option `pageanchor' set `false' on input line 6.
-<../img/logo-cs.pdf, id=190, 506.4591pt x 156.49065pt>
+<../img/logo-cs.pdf, id=186, 506.4591pt x 156.49065pt>
 File: ../img/logo-cs.pdf Graphic file (type pdf)
 <use ../img/logo-cs.pdf>
 Package pdftex.def Info: ../img/logo-cs.pdf  used on input line 10.
@@ -877,29 +881,29 @@ File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ]
 
 Package natbib Warning: Citation `Rinn a Chang' on page 5 undefined on input li
-ne 61.
+ne 58.
 
 
-Package natbib Warning: Citation `2012' on page 5 undefined on input line 61.
+Package natbib Warning: Citation `2012' on page 5 undefined on input line 58.
 
 [5]
-<../img/secondary_structure.png, id=302, 660.96938pt x 434.37282pt>
+<../img/secondary_structure.png, id=297, 660.96938pt x 434.37282pt>
 File: ../img/secondary_structure.png Graphic file (type png)
 <use ../img/secondary_structure.png>
-Package pdftex.def Info: ../img/secondary_structure.png  used on input line 84.
+Package pdftex.def Info: ../img/secondary_structure.png  used on input line 81.
 
 (pdftex.def)             Requested size: 412.56496pt x 271.13768pt.
  [6 <../img/secondary_structure.png>]
-<../img/ecoli_rna_example.png, id=316, 773.89125pt x 592.46344pt>
+<../img/ecoli_rna_example.png, id=311, 773.89125pt x 592.46344pt>
 File: ../img/ecoli_rna_example.png Graphic file (type png)
 <use ../img/ecoli_rna_example.png>
-Package pdftex.def Info: ../img/ecoli_rna_example.png  used on input line 102.
+Package pdftex.def Info: ../img/ecoli_rna_example.png  used on input line 97.
 (pdftex.def)             Requested size: 412.56496pt x 315.84834pt.
  [7 <../img/ecoli_rna_example.png>]
-<../img/x-ray.jpg, id=328, 356.23354pt x 145.81912pt>
+<../img/x-ray.jpg, id=323, 356.23354pt x 145.81912pt>
 File: ../img/x-ray.jpg Graphic file (type jpg)
 <use ../img/x-ray.jpg>
-Package pdftex.def Info: ../img/x-ray.jpg  used on input line 132.
+Package pdftex.def Info: ../img/x-ray.jpg  used on input line 127.
 (pdftex.def)             Requested size: 412.56496pt x 168.88329pt.
 )
 [8 <../img/x-ray.jpg>]
@@ -907,17 +911,23 @@ Package pdftex.def Info: ../img/x-ray.jpg  used on input line 132.
 
  (kap02.tex
 Kapitola 2.
-<../img/zones_of_aln.png, id=342, 706.89093pt x 427.5975pt>
+<../img/zones_of_aln.png, id=337, 706.89093pt x 427.5975pt>
 File: ../img/zones_of_aln.png Graphic file (type png)
 <use ../img/zones_of_aln.png>
 Package pdftex.def Info: ../img/zones_of_aln.png  used on input line 15.
 (pdftex.def)             Requested size: 412.56496pt x 249.55957pt.
+
+Overfull \hbox (2.99599pt too wide) in paragraph at lines 21--22
+\T1/lmr/m/n/12 chemicko-fyzikálnych vlast-ností, v¤aka kto-rým sa v re-ál-nom s
+vete ²truk-t-úra skladá|
+ []
+
 [9
 
 
 
 ]
-<../img/str_reprezentace_uhly.png, id=358, 763.35187pt x 396.7322pt>
+<../img/str_reprezentace_uhly.png, id=353, 763.35187pt x 396.7322pt>
 File: ../img/str_reprezentace_uhly.png Graphic file (type png)
 <use ../img/str_reprezentace_uhly.png>
 Package pdftex.def Info: ../img/str_reprezentace_uhly.png  used on input line 3
@@ -928,7 +938,7 @@ Package pdftex.def Info: ../img/str_reprezentace_uhly.png  used on input line 3
 Package natbib Warning: Citation `Emboss' on page 11 undefined on input line 50
 .
 
-<../img/needlemanwunsch.png, id=375, 385.44pt x 385.44pt>
+<../img/needlemanwunsch.png, id=370, 385.44pt x 385.44pt>
 File: ../img/needlemanwunsch.png Graphic file (type png)
 <use ../img/needlemanwunsch.png>
 Package pdftex.def Info: ../img/needlemanwunsch.png  used on input line 53.
@@ -949,7 +959,7 @@ Needleman \ T1 \ textendashWunsch _
  []
 
 [11 <../img/str_reprezentace_uhly.png>] [12 <../img/needlemanwunsch.png>]
-<../img/template-vs-denovo.jpg, id=398, 611.28375pt x 498.86375pt>
+<../img/template-vs-denovo.jpg, id=393, 611.28375pt x 498.86375pt>
 File: ../img/template-vs-denovo.jpg Graphic file (type jpg)
 <use ../img/template-vs-denovo.jpg>
 Package pdftex.def Info: ../img/template-vs-denovo.jpg  used on input line 82.
@@ -971,22 +981,25 @@ Kapitola 3.
 
 
 ] [18]
-<../img/aln-problems.png, id=463, 596.98032pt x 609.77812pt>
+<../img/aln-problems.png, id=458, 596.98032pt x 609.77812pt>
 File: ../img/aln-problems.png Graphic file (type png)
 <use ../img/aln-problems.png>
 Package pdftex.def Info: ../img/aln-problems.png  used on input line 65.
 (pdftex.def)             Requested size: 412.56496pt x 421.40797pt.
-<../img/sphere.png, id=465, 630.85687pt x 411.03563pt>
+<../img/sphere.png, id=460, 630.85687pt x 411.03563pt>
 File: ../img/sphere.png Graphic file (type png)
 <use ../img/sphere.png>
 Package pdftex.def Info: ../img/sphere.png  used on input line 83.
 (pdftex.def)             Requested size: 412.56496pt x 268.80695pt.
- [19] [20 <../img/aln-problems.png>]
+ [19] [20 <../img/aln-problems.png>] [21 <../img/sphere.png>]
+<../img/badPredictedRegion.png, id=477, 797.98125pt x 678.28406pt>
+File: ../img/badPredictedRegion.png Graphic file (type png)
+<use ../img/badPredictedRegion.png>
+Package pdftex.def Info: ../img/badPredictedRegion.png  used on input line 114.
 
-LaTeX Warning: Reference `obr3.3:loop 3DIg_X_3DOU_A' on page 21 undefined on in
-put line 109.
-
-[21 <../img/sphere.png>]) [22]
+(pdftex.def)             Requested size: 412.56496pt x 350.68118pt.
+)
+[22 <../img/badPredictedRegion.png>]
 \openout2 = `kap04.aux'.
 
  (kap04.tex
@@ -996,61 +1009,76 @@ Kapitola 4.
 
 
 ]
-Overfull \hbox (23.16904pt too wide) in paragraph at lines 21--22
-\T1/lmr/m/n/12 vpy-thon scrip-toch. Preto sme vy-tvo-rili kon-fi-gu-ra£ný sú-bo
-r Pre-dic-tor/scripts/config.py,|
- []
-
-<../img/config.png, id=492, 743.77875pt x 353.06906pt>
+<../img/config.png, id=491, 743.77875pt x 353.06906pt>
 File: ../img/config.png Graphic file (type png)
 <use ../img/config.png>
 Package pdftex.def Info: ../img/config.png  used on input line 24.
 (pdftex.def)             Requested size: 412.56496pt x 195.84789pt.
-[24 <../img/config.png>] [25]) [26]
+ [24 <../img/config.png>] [25] [26]) [27]
 \openout2 = `kap05.aux'.
 
  (kap05.tex
 Kapitola 5.
-) [27
+<../img/dssr.png, id=542, 689.57625pt x 24.84282pt>
+File: ../img/dssr.png Graphic file (type png)
+<use ../img/dssr.png>
+Package pdftex.def Info: ../img/dssr.png  used on input line 11.
+(pdftex.def)             Requested size: 412.56496pt x 14.86333pt.
+[28
 
 
 
-]
+ <../img/dssr.png>] [29]
+<../img/struct1.png, id=562, 1706.375pt x 1002.74625pt>
+File: ../img/struct1.png Graphic file (type png)
+<use ../img/struct1.png>
+Package pdftex.def Info: ../img/struct1.png  used on input line 58.
+(pdftex.def)             Requested size: 412.56496pt x 242.43889pt.
+ [30 <../img/struct1.png>]
+
+LaTeX Warning: Reference `obr5.2' on page 31 undefined on input line 70.
+
+<../img/corelation.png, id=570, 1180.41pt x 794.2172pt>
+File: ../img/corelation.png Graphic file (type png)
+<use ../img/corelation.png>
+Package pdftex.def Info: ../img/corelation.png  used on input line 72.
+(pdftex.def)             Requested size: 412.56496pt x 277.58026pt.
+) [31 <../img/corelation.png>]
 \openout2 = `kap06.aux'.
 
  (kap06.tex
 Kapitola 6.
-) [28
+) [32
 
 
 
 ]
 \openout2 = `zaver.aux'.
 
- (zaver.tex) [29
+ (zaver.tex) [33
 
 
 
 ]
 \openout2 = `literatura.aux'.
 
- (literatura.tex (prace.bbl [30
+ (literatura.tex (prace.bbl [34
 
 
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 136--145
+Underfull \hbox (badness 10000) in paragraph at lines 159--168
 \T1/lmr/m/n/12 URL []$\T1/lmtt/m/n/12 https : / / app . dimensions . ai / detai
 ls / publication / pub .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 136--145
+Underfull \hbox (badness 10000) in paragraph at lines 159--168
 \T1/lmtt/m/n/12 1001896118andhttp : / / europepmc . org / articles / pmc2504711
  ? pdf = render$[]\T1/lmr/m/n/12 .
  []
 
-)) [31] (prace.lof
+[35])) [36] (prace.lof
 Overfull \hbox (10.91682pt too wide) in paragraph at lines 9--9
  [][] [][]\T1/lmr/m/n/12 NeedlemanWunsch al-go-ri-thm (2014) Wi-ki-pe-dia do-s
 tupné na []$\T1/lmtt/m/n/12 https : |
@@ -1062,24 +1090,24 @@ Overfull \hbox (51.07172pt too wide) in paragraph at lines 9--9
 unsch _ algorithm$[] |
  []
 
-)
+[37
+
+
+])
 \tf@lof=\write7
 \openout7 = `prace.lof'.
 
- [32
-
-
-] (prace.lot)
+ [38] (prace.lot)
 \tf@lot=\write8
 \openout8 = `prace.lot'.
 
- [33
+ [39
 
-] [34
+] [40
 
 ]
 P\v {r}\'{\i }loha A.
-[35
+[41
 
 ]
 
@@ -1092,18 +1120,21 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 178.
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 178.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 178.
 Package rerunfilecheck Info: File `prace.out' has not changed.
-(rerunfilecheck)             Checksum: 43436C4CBF0FB225DD70AB1BD70253F0;7733.
+(rerunfilecheck)             Checksum: CF05517D581A717776B63507041AD55C;7864.
 
 
 LaTeX Warning: There were undefined references.
 
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 178.
  ) 
 Here is how much of TeX's memory you used:
- 15855 strings out of 492945
- 224855 string characters out of 3126252
- 294899 words of memory out of 3000000
- 19258 multiletter control sequences out of 15000+200000
+ 15905 strings out of 492945
+ 225624 string characters out of 3126252
+ 297171 words of memory out of 3000000
+ 19289 multiletter control sequences out of 15000+200000
  59550 words of font info for 53 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  37i,14n,37p,1535b,2327s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1116,9 +1147,9 @@ c/lm/lmr12.pfb><C:/Users/rgalv/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pu
 blic/lm/lmr17.pfb><C:/Users/rgalv/AppData/Local/Programs/MiKTeX 2.9/fonts/type1
 /public/lm/lmri12.pfb><C:/Users/rgalv/AppData/Local/Programs/MiKTeX 2.9/fonts/t
 ype1/public/lm/lmtt12.pfb>
-Output written on prace.pdf (39 pages, 1683514 bytes).
+Output written on prace.pdf (45 pages, 2635802 bytes).
 PDF statistics:
- 694 PDF objects out of 1000 (max. 8388607)
- 141 named destinations out of 1000 (max. 500000)
- 436 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 774 PDF objects out of 1000 (max. 8388607)
+ 156 named destinations out of 1000 (max. 500000)
+ 448 words of extra memory for PDF output out of 10000 (max. 10000000)
 
