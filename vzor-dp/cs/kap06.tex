@@ -1,15 +1,68 @@
 \chapter{Použitie viacerých template štruktúr pri predikcií}
 
-Ako druhé opatrenie, na zlepšenie rýchlosti a presnosti predikovania nekonzerovvaných úsekov sme navrhli skúsiť použiť viacero template štruktúr na predikciu jednej template štruktúry. Očakávali sme pritom, že sa nám podarí zmenšiť počet a dĺžku nekonzervovaných úsekov v predikovanej štruktúre a tým výrazne zjednosušiť ich predikciu algoritmom FARFAR.
+Ako druhé opatrenie, na zlepšenie rýchlosti a presnosti predikovania nekonzerovvaných úsekov sme navrhli  použiť viacero template štruktúr na predikciu jednej target štruktúry. Očakávali sme pritom, že sa nám podarí zmenšiť počet a dĺžku nekonzervovaných úsekov v predikovanej štruktúre a tým výrazne zjednosušiť ich predikciu algoritmom FARFAR.
 
-\section{Varianty a prístupy}
+\section{Výber sekundárnych template štruktúr}
+Hlavnou myšlienkou algoritmu je použiť viacero template štruktúr pre predikciu jednej target štruktúry. Tým môžeme dosiahnuť väčšiu percentuálnu mieru konzervovaných úsekov v štruktúre, čo by malo zjednodušiť následnu predikciu nekonzervovaných úsekov.
 
 
-\section{Výber vhodných štruktúr}
+\indent  Existuje viacero spôsobov, ako je možné použiť na predikciu viacero template štruktúr. My sme sa aj vzhľadom na jednoduchšiu implementáciu do už existujúceho algoritmu rozhodli postupovať tak, že používame jednu template štruktúru ako primárnu (hlavnú) a ďalšie template štruktúry, ako sekundárne (vedľajšie), ktoré sú použité na vyplnenie dlhých nekonzervovaných úsekov (to sú tie, ktoré v pôvodnom algoritme vyčleňujeme do samostatných predikcií). Alternatívny prístup by mohol byť rozdeliť si target sekvenciu na regióny a pre predikciu každého regiónu použiť inú template štruktúru.   
+
+
+\indent Potencionálnych spôsobov ako nájsť vhodnú sekundárne štruktúry existuje viac: 
+\begin{enumerate}
+\item Globálne zarovnanie potenciálnych sekundárnych temeplate molekúl s target molekulou. 
+\item Lokálne zarovnanie potenciálnych sekundárnych tmeplate molekúl s target molekulou. 
+\item Pseudoglobálne zarovnanie potenciálnych sekundárnych temeplate molekúl s target molekulou. 
+\item Najprv zarovnať heuristickým algoritmom (BLAST, FASTA) a následne z takto vybranej skupiny najlepších štruktúr vybrať tú najvhodnejšiu za pomoci jedného z troch hore uvedených spôsobov.
+\end{enumerate}
+
+
+\indent My sme najprv skúšali prvý a najjednoduchší postup a to globálne zarovnávať potencionálne sekundárne molekuly na target molekulu pričom v zarovnaniach hľadáme sekundárnu štruktúru, ktorá by dobre vyplnila nekonzervované úseky (teda by ich pokryla aspoň na 60\%, ktoré sme na základe doterajšieho testovania určili ako dolnú hranicu pokrytia v zarovnaní). Pri globálnom zarovnaní sme však nenachádzali vhodné sekundárne štruktúry, ktoré by pokrývali nekonzervované úseky s aspoň 60\%. Je to dané tým, že okrem toho, že v sekundárnej template štruktúre sa musí nachádzať vhodný konzervovaný úsek musí byť aj na správnom mieste v štruktúre tak, aby bol globálne zarovnaný na miesto nekonzervovaného úseku v target štruktúre. Tento prístup sme nakoniec označili za nepoužiteľný.
+
+
+\indent Lokálne zarovnanie hľadá zarovnanie s najlepším skóre dvoch podúsekov z target aj template sekvencie. To znamená, že dĺžka zarovnaných úsekov je určená najvyšším skóre zarovnania oboch sekvencií (ak by bol do zarovnania pridaný alebo odobratý ľubovolný nukleotid z target alebo template sekvencie skóre zarovnania by sa zhoršilo). Vzhľadom na to, že my potrebujeme zarovnať celý nekonzervovaný úsek target sekvencie na ľubovoľný úsek template sevencie bolo by lokálne zarovnanie ťažko použiteľné.
+
+
+\indent Pseudoglobálne zarovnanie je kombinácia globálneho a lokálneho zarovnania. Funguje tak, že kratšiu štruktúru zarovná na časť dlhšej štruktúry a nezarovnané úseky pred a po kratšej štruktúre sa do výsledného skóre zarovnania nezapočítavajú. Teda z globálnym zarovnaním má spoločné to, že kratšia sekvencia je zarovnaná celá na časť dlhšej. Z lokálnym zarovnaním má spoločné to, že pridaním alebo odobratím ďalšieho nukleotidu z dlhšej štruktúry do zarovnania by sme výsledné skóre len zhoršili. V našom algoritme ho budeme používať na vyľadanie optimálnych sekundárnych template molekúl. Postupovať tak, že vyberieme nekonzervovaný úsek z target sekvencie a postupne ho budeme zarovnávať na rôzne potencionálne template sekvencie. Buď môžeme prejsť všetky dostupné sekvencie pre každý nekonzervovaný úsek a vybrať najlepšiu, alebo vyberieme prvú ktorá splní nejaké nami zadané požiadavky. Nevýhoda prechádzania všetkých sekvencií je vysoká časová náročnosť, pretože algoritmus zarovnania má kvadratickú časovú náročnosť O(mn), kde m a n sú dĺžky zarovnávaných molekúl. Teda asymptotoicky bude náročnosť predikcie jednej štruktúry O(snm), kde n a m sú dĺžky štruktúr a s je počet štruktúr v databáze. 
+
+
+\indent TODO: ako získavame similaritu pseudoglobalneho zarovnania
+
+
+\indent Zvýšená časová náročnosť by sa dala riešiť použitím algoritmov FASTA, ktoré používajú heuristické metódy na vyhľadanie najpodobnejších sekvencií. V našom prípade, kedy máme približne 1500 sekvencií na porovnanie, trvá presný pseudoglobálny alignment niekoľo minút a vzhľadom na to, že neskoršia de novo predikcia trvá oveľa dlhšie, rozhodli sme sa tento problém neriešiť.
 
 
 \section{Algoritmus}
+\indent Kostra algoritmu, používajúceho viacero template štruktúr:
+\begin{enumerate}
+\item Vybrať primárnu target štruktúru.
+\item Zarovnať  target a template sekvencie pomocou algoritmu globálneho zarovnania.
+\item Identifikovať dlhé nekonzervované úseky v zarovnaní.
+\item Pre každý nekonzervovaný úsek nájsť vhodnú sekundárnu target štruktúru pomocou semiglobálneho zarovnania.
+\item Integrovať úseky zo sekundárnych template štruktúr do konzervovaných úsekoch z template štruktúry (pomocou superpozície).
+\item Pokračovať de novo predikciou zvyšných nekonzervovaných úsekov.
+\end{enumerate}
 
+
+\indent Prvé tri kroky sa v ničom nelíšia od pôvodného algoritmu. Teda najprv musíme získať hlavnú template štruktúru, pričom nezáleží na tom, či ju už dostaneme na vstupe, alebo ju budeme hľadať nejakú vhodnú z našej stiahnutej databáze. Následne zarovnáme target a template sekvencie, aplikujeme algoritmus posuvného okienka, ošetríme medzery v zarovnaní a dostaneme tak nekonzervované úseky, ktoré musíme predikovať. Z nich vyberieme tie dlhé (určené parametrom, pričom sme hľadali nekonzervované úseky dlhé aspoň 7 nukleotidov) uložíme si ich do poľa a budeme pre ne hľadať sekundárne template štruktúry.
+
+
+\indent Aby sme vyfiltrovali štruktúry nepoužiteľné template pre vybraný gap a  
+
+\indent Hlavné kroky algoritmu týkajúce sa sekundárnych template štruktúr:
+\begin{enumerate}
+\item Nájdi dlhé nekonzervované úseky.
+\item Otaguj a vyfiltruj potenciálne template štruktúry sekvenčným prechodom všetkých štruktúr, ulož  ich do poľa.
+\item For each nekonzervovaný úsek:
+\begin{enumerate}
+\item Uprav nekonzervovaný úsek na rozšírený nekonzervovaný úsek.
+\item Pomocou pseudoglobálneho zarovnania nájdi v indexovaných štruktúrach vhodnú sekundárnu štruktúru pre nekonzervovaný úsek.
+\item 
+\item 
+\item
+\end{enumerate}
+\end{enumerate}
 
 \section{Integrácia do existujúceho algoritmu}
 
