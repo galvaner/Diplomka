@@ -97,23 +97,30 @@
 % Nepovinné poděkování (vedoucímu práce, konzultantovi, tomu, kdo
 % zapůjčil software, literaturu apod.)
 \def\Podekovani{%
-Poděkování.
+Výpočtové zdroje boli poskytnuté Ministerstvom školstva, mládeže a športu
+Českej Republiky v projekte CESNET (Project No. LM2015042) a CERIT-Scientific
+Cloud (Project No. LM2015085) spadajúce do programu Projects of
+Large Research, Development and Innovations Infrastructures.
 }
 
 % Abstrakt (doporučený rozsah cca 80-200 slov; nejedná se o zadání práce)
 \def\Abstrakt{%
-Abstrakt.
+V tejto práci ďalej rozvíjame algoritmus homológnej predikcie terciárnej štruktúry RNA,  ktorý bol navrhnutý a naimplementovaný v rámci bakalárskej práce.
+Venujeme sa väčšej automatizácií implementácie algoritmu a jeho jednoduchšiemu použitiu tak, aby bol schopný predikovať RNA štruktúru molekuly bez manuálnych zásahov, len na základe sekvencie cieľovej štruktúry.
+Algoritmus ďalej rozširujeme o homológnu predikciu sekundárnej štruktúry a možnosť použiť viac template štruktúr, čo by malo viesť k zmenšeniu prehľadávaného priestoru pri predikcii nekonzervovaných úsekov predikovanej štruktúry a tým zvýšiť celkovú presnosť predikcie.
 }
 \def\AbstraktEN{%
-Abstract.
+In this thesis we will further develop the algorithm of homologous prediction of tertiary RNA structure. The algorithm was originally created and implemented in my the bachelor thesis.
+We will focus on further automatization of algorithm implementation and  we are going to make it easier to use. User will be able to predict tertiary structure of RNA based only on target structure sequence. 
+The algorithm will be also extended to use multiple template structures for prediction and it will be able to firstly predict the secondary structure of target molecule. Both of those modification shoud lead to more precise prediction by restricting the search space and reducing the size of unconserved regions of predicted structure.
 }
 
 % 3 až 5 klíčových slov (doporučeno), každé uzavřeno ve složených závorkách
 \def\KlicovaSlova{%
-{klíčová} {slova}
+{predikcia} {RNA} {template} {komparatívne modelovnie}
 }
 \def\KlicovaSlovaEN{%
-{key} {words}
+{prediction} {RNA} {template} {comparative modeling}
 }
 
 %% Balíček hyperref, kterým jdou vyrábět klikací odkazy v PDF,
@@ -157,7 +164,7 @@ Abstract.
 
 %%% Použité zkratky v diplomové práci (opět nemusí být nutné uvádět)
 %%% U matematických prací může být lepší přemístit seznam zkratek na začátek práce.
-\chapwithtoc{Seznam použitých zkratek}
+%\chapwithtoc{Seznam použitých zkratek}
 
 %%% Přílohy k diplomové práci, existují-li. Každá příloha musí být alespoň jednou
 %%% odkazována z vlastního textu práce. Přílohy se číslují.
@@ -170,9 +177,9 @@ Abstract.
 %%% je také do práce vložit na CD/DVD. Povolené formáty souborů specifikuje
 %%% opatření rektora č. 72/2017.
 \appendix
-\chapter{Přílohy}
+%\chapter{Přílohy}
 
-\section{První příloha}
+%\section{První příloha}
 
 \openright
 \end{document}

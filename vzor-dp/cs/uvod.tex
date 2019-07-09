@@ -1,7 +1,11 @@
 \chapter*{Úvod}
 \addcontentsline{toc}{chapter}{Úvod}
 
-Následuje několik ukázkových kapitol, které doporučují, jak by se
-měla diplomová práce sázet. Primárně popisují použití \TeX{}ové
-šablony, ale obecné rady poslouží dobře i~uživatelům jiných
-systémů.
+Štruktúry RNA hrajú významnú úlohu napríklad v syntéze proteínov, alebo v prenose a uchovávaní genetickej informácie organizmov. Znalosť ich 3D štruktúry je kľúčova pri porozumení ich funkcie. Na rozdiel od získania sekvencie RNA, čo je pomerne jednoduché a v dnešnej dobe pomerne lacno zvládnuteľné, je získanie terciárnej štruktúry RNA stále pomalý a nákladný proces. Z toho vyplýva, že  rozdiel medzi počtom známych RNA sekvencií a množstvom známych terciárnych RNA štruktúr sa neustále zväčšuje, čo vytvára priestor pre oblasť výpočetnej predikcie terciárnych štruktúr.
+
+
+\indent Algoritmy predikcie môžeme rozdeliť na dve skupiny podľa prístupu k predikcii. v Prvej skupine sú algoritmy ab initio, ktoré predikujú štruktúru priamo zo sekvencie na základe biologických, chemických a fyzikálnych vlastností. Druhá skupina je tvorená homológnymi algoritmami, ktoré využívajú dôsledky evolúcie, kedy platí, že molekuly s podobnými úsekmi v sekvenciách majú aj podobnú štruktúru. Takéto úseky nazývame konzervované. 
+
+
+\indent V bakalárskej práci sme predstavili metódu homológneho modelovania RNA - TROOPER, ktorú budeme v tejto práci ďalej rozvíjať. Upravíme implementáciu tak, aby bola samotná predikcia užívateľsky jednoduchšia vďaka väčšej miere automatizácie. Následne naše výsledky porovnáme s nástrojom ModeRNA založenom tiež na princípe komparatívneho modelovania RNA štruktúr.
+Ďalej sa budeme zaoberať rozšírením algortimu o dva moduly. Prvý modul rozširuje predikciu terciárnej štruktúry o krok napredikovania sekundárnej štruktúry, ktorá je následne použitá pri de novo predikcií nekonzervovaných úsekov, čim by sa mal zmenšiť prehľadávaný priestor pri modelovaní. Druhý modul dopĺňa predikciu o možnosť použitia separátnej template štruktúry pre každý dlhý nekonzervovaný úsek v štruktúre získanej z primárnej template štruktúry.
