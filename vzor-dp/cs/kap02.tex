@@ -8,7 +8,7 @@ Cieľom výpočetnej predikcie RNA štruktúry je dokázať algoritmicky modelov
 \indent  Existujú dve hlavné pozorovania, ktoré nám umožnujú štruktúry makromolekúl modelovať  \cite{Jenny09}:
 \begin{itemize}
 \item Štruktúra proteínu je unikátne určená sekvenciou aminokyselín.
-\item Štruktúra sa zachováva aj pri určitých zmenách v sekvencii, a teda platí, že napriek odlišnosti v sekvenciách sú štruktúry veľmi podobné. Je to spôsobené tým, že počas evolúcie štruktúra stále plnila podobnú úlohu, a preto sa jej tvar nemenil aj napriek mutáciám sekvencie. Vďaka rozširujúcej sa databáze makromolekúl (Protein Data Bank) boli získané vzťahy určujúce, aká musí byť podobnosť rovnako dlhých sekvencií, aby sme mohli predpokladať, že aj ich štruktúry sú podobné. Tento vzťah zobrazuje obrázok  \ref{obr01:aln-zones}.
+\item Štruktúra sa zachováva aj pri určitých zmenách v sekvencii, a teda platí, že napriek odlišnosti v sekvenciách sú štruktúry veľmi podobné. Je to spôsobené tým, že počas evolúcie štruktúra stále plnila podobnú úlohu, a preto sa jej tvar nemenil aj napriek mutáciám sekvencie. Vďaka rozširujúcej sa databáze makromolekúl (Protein Data Bank) boli empiricky získané vzťahy definujúce, aká by mala byť podobnosť rovnako dlhých sekvencií, aby sme mohli predpokladať, že aj ich štruktúry sú podobné. Tento vzťah zobrazuje obrázok  \autoref{obr01:aln-zones}.
 \end{itemize}
 
 \begin{figure}%[p]\centering
@@ -18,19 +18,19 @@ Cieľom výpočetnej predikcie RNA štruktúry je dokázať algoritmicky modelov
 \end{figure}
 
 \section{Ab initio predikcia}
-Pri ab initio predikcii štruktúry vychádzame iba z primárnej sekvencie a chemicko-fyzikálnych vlastností, vďaka ktorým sa v reálnom svete štruktúra skladá do stabilného tvaru. Algoritmus postupne vytvára kandidátske štruktúry tak, že sa snaží minimalizovať funkciu predstavujúcu voľnú energiu (energia, ktorá je ľahko dostupná v systéme). Následne z takto vygenerovaných kandidátov musí vybrať najprirodzenejšiu štruktúru. Najväčším problémom tohoto prístupu je mnoho lokálnych miním vo funkcii predstavujúcej voľnú energiu, a preto aj výpočetná zložitosť.
+Pri ab initio predikcii štruktúry vychádzame iba z primárnej sekvencie a chemicko-fyzikálnych vlastností, vďaka ktorým sa v reálnom svete štruktúra skladá do stabilného tvaru. Algoritmus postupne vytvára kandidátske štruktúry tak, že sa snaží minimalizovať funkciu predstavujúcu voľnú energiu (energia, ktorá je ľahko dostupná v systéme). Algoritmus následne z takto vygenerovaných kandidátov musí vybrať najprirodzenejšiu štruktúru. Najväčším problémom tohoto prístupu je mnoho lokálnych miním vo funkcii predstavujúcej voľnú energiu, a preto aj výpočetná zložitosť.
 
 
 \indent  Tieto komplikácie sa dajú čiastočne riešiť viacerými spôsobmi. Jedna cesta je zvýšiť výpočetný výkon - použitie superpočítača, alebo distribuovať výpočet na mnoho výpočetných staníc. Ďalšia je pokus o zmenšenie vyhľadávacieho priestoru a efektívnejšie vyhľadávať kandidátske štruktúry. Jedna metóda je označovaná ako coarse-grained reprezentácie, kde nie sú reprezentované všetky atómy. Využívajú sa taktiež heuristické a pravdepodobnostné metódy na zmenšienie prehľadávaného priestoru.
 
 
-\indent  Stále však platí, že takáto metóda je pre dlhšie štruktúry nepoužiteľná. Napriek tomu, že súšasný state-of-the art umožňuje predikovať štruktúry celkom presne, s rastúcou dĺžkou sekvencie neúmerne rastie výpočetná náročnosť. Ako príklad uvedieme pokus predikovať štruktúru dlhú 112 nukleotidov, pričom výsledná štruktúra sa líšila od experimentálne získanej len minimálne, výpočet však stál viac ako 100 000 hodín CPU.  \cite{Qian2007}
+\indent  Stále však platí, že ab initio predikcia je pre dlhšie štruktúry nepoužiteľná. Napriek tomu, že súšasný state-of-the art umožňuje predikovať krátke štruktúry celkom presne, s rastúcou dĺžkou sekvencie neúmerne rastie výpočetná náročnosť. Ako príklad uvedieme pokus predikovať štruktúru dlhú 112 nukleotidov, pričom výsledná štruktúra sa líšila od experimentálne získanej len minimálne, výpočet však stál viac ako 100 000 hodín CPU.  \cite{Qian2007}
 
 
 \section{Knowledge based de novo predikcia}
-Princíp tohoto typu predikcie je veľmi podobný ako ten v ab initio metóde, ale namiesto samplovania možných usporiadaní atómov používa knižnicu krátkych úsekov štruktúry (väčšinou dĺžky 2-5 nukleotidov). Algoritmus následne vytvára kandidátske štruktúry tým, že kombinuje jednotlivé krátke úseky štruktúr z knižnice do kandidátskych štruktúr, a takisto minimalizuje voľnú energiu modelu. Výhodou je hlavne zrýchlené generovanie kandidátskych štruktúr oproti ab iniio predikcii. Aj tak je však predikovanie dlhých štruktúr príliš pomalé. Mnohé nástroje preto umožňujú vložiť sekundárnu štruktúru predikovanej sekvencie, a tak zmenšiť prehľadávaný priestor. 
+Princíp tohoto typu predikcie je veľmi podobný ako ten v ab initio metóde, ale namiesto samplovania možných usporiadaní atómov používa knižnicu krátkych úsekov štruktúry (väčšinou dĺžky 2-5 nukleotidov). Algoritmus následne vytvára kandidátske štruktúry tým, že kombinuje jednotlivé krátke fragmenty štruktúr z knižnice do kandidátskych štruktúr, a takisto minimalizuje voľnú energiu modelu. Výhodou je hlavne zrýchlené generovanie kandidátskych štruktúr oproti ab iniio predikcii. Aj tak je však predikovanie dlhých štruktúr príliš pomalé. Mnohé nástroje preto umožňujú vložiť sekundárnu štruktúru predikovanej sekvencie, a tak zmenšiť prehľadávaný priestor. 
 
-\indent Ďalší spôsob ako znížiť prehľadávaný priestor, je použitie internej reprezentácie štruktúry. V prípade, že atómy reprezentujeme súradnicami v trojdimenzionálnom priestore, ich síce viem dobre zobraziť, ale takáto reprezentácia má 3*počet \_átomov stupňov voľnosti. Výhodnejšie je štruktúru reprezentovať napríklad pomocou reprezentácie uhlov medzi nukleotidmi.  \ref{obr02:reptesentation}
+\indent Ďalší spôsob ako znížiť prehľadávaný priestor, je použitie šikovnejšej reprezentácie štruktúry. V prípade, že atómy reprezentujeme súradnicami v trojdimenzionálnom priestore, ich síce vieme dobre zobraziť, ale takáto reprezentácia má 3*počet\_átomov stupňov voľnosti. Výhodnejšie je štruktúru reprezentovať napríklad pomocou reprezentácie uhlov medzi nukleotidmi.  \autoref{obr02:reptesentation}
 
 
 \begin{figure}%[p]\centering
@@ -44,10 +44,10 @@ Princíp tohoto typu predikcie je veľmi podobný ako ten v ab initio metóde, a
 
 
 \section{Alignment sekvencií}
-Zarovnanie dvoch sekvencií slúži na získanie informácie o tom, či sú dané sekvencie nejako evolučne, štrukturálne, alebo funkčne príbuzné. Existuje viacero druhov algoritmov zarovnania - napríklad jednoduchý dot plot vhodný na jednoduchú vizualizáciu zarovnania, heuristické metódy ako FASTA a BLAST určené na čo najrýchlejšie porovnanie sekvencie s rozsiahlou databázou ďalších sekvencií, alebo metódy počítajúce najlepšie zarovnanie určené skórovacím systémom za pomoci dynamického programovania.
+Zarovnanie dvoch sekvencií slúži na získanie informácie o tom, ktoré časti sekvencii sú nejako evolučne, štrukturálne, alebo funkčne príbuzné. Existuje viacero druhov algoritmov zarovnania - napríklad jednoduchý dot plot vhodný na jednoduchú vizualizáciu zarovnania  \cite{Gibbs70}, kombinácia heuristických metód a dynamického programovania ako algoritmy FASTA a BLAST určené na čo najrýchlejšie porovnanie sekvencie s rozsiahlou databázou ďalších sekvencií, alebo metódy počítajúce najlepšie zarovnanie určené skórovacím systémom za pomoci dynamického programovania.
 
 
-\indent  V tejto práci budeme využívať semiglobálne zarovnanie pomocou algoritmu Needleman–Wunsch \cite{Needleman70}  implementovaného v programe EMBOSS \cite{Emboss}. Ako vstup algoritmus dostáva dve sekvencie dĺžiek m a n, ktoré chceme zarovnať, a hodnoty parametrov gap open (penalizácia v skóre za otvorenie medzery v zarovnaní) a gap extend (penalizácia v skóre za predĺženie medzery v zarovnaní). Algoritmus následne za pomoci dynamického programovania \ref{obr03:aln} vypočíta zarovnanie s najnižším skóre v čase aj priestore O(nm).  Výstupom algoritmu sú zarovnané sekvencie a skóre zarovnania. V zarovnaní na určitej pozícii môžu nastať tri prípady, a to zarovnanie dvoch rovnakých reziduí (match), zarovnanie dvoch odlišných reziduí (mismatch), a nakoniec zarovnanie rezidua na medzeru (gap) vloženú do druhej sekvencie. Nami používaná implementácia algoritmu nepenalizuje za medzery v zarovnaní nachádzajúce sa na začiatku alebo na konci zarovnania, preto je možné ňou zmysluplne zarovnať krátku štruktúru na časť oveľa dlhšej štruktúry.
+\indent  V tejto práci budeme využívať semiglobálne zarovnanie pomocou modifikovaného algoritmu Needleman–Wunsch \cite{Needleman70}  implementovaného v programe \mbox{EMBOSS} \cite{Emboss}. Ako vstup algoritmus dostáva dve sekvencie dĺžiek \textit{m} a \textit{n}, ktoré chceme zarovnať, a hodnoty parametrov gap open (penalizácia v skóre za otvorenie medzery v zarovnaní) a gap extend (penalizácia v skóre za predĺženie medzery v zarovnaní). Algoritmus následne za pomoci dynamického programovania \autoref{obr03:aln} vypočíta zarovnanie s najnižším skóre v čase aj priestore \textit{O(nm)}.  Výstupom algoritmu sú optimálne zarovnané sekvencie a príslušné najlepšie dosiahnuteľné skóre zarovnania. V zarovnaní na určitej pozícii môžu nastať tri prípady, a to zarovnanie dvoch rovnakých reziduí (match), zarovnanie dvoch odlišných reziduí (mismatch), a nakoniec zarovnanie rezidua na medzeru (gap) vloženú do druhej sekvencie. Nami používaná implementácia algoritmu nepenalizuje za medzery v zarovnaní nachádzajúce sa na začiatku alebo na konci zarovnania, preto je možné ňou zmysluplne zarovnať krátku štruktúru na časť oveľa dlhšej štruktúry. Zarovnanie s takýmito vlastnosťami zaraďujeme medzi hybridné zarovnávacie metódy a označujeme ako semiglobálne \cite{Brudno03}.
 
 \begin{figure}%[p]\centering
 \includegraphics[width=\textwidth]{../img/needlemanwunsch}
@@ -60,22 +60,30 @@ Zarovnanie dvoch sekvencií slúži na získanie informácie o tom, či sú dan�
 
 
 \section{Homológne modelovanie}
-Tvrdenie zo začiatku kapitoly, ktoré hovorí, že štruktúra si zachováva podobný tvar aj napriek tomu, že jej sekvencia postupne mutuje, umožňuje zmysluplne predikovať štruktúru na základe vzoru.  
+Tvrdenie zo začiatku kapitoly, ktoré hovorí, že štruktúra si zachováva podobný tvar aj napriek tomu, že jej sekvencia postupne mutuje, umožňuje zmysluplne predikovať štruktúru na základe vzoru. Homológne modelovanie používa na modelovanie neznámej štruktúry zo sekvencie ešte jednu vzorovú molekulu (template), ktorej štruktúra je známa, teda získaná za pomoci nejakej experimentálnej metódy. Predikovanú molekulu zvykneme nazývať cieľ (target).
+
+Homológne modelovanie pozostáva z nasledujúcich krokov:
+\begin{enumerate}
+\item Určenie vhodnej template štruktúry.
+\item Zarovnanie sekvencií a získanie konzervovaných úsekov.
+\item Dopredikovanie nekonzervovaných úsekov.
+\item Optimalizácia napredikovaného modelu.
+\end{enumerate}
 
 
-\indent Homológne modelovanie používa na modelovanie neznámej štruktúry zo sekvencie ešte jednu vzorovú sekvenciu (template), ktorej štruktúra je známa, teda získaná za pomoci nejakej experimentálnej metódy. Predikovanú štruktúru zvykneme nazývať cieľ (target).
+\indent Prvým krokom je teda určenie vhodnej template štruktúry, pomocou ktorej budeme predikovať target štruktúru. Typicky budeme hľadať molekulu s čo najpodobnejšou sekvenciou, aby sa neskôr minimalizoval počet a veľkosť nekonzervovaných úsekov. 
 
 
-\indent Prvým krokom je teda určenie vhodnej template štruktúry, pomocou ktorej budeme predikovať target štruktúru. Druhým krokom je globálne zarovnanie oboch sekvencií a získanie konzervovaných úsekov, teda úsekov, v ktorých by mali byť obe štruktúry veľmi podobné. Konzervované úseky môžu byť po nejakých úpravách prenesené do cieľovej štruktúry. Z princípu vyplýva, že čím podobnejšie sekvencie budú máť target a template štruktúry, tým viac konzervovaných úsekov bude existovať a tým jednoduchšia a presnejšia by mala predikcia byť.
+\indent Druhým krokom je globálne zarovnanie oboch sekvencií a získanie konzervovaných úsekov, teda úsekov, v ktorých by mali byť obe štruktúry veľmi podobné. Konzervované úseky môžu byť po nejakých úpravách prenesené do cieľovej štruktúry. Z princípu vyplýva, že čím podobnejšie sekvencie budú máť target a template štruktúry, tým viac konzervovaných úsekov bude existovať a tým jednoduchšia a presnejšia by mala predikcia byť.
 
 
 \indent V treťom kroku musia byť dopredikované nekonzervované (chýbajúce úseky) cieľovej štruktúry. Existuje viacero prístupov. Jedným z nich je knižnica fragmentov, kde sa do chýbajúcej medzery v cieľovej štruktúre snažíme vhodne umiestniť fragment štruktúry z knižnice, ďalším je napríklad dopredikovanie medzery ab initio alebo de novo algoritmami.
 
 
-\indent Takto hotový model sa nakoniec môže optimalizovať použitím algoritmu na minimalizovanie voľnej energie, alebo sa riešia kolízie medzi jednotlivými nukleotidmi.
+\indent Takto hotový model sa nakoniec môže optimalizovať použitím algoritmu na minimalizovanie voľnej energie, alebo sa môžu vyriešiť kolízie medzi jednotlivými nukleotidmi.
 
 
-\indent Hlavnou výhodou homológneho modelovania je, že je možné ho použiť na dlhé štruktúry. Problémom môže byť výber správnej template štruktúry a dopredikovanie nekonzervovaných úsekov. \ref{obr04:porovnanie}
+\indent Hlavnou výhodou homológneho modelovania je, že je možné ho použiť na dlhé štruktúry. Problémom môže byť výber správnej template štruktúry a dopredikovanie nekonzervovaných úsekov. \autoref{obr04:porovnanie}
 
 
 \begin{figure}%[p]\centering
@@ -86,7 +94,7 @@ Tvrdenie zo začiatku kapitoly, ktoré hovorí, že štruktúra si zachováva po
 
 
 \section{Prehľad existujúcixh nástrojov}
-Vďaka tomu, že počet dostupných primárnych sekvencií stále rastie rýchlejšie, ako počet experimentálne zistených terciárnych štruktúr, vzniklo mnoho nástrojov na predikciu terciárnej štruktúry RNA. \ref{tab01}
+Vďaka tomu, že počet dostupných primárnych sekvencií stále rastie rýchlejšie, ako počet experimentálne zistených terciárnych štruktúr, vzniklo mnoho nástrojov na predikciu terciárnej štruktúry RNA. V tabuľke uvádzame prehľad a základné princípy fungovania najpoužívanejších aktuálne dostupných algoritmov na predikciu RNA štruktúr \autoref{tab01}. V nasledujúcich dvoch sekciách bližšie predstavíme algoritmy ModeRNA a FARFAR, ktoré budeme používať v našej práci.
 
 
 \begin{table}[b!]
@@ -105,23 +113,23 @@ iFoldRNA & \begin{tabular}[c]{@{}l@{}}de novo predikcia RNA \\ založená na cor
 
 \end{tabular}
 
-\caption{Prehľad niektorých programov určených na predikciu RNA s informáciou o type použitého algoritmu.}\label{tab01}
+\caption{Prehľad najčastejšie používaných programov určených na predikciu RNA s informáciou o type použitého algoritmu.}\label{tab01}
 
 \end{table}
 
 
 \section{ModeRNA}
 
-ModeRNA je implementácia algoritmu komparatívneho modelovania RNA s ktorým sme porvnávali nami vyvinutý algoritmus. Je dostupná ako ModeRNA server a ponúka službu kompletnej predikcie submitovanej sekvencie (nájdenie vhodného template, zarovnanie sekvencií a vytvorenie modelu terciárnej štruktúry). Okrem toho je možné stiahnuť jej zdrojové kódy (Python) a nainštalovať a používať ju lokálne pre automatické hromadné spracovanie.
+ModeRNA je algoritmus komparatívneho modelovania RNA. Je dostupný ako ModeRNA server a ponúka službu kompletnej predikcie submitovanej sekvencie (nájdenie vhodného template, zarovnanie sekvencií a vytvorenie modelu terciárnej štruktúry). Okrem toho je možné stiahnuť jej zdrojové kódy (Python) a nainštalovať a používať ju lokálne pre automatické hromadné spracovanie.
 
 
-\indent Ako vstup ModeRNA požaduje zarovnanie  template a target sekvencií spolu so súradnicami jednotlivých atómov template štruktúry. Dodané zarovnanie ModeRNA nijako nemodifikuje a od jeho kvality a zvoleného template záleží výsldná presnosť predikcie. 
+\indent Ako vstup ModeRNA požaduje zarovnanie  template a target sekvencií spolu so štruktúrou template molekuly. Dodané zarovnanie ModeRNA nijako nemodifikuje a od jeho kvality a zvoleného template záleží výsldná presnosť predikcie. 
 Zjednodušený algoritmus, ktorým ModeRNA predikuje štruktúru \cite{Rother11}: 
 
 \begin{itemize}
 \item Skopírovanie zarovnaných nukleotidov.
 \item Substitúcia nukleotidov, ktoré boli zarovnané na iný nukleotid.
-\item Modelovanie indelov vložením fragmentov štruktúr z knižnice obsahujúcej 131 316 fragmentov dĺžky 2-19 nukleotidov. ModeRNA najprv rýchlym filtrovaním podľa vzdialeností  prekrývajúcich sa atómov fragmentu a template-u vyberie 50 najvhodnejších kandidátov, pokúsi sa ich vložiť do medzery a pre každého kandidáta spočíta skóre. Následne vyberie jediného s najlepším skóre a vloží ho do medzery.
+\item Modelovanie indelov (označujeme tak miesto vloženia alebo zmazania nukleotidu v sekvencii) vložením fragmentov štruktúr z knižnice obsahujúcej 131 316 fragmentov dĺžky 2-19 nukleotidov. ModeRNA najprv rýchlym filtrovaním podľa vzdialeností  prekrývajúcich sa atómov fragmentu a template-u vyberie 50 najvhodnejších kandidátov, pokúsi sa ich vložiť do medzery a pre každého kandidáta spočíta skóre. Následne vyberie jediného s najlepším skóre a vloží ho do medzery.
 \item V prípade, že predikovaná štruktúra (backbone) nie je spojitá, ModeRNA sa ju pokúsi opraviť.
 \end{itemize}
 

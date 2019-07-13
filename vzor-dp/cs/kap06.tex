@@ -27,7 +27,7 @@ Hlavnou myšlienkou algoritmu je použiť viacero template štruktúr pre predik
 \indent Semiglobálne zarovnanie je kombinácia globálneho a lokálneho zarovnania. Funguje tak, že kratšiu štruktúru zarovná na časť dlhšej štruktúry a nezarovnané úseky pred a po kratšej štruktúre sa do výsledného skóre zarovnania nezapočítavajú. Teda z globálnym zarovnaním má spoločné to, že kratšia sekvencia je zarovnaná celá na časť dlhšej. Z lokálnym zarovnaním má spoločné to, že pridaním alebo odobratím ďalšieho nukleotidu z dlhšej štruktúry do zarovnania by sme výsledné skóre len zhoršili. V našom algoritme ho budeme používať na vyľadanie optimálnych sekundárnych template molekúl. Postupovať tak, že vyberieme nekonzervovaný úsek z target sekvencie a postupne ho budeme zarovnávať na rôzne potencionálne template sekvencie. Buď môžeme prejsť všetky dostupné sekvencie pre každý nekonzervovaný úsek a vybrať najlepšiu, alebo vyberieme prvú ktorá splní nejaké nami zadané požiadavky. Nevýhoda prechádzania všetkých sekvencií je vysoká časová náročnosť, pretože algoritmus zarovnania má kvadratickú časovú náročnosť O(mn), kde m a n sú dĺžky zarovnávaných molekúl. Teda asymptotoicky bude náročnosť predikcie jednej štruktúry O(snm), kde n a m sú dĺžky štruktúr a s je počet štruktúr v databáze. 
 
 
-\indent Semiglobálne zarovnanie získavame rovnakým nástrojom ako globálne, teda pomocou programu Emboss.Needle \cite{Emboss}. Z výsledného zarovnania nás nezaujíma skóre zarovnania, ale percentuálny pomer správne zarovnaných nukleotidov oproti nesprávne zarovnaným nukleotidom, prípadne medzerám v  zarovnaní (bez medzery na začiatku a na konci), čo označujeme ako podobnosť, alebo tiež similarity. Emboss ale do výstupného súboru zarovnania uvádza len globálnu podobnosť v kombinácií so semiglobálnym skóre \ref{obr06:emboss}. To pre nás znamenalo, že sme muslei napísať parser založený na regulárnych výrazoch, ktorý vyselektuje zo zarovnania len zarovnanú časť a určí podobnosť oboch štruktúr.
+\indent Semiglobálne zarovnanie získavame rovnakým nástrojom ako globálne, teda pomocou programu Emboss.Needle \cite{Emboss}. Z výsledného zarovnania nás nezaujíma skóre zarovnania, ale percentuálny pomer správne zarovnaných nukleotidov oproti nesprávne zarovnaným nukleotidom, prípadne medzerám v  zarovnaní (bez medzery na začiatku a na konci), čo označujeme ako podobnosť, alebo tiež similarity. Emboss ale do výstupného súboru zarovnania uvádza len globálnu podobnosť v kombinácií so semiglobálnym skóre \autoref{obr06:emboss}. To pre nás znamenalo, že sme muslei napísať parser založený na regulárnych výrazoch, ktorý vyselektuje zo zarovnania len zarovnanú časť a určí podobnosť oboch štruktúr.
 \begin{figure}%[p]\centering
 \includegraphics[width=\textwidth]{../img/emboss}
 \caption{Príklad semiglobálneho zarovnania nekonzervovaného rozšíreného úseku dlhého 13 nukleotidov na sekvenciu 1C2W\_B dlhú 2904 nukleotidov. Zeleným obdĺžnikom je ohraničené zarovnanie, ktorého podobnosť nás zaujíma a oranžovým obdĺžnikom je označená hodnota globálnej podobnosti vypočítanej programom Emboss.}
@@ -37,6 +37,86 @@ Hlavnou myšlienkou algoritmu je použiť viacero template štruktúr pre predik
 
 \indent Zvýšená časová náročnosť by sa dala riešiť použitím algoritmov FASTA, ktoré používajú heuristické metódy na vyhľadanie najpodobnejších sekvencií. V našom prípade, kedy máme približne 1500 sekvencií na porovnanie, trvá presný semiglobálny alignment niekoľo minút a vzhľadom na to, že neskoršia de novo predikcia trvá oveľa dlhšie, rozhodli sme sa tento problém neriešiť.
 
+
+\section{Pseudokód}
+Pseudokód algoritmu používajúceho viacero template štruktúr spolu s integráciou do pôvodného algoritmu, ktorý vychádza z pseudokódu algoritmu Trooper so sekundárnou štruktúrou v piatej kapitole \autoref{kap5:pseudocode}.
+\lstset{numbers=left, numberstyle=\tiny, stepnumber=1, numbersep=5pt}
+\begin{lstlisting}
+Main(fastaTarget, fastaTemplate
+        , secStrTemplate, pdbTemplate)
+{
+   CheckTemplateMapping
+      (fastaTemplate,pdbTemplate)
+   alignment := Align
+      (fastaTarget, fastaTemplate)
+   alignment1 := UseSlidingWindow
+      (alignment)
+   alignment2 := ProcessGaps
+      (alignment1)
+   conservedParts := CopyConservedParts
+      (alignment2, pdbTemplate)
+   mappedConservedParts := MapConservedParts
+      (conservedParts, alignment2)
+   conservedPartsSecStr := CopyConservedPartsSecStr
+      (alignment2, secStrTemplate)
+   mappedConservedPartsSecStr := MapConservedPartsSecStr
+      (conservedPartsSecStr, alignment2)
+   predictedSecStr := PredictUnconservedSecStr
+      (mappedConservedPartsSecStr)
+   mappedConservedParts := MultipleTemplatesModule
+      (mappedConservedParts)
+   longParts[] := ProcessLongUnconservedParts
+      (mappedConservedParts, secStr)
+   shortParts[] := ProcessShortUnconservedParts
+      (mappedConservedParts, secStr)
+   predictedParts[] := PredictUnconservedParts
+      (longParts[], shortParts[])
+   finalModel := ConnectPredictedParts
+      (predictedParts)
+}
+
+MultipleTemplatesModule(mappedConservedParts)
+{
+   gaps[] := IdentifyLongUnconservedRegions
+      (mappedConservedParts)
+   foreach gap in gaps
+   {
+      extendedGap = ExtendGap(5 nk from each side)
+      secTemplate := FindTemplateForGap(extendedGap) 
+      preparedSecTemplate := MapTemplateToGap
+         (secTemplate)
+      mappedConservedParts := IntegrateNewTemplateStr
+         (prepared_sec_template)
+   }
+   return mappedConservedParts
+}
+
+   FindTemplateForGap(gap) 
+   {
+       alns = []
+       foreach sequence in database:
+       {
+          alns = EmbossAlign(sequence, gap)
+       }
+       bestAln = alns.SelectBest()
+       return bestAln
+   }
+
+   MapTemplateToGap(secTemplate)
+   {
+      from secTemplate select only relevant nukleotides
+      renumber secTemplate to match unconserved region
+      rename chain to match the primary template
+   }   
+
+   IntegrateNewTemplateStr(preparedSecTemplate)
+   {
+      superimpose prepared template to gap
+      OR
+      save secondary template to new file
+   }
+
+\end{lstlisting}
 
 \section{Algoritmus}
 \indent Kroky algoritmu používajúceho viacero sekundárnych template štruktúr:
@@ -50,14 +130,14 @@ Hlavnou myšlienkou algoritmu je použiť viacero template štruktúr pre predik
 \item Namapujeme vybraný fragment sekundárnej target štruktúry na príslušné miesto v template štruktúre (prečíslovanie nukleotidov v sekundárnej template štruktúre).
 \item Vykonáme jeden z následujúcich dvoch krokov, podľa verzie algoritmu:
 \begin{enumerate}
-\item Dáme do superpozície štruktúru tvorenú konzervovanými úsekmi z primárnej template štruktúry a fragment zo sekundárnej štruktúry.
-\item Uložíme fragment sekundárnej template štruktúry do separátneho súboru.
+\item Dáme do superpozície štruktúru tvorenú konzervovanými úsekmi z primárnej template štruktúry a fragment zo sekundárnej template štruktúry.
+\item Uložíme fragment sekundárnej template štruktúry do separátneho súboru, ktorý potom poskytneme algoritmu FARFAR.
 \end{enumerate}
 \end{enumerate}
 \end{enumerate}
 
 
-\indent Hlavná logika je naimplementovaná v skriptoch \url{Predictor/scripts/multiple\_templates\_modul.py} a \url{Predictor/scripts/superposition.py}. Druhý z menovaných skriptov bol pôvodne inšpirovaný skriptom od Anders S. Christensen-a dostupného na \url{https://gist.github.com/andersx/6354971}, a výrazne upravený.  
+\indent Logika algoritmu je naimplementovaná v metóde \textit{MultipleTemplateModule}. Superimposer použitý v metóde \textit{IntegrateNewTemplateStr} bol pôvodne inšpirovaný skriptom od Anders S. Christensen-a dostupného na \url{https://gist.github.com/andersx/6354971} a výrazne upravený.  
 
 
 \indent V prvom kroku sekvenčne prejdeme target štruktúru skladajúcu sa zatiaľ len z konzervovaných úsekov primárnej template štruktúry a vyhľadáme nekonzervované úseky dlhšie ako určitá hranica daná parametrom (momentálne nastavené na 7 nukleotirdov).
@@ -66,7 +146,7 @@ Hlavnou myšlienkou algoritmu je použiť viacero template štruktúr pre predik
 \indent V druhom kroku si predpripravíme možné template štruktúry tak, že odstránime tie, ktoré obsahujú moc veľa neplatných nukleotidov (znaky iné ako A,C,G,U), ale hlavne si uložíme dĺžku každej sekvencie a v nasledujúcom kroku budeme na seba zarovnávať len dosť dlhé sekvencie vzhľadom k nekonzervovanému úseku (minimálne 0,8 násobok dĺžky úseku). Dôvody sú vyhnutie sa problémovým dátam a ušetrenie času pri zarovnávaní hlavne dlhších nekonzervovvaných úsekov. Tu by bolo možné si takto sekvencie otagovať mimo algoritmu predikcie, čo by ale bolo treba prepočítavať pri zmene v databázi, a keďže celý tento proces trvá pár desiatok sekúnd rozhodli sme sa robiť to vždy odznova počas predikcie.
 
 
-\indent V ďalších krokoch iterujeme cez všetky vybrané nekonzervované úseky algoritmu a pre každý aplikujeme rovnaké kroky. Najprv si nekonzervovvaný úsek rozšírime. To znamená, že k nemu pridáme z oboch strán určitý počet nukleotidov (my používame parameter 5). Keďže pracujeme s nekonzervovvaným úsekom musí existovať na každej strane minimálne 1 nukleotid, ktorý tento úsek ohraničuje (s výnimkou začiatku a konca sekvencie). Za pomoci týchto rozširujúcich nukleotidov sme schopní superpozíciovať (správne umiestniť) v nasledujúcich krokoch vybraný fragment sekundárnej template štruktúry do primárnej template štruktúry.
+\indent V ďalších krokoch iterujeme cez všetky vybrané nekonzervované úseky algoritmu a pre každý aplikujeme rovnaké kroky. Najprv si nekonzervovvaný úsek rozšírime. To znamená, že k nemu pridáme z oboch strán určitý počet nukleotidov (my používame parameter 5). Keďže pracujeme s nekonzervovaným úsekom musí existovať na každej strane minimálne 1 nukleotid, ktorý tento úsek ohraničuje (s výnimkou začiatku a konca sekvencie). Za pomoci týchto rozširujúcich nukleotidov sme schopní superpozíciovať (správne umiestniť) v nasledujúcich krokoch vybraný fragment sekundárnej template štruktúry do primárnej template štruktúry.
 
 
 \indent V tomto kroku postupne zarovnávame rošírený nekonzervovaný úsek s vyhovujúcimi predpripravenými štruktúrami z druhého kroku. V prípade, že zarovnanie splňuje určené podmienky, vyberieme príslušnu štruktúru za sekundárny template  pre spracovávaný nekonzervovaný úsek a v prehľadávaní ďalej nepokračujeme. Podmienky pre výber používame nasledujúce: podobnosť zarovnania minimálne 70\% a maximálne 95\%. Maximálnu podobnosť volíme preto, aby sme ako template nepoužili štruktúru skoro úplne zhodnú s target štruktúrou. To by síce bolo žiaduce pri naozajstnej predikcii kedy chcem dostať čo najlepší výsledok, ale nežiadúce pre testovanie funkčnosti predikcie, kedy by nám to zvyšok predikcie výrazne zjednodušilo. Pri predikcií neznámej štruktúry tiež typicky nepoznáme žiadnu veľmi podobnú štruktúru neznámej štruktúre, inak by sme ju použili ako primárny template. 
@@ -100,6 +180,10 @@ Integácia do algoritmu si vyžiadala niekoľko úprav v pôvodnom algoritme a i
 
 \indent V nasledujúcich krokoch nepoužijeme časť, algoritmu kotrý vyberal a separátne pripravoval predikciu dlhých nekonzervovaných úsekov, pretože tieto by mali byť doplnené zo sekundárnych template štruktúr a preto by táto časť stratil význam. Okrem toho musíme upraviť vstupné súbory a volania algoritmu FARFAR o novo pridané nukleotidy a súbory. Následne v prípade, že používame druhú variantu algoritmu s viacerými template súbormi, musíme upraviť automatizačné shell scripty, aby tieto súbory nakopírovali na správne miesto spolu s ostatnými vstupnými súbormi.
 
+
+\section{Časová zložitosť} 
+V tejto sekcií popíšeme, ako sa líši časová zložitosť od pôvodného algoritmu Trooper. Jediná zásadná funkcionalita, ktorá pribudla je implementovaná v metóde \textit{MultipleTemplatesModule}.
+Z pohľadu asymptotickej zložitosti je zaujímavá hlavne metóda  \textit{FindTemplateForGap} slúžiaca na vyhľadanie sekundárnych template štruktúr.
 
 \section{Experiment a výsledky} 
 Pre experiment sme volili rovnaké podmienky a vstupné parametre, ako pre predchádzajúce dva experimenty. Predikovali sme tiež s použitím sekundárnej štruktúry, pretože predikcia so sekundárnou štruktúrou, ako aj predikcia s viacerými template štruktúrami sú navzájom kompatibilné.

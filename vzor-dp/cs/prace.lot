@@ -1,14 +1,13 @@
 \babel@toc {czech}{}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {2.1}{\ignorespaces Preh\IeC {\v l}ad niektor\IeC {\'y}ch programov ur\IeC {\v c}en\IeC {\'y}ch na predikciu RNA s inform\IeC {\'a}ciou o type pou\IeC {\v z}it\IeC {\'e}ho algoritmu.}}{15}{table.2.1}% 
+\contentsline {table}{\numberline {2.1}{\ignorespaces Preh\IeC {\v l}ad naj\IeC {\v c}astej\IeC {\v s}ie pou\IeC {\v z}\IeC {\'\i }van\IeC {\'y}ch programov ur\IeC {\v c}en\IeC {\'y}ch na predikciu RNA s inform\IeC {\'a}ciou o type pou\IeC {\v z}it\IeC {\'e}ho algoritmu.}}{17}{table.2.1}% 
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {3.1}{\ignorespaces Preh\IeC {\v l}ad \IeC {\v s}tyroch situ\IeC {\'a}ci\IeC {\'\i }, ktor\IeC {\'e} m\IeC {\^o}\IeC {\v z}u nasta\IeC {\v t} na ka\IeC {\v z}dej poz\IeC {\'\i }ci\IeC {\'\i } v zarovnan\IeC {\'\i } dvoch sekvenci\IeC {\'\i }.}}{18}{table.3.1}% 
+\contentsline {table}{\numberline {3.1}{\ignorespaces Preh\IeC {\v l}ad \IeC {\v s}tyroch situ\IeC {\'a}ci\IeC {\'\i }, ktor\IeC {\'e} m\IeC {\^o}\IeC {\v z}u nasta\IeC {\v t} na ka\IeC {\v z}dej poz\IeC {\'\i }cii v zarovnan\IeC {\'\i } dvoch sekvenci\IeC {\'\i }.}}{20}{table.3.1}% 
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {4.1}{\ignorespaces V\IeC {\'y}sledky predikcie pre target template p\IeC {\'a}ry d\IeC {\'l}\IeC {\v z}ky 50-500 nukleotidov. }}{25}{table.4.1}% 
-\contentsline {table}{\numberline {4.2}{\ignorespaces Porovnanie na\IeC {\v s}eho algoritmu s ModeRNA. }}{26}{table.4.2}% 
-\contentsline {table}{\numberline {4.3}{\ignorespaces Porovnanie v\IeC {\'y}sledkov predikcie vybran\IeC {\'y}ch dlh\IeC {\'y}ch \IeC {\v s}trukt\IeC {\'u}r pomocou na\IeC {\v s}eho algoritmu a pomocou ModeRNA. }}{26}{table.4.3}% 
+\contentsline {table}{\numberline {4.1}{\ignorespaces V\IeC {\'y}sledky predikcie pre target template p\IeC {\'a}ry d\IeC {\'l}\IeC {\v z}ky 50-500 nukleotidov. }}{34}{table.4.1}% 
+\contentsline {table}{\numberline {4.2}{\ignorespaces Porovnanie n\IeC {\'a}\IeC {\v s}ho algoritmu s ModeRNA. }}{35}{table.4.2}% 
+\contentsline {table}{\numberline {4.3}{\ignorespaces Porovnanie v\IeC {\'y}sledkov predikcie vybran\IeC {\'y}ch dlh\IeC {\'y}ch \IeC {\v s}trukt\IeC {\'u}r pomocou na\IeC {\v s}eho algoritmu a pomocou ModeRNA. }}{35}{table.4.3}% 
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {5.1}{\ignorespaces Porovnanie priemernej RMSD predikcie RNA n\IeC {\'a}strojmi Trooper, Trooper s predikciou sekund\IeC {\'a}rnej \IeC {\v s}trukt\IeC {\'u}ry a ModeRNA. }}{30}{table.5.1}% 
-\addvspace {10\p@ }
+\contentsline {table}{\numberline {5.1}{\ignorespaces Porovnanie priemernej RMSD predikcie RNA n\IeC {\'a}strojmi Trooper, Trooper s predikciou sekund\IeC {\'a}rnej \IeC {\v s}trukt\IeC {\'u}ry a ModeRNA. }}{42}{table.5.1}% 
 \addvspace {10\p@ }

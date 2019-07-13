@@ -1,4 +1,4 @@
-\begin{thebibliography}{26}
+\begin{thebibliography}{33}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -38,6 +38,11 @@
 \newblock ISSN 0305-1048.
 \newblock \doi{10.1093/nar/gkv1479}.
 \newblock URL \url{https://doi.org/10.1093/nar/gkv1479}.
+
+\bibitem[Brudno(2003)]{Brudno03}
+{\sc Brudno, M;~Malde, S. P.~A.} (2003).
+\newblock Glocal alignment: finding rearrangements during alignment.
+\newblock \emph{Bioinformatics}, \penalty0 (19), \penalty0 54--62.
 
 \bibitem[Crick(1970)]{Crick70}
 {\sc Crick, F.} (1970).
@@ -94,6 +99,16 @@
 \newblock In \emph{2016 IEEE International Conference on Bioinformatics and
   Biomedicine (BIBM)}, pages 1897--1900.
 \newblock \doi{10.1109/BIBM.2016.7822808}.
+
+\bibitem[Galvánek(2016)]{bc}
+{\sc Galvánek, R.} (2016).
+\newblock Predikce terciární struktury rna na základě předlohy.
+
+\bibitem[Gibbs(1970)]{Gibbs70}
+{\sc Gibbs, Adrian J.;~McIntyre, G.~A.} (1970).
+\newblock The diagram, a method for comparing sequences. its use with amino
+  acid and nucleotide sequences.
+\newblock \emph{Biochem}, \penalty0 (16), \penalty0 1--11.
 
 \bibitem[Gruber~AR(2008)]{RNAfold}
 {\sc Gruber~AR, Lorenz~R, B. S. N. R. H.~I.} (2008).
@@ -166,6 +181,22 @@
   and http://europepmc.org/articles/pmc2504711?pdf=render}.
 \newblock Exported from https://app.dimensions.ai on 2019/05/26.
 
+\bibitem[Ramlan a Zauner(2008)]{dbnotation}
+{\sc Ramlan, E. {\rm a} Zauner, K.-P.} (2008).
+\newblock An extended dot-bracket-notation for functional nucleic acids.
+
+\bibitem[Rice~P. a A.(2000)]{Emboss}
+{\sc Rice~P., L.~I. {\rm a} A., B.} (2000).
+\newblock Emboss: The european molecular biology open software suite. trends in
+  genetics.
+\newblock \emph{Trends in Genetics.}, \penalty0 (16), \penalty0 276--277.
+
+\bibitem[Rinn(2012)]{Rinn12}
+{\sc Rinn, J. a~Chang, H.} (2012).
+\newblock How do rna folding algorithms work?
+\newblock \emph{Annual Review of Biochemistry}, \penalty0 (81), \penalty0
+  145--166.
+
 \bibitem[Rother a~kol.(2011)Rother, Rother, Puton a Bujnicki]{ModeRNA}
 {\sc Rother, M., Rother, K., Puton, T. {\rm a} Bujnicki, J.~M.} (2011).
 \newblock {RNA tertiary structure prediction with ModeRNA}.
@@ -210,5 +241,10 @@
 \newblock Identification of common molecular subsequences.
 \newblock \emph{Journal of Molecular Biology}, \penalty0 (147), \penalty0
   195--197.
+
+\bibitem[Yunjie~Zhao(2012)]{Zhao2012}
+{\sc Yunjie~Zhao, Yangyu~Huang, Z. G. Y. W. J. M. . Y.~X.} (2012).
+\newblock Automated and fast building of three-dimensional rna structures.
+\newblock \emph{Scientific Reports}.
 
 \end{thebibliography}
