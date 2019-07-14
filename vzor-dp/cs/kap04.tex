@@ -6,42 +6,21 @@ V tejto kapitole sa budeme venovať ďalšej automatizácii algoritmu a zjednodu
 Všetky testovacie dáta boli stiahnuté z webu ProteinDataBank \url{https://www.rcsb.org} \cite{PDB00}. Jedná sa o fasta a pdb súbory RNA molekúl, ktoré majú experimentálne získanú terciárnu štruktúru. Celkový počet molekúl je 1158. Odpovedajúce fasta súbory sme následne rozdelili podľa identifikátora vlákien \textit{(chain)} (jedna stiahnutá molekula môže obsahovať viacero štruktúr rozdelených do vlákien). Po tomto rozdelení fasta súborov sme získali 2081 sekvencií. Na tieto dáta budeme v práci ďalej odkazovať ako na \textit{databázu štruktúr}.
 
 
-\section{Automatické vyhľadanie tempalte štruktúry}
-V pôvodnej implementácii  algoritmus očakáva pripravený súbor target a template dvojíc, ktoré bude predikovať. To je vhodné pre účely testovania algoritmu, kedy je našim cieľom zadať vzťah medzi target a template sekvenciou (dĺžka, podobnosť, počet medzier v zarovnaní). V prípade, že by sme našu implementáciu chceli poskytnúť užívateľom tak, aby mohli pomocou nej napredikovať neznámu štruktúru, očakávame, že užívateľ nebude vedieť, akú štruktúru je vhodné použiť ako target. Preto sme naimplementovali možnosť zadať na vstup iba target sekvenciu a náš algoritmus sám určí vhodnú sadu template sekvencií, podľa ktorých by bolo možné cieľovú sekvenciu predikovať čo najlepšie. Počet template sekvencií dodáme algoritmu ako parameter \textit{returnFirstSuitableX} a uživateľovi to dáva teoretickú možnosť napredikovať jeden target podľa viacerých template štruktúr.
-
-
-\indent Pseudokód algoritmu vyhľadávajúceho template štruktúru:
-\lstset{numbers=left, numberstyle=\tiny, stepnumber=1, numbersep=5pt}
-\begin{lstlisting}
-SelectTemplates(targetSeq, returnFirstSuitableX)
-{
-   foundSeqs = []
-   foreach fastaSeq in allSequences 
-   {
-       if foundSeqs.Count() == returnFirstSuitable:
-	return foundSeqs
-       if fastaSeq not usable as template for targetSeq:
-          continue
-       align := CallEmbossAln(fastaSeq, targetSeq)
-       if fastaSeq is better than any of foundSeqs:
-          if fastaSeq not too similar to other foundSeqs:
-            foundSeq.Add(fastaSeq)
-   }		
-   return foundSeqs
-}
-\end{lstlisting}
-
-
-\indent Algoritmus sme naimplementovali v metóde SelectTemplates a pozostáva z toho, že v cykle postupne globálne zarovnávame target sekvenciu so sekvenciou z databázy sekvencií (v našom prípade zložka s fasta súbormi). Následne  zarovnanie validujeme viacerými validáciami. Najpv validujeme, či vôbec budeme môcť uvažovaný template použiť podľa toho, že neobsahuje príliš veľa neznámych nukleotidov (ak  bol fasta súbor generovaný z pdb, znamená to chýbajúce nukleotidy v pdb). My sme určili minimálny limit 95\% platných nukleotidov. Následne validujeme, podľa samotnej podobnosti target sekvencie a potencionálnej template sekvencie. Nami určený interval podobnosti je v tomto prípade 60\% - 90\% (minimum vychádza z pokusov z bakalárskej práce, maximum je nastavené empiricky tak, aby sa target a template dostatočne líšili). Nakoniec validujeme potencionálnu template sekvenciu medzi už vybranými template sekvenciami. S každou z nich môže mať podobnosť maximálne 90\%. Ak zarovnanie prejde validáciou, štruktúru si označíme ako vhodnú pre predikciu a pokračujeme v cykle. Štruktúru taktiež považujeme za vhodnú ako template iba vtedy, ak  žiadnu veľmi podobnú štruktúru už takto označenú nemáme (podobnosť maximálne 90\%). Ukončovacie kritérium pre cyklus je buď prejdenie všetkých štruktúr a vrátenie požadovaného počtu najlepších, alebo nájdenie prvých \textit{returnFirstSuitableX} štruktúr splňujúce parametre hľadania.
-
-
-\indent Takto môže užívateľ predikovať štruktúru podľa viacerých odlišných template štruktúr vo viacerých nezávislých predikciách, výsledky potom manuálne porovnať a vybrať ten najlepší. Nevýhodou vyhľadávania vhodných template štruktúr takýmto spôsobom je časová náročnosť, kedy vyhľadanie v našej databáze  môže trvať niekoľko minút, čo je výrazné spomalenie. Takýto problém by bolo možné vyriešiť použitím rýchleho heuristického zarovnania typu BLAST alebo FASTA, no vzhľadom na trvanie predikcie FARFAR a predpokladu, že táto funkcionalita nebude využívaná na hromadnú predikciu štruktúr, sme to nepovažovali za prioritu. Z pohľadu asymptotickej náročnosti platí všetko, čo sme o nej povedali v rozbore v tretej kapitole a okrem toho na začiatok pridáme zložitosť metódy SelectTemplates, ktorá je \textit{O(n$l^2$)}, kde \textit{n} označuje počet štruktúr v databáze a \textit{l} označuje dĺžku štruktúry v databáze. Celková asymtotická zložitosť algoritmu sa teda zvýšila na \textit{O(n$l^2$)}.
+\section{RMSD}
+V tejto sekcii si predstavíme mieru, ktorou budeme vyjadrovať presnosť získaných výsledkov. Budeme merať rozdiely medzi experimentálne získanou štruktúrou a nami napredikovanou štruktúrou. Sekvencia oboch štruktúr je rovnaká, na základe čoho je možné učiť vzájomne si odpovedajúce nukleotidy a tiež atómy. Mierou RMSD (root mean square deviation) vyjadrujeme priemerná vzdialenosť medzi dvojicami atómov v zarovnaných terciárnych štruktúrach a vypočíta sa nasledovne:
+$$RMSD = \sqrt{ \frac{1}{N} \sum_{i=1}^{N} \delta_i ^ {2}}$$, pričom $\delta$ je vzdialenosť medzi \textit{N} pármi ekvivalentných atómov. Hodnota je vyjadrená  v  jednotke \textit{Ångström (Å)}, ktorá je rovná  $10^{-10}m$. Na zarovnanie a samotný výpočet RMSD používame funkciu align v programe PyMol \cite{PyMOL}.
 
 
 \section{Automatizácia predikcie}
-V pôvodnej implementácii bežala časť algoritmu na OS Windows a časť na UNIXe. Medzi operačnými systémami bolo treba manuálne kopírovať súbory, čo je zbytočne zdĺhavé. Kvôli tomu sme algoritmus testovali iba na skupine vybraných dát. 
+V pôvodnej implementácii bežala časť algoritmu na OS Windows a časť na UNIXe. Medzi operačnými systémami bolo treba manuálne kopírovať súbory, čo je zbytočne zdĺhavé. Kvôli tomu sme algoritmus testovali iba na skupine vybraných dát. Upravili sme implementáciu tak, že dokáže bežať na jednom operačnom systéme a z hľadiska obsluhy sa predikcia skladá z nasledujúcich štyroch krokov:
+\begin{enumerate}
+\item Príprava predikcie pre FARFAR.
+\item Predikcia FARFAR.
+\item Konverzia a spojenie výsledkov FARFAR do jedného pdb súbora.
+\item Vyhodnotenie predikcie.
+\end{enumerate}
 
-\indent Rozhodli sme sa teda presunúť beh celého algoritmu na unixový systém. Prečo sme sa rozhodli pre Unix a nie Windows? Hlavným dôvodom je možnosť paralelizácie predikcie FARFAR v Metacentre a taktiež fakt, že Rosetta nie je na Windowse podporovaná. Algoritmus bol upravený tak, že pre predikciu stačí dodať vstupné dáta a spustiť jeden skript na prípravu predikcie bodov 1-7 \autoref{3-kostra} (teda až do spustenia FARFAR predikcie). Táto časť trvá v základnej verzii algoritmu pár sekúnd pre jednu target štruktúru v závislosti na jej dĺžke.  Následne treba spustiť druhý skript, ktorý spustí predikciu FARFAR. Bolo by možné automaticky spustiť tento skript hneď po prvom, avšak v prípade, že by prvá časť skončila s chybami, máme možnosť ju prekontrolovať a nezahltiť tak metacentrum naplánovaním zbytočných taskov. Trvanie druhého skriptu sa štandardne pohybuje okolo 24 hodín, ak nie je nastavené inak. Po dobehnutí predikcie nekonzervovaných úsekov je treba spustiť tretí skript, ktorý konvertuje výstupy FARFAR z internej reprezentácie do pdb súborov, a štvrtý skript, ktorý ich zmerguje do výslednej štruktúry. Oba skripty bežia v rádoch sekúnd pre jednu štruktúru. Nakoniec v prípade, že v priečinku s experimentálne získanými štruktúrami existuje predikovaná target štruktúra, s ňou porovná napredikovanú štruktúru pomocou programu PyMol a výsledok uloží.
+\indent Rozhodli sme sa teda presunúť beh celého algoritmu na unixový systém. Prečo sme sa rozhodli pre Unix a nie Windows? Hlavným dôvodom je možnosť paralelizácie predikcie FARFAR v Metacentre a taktiež fakt, že Rosetta nie je na Windowse podporovaná. Algoritmus bol upravený tak, že pre predikciu stačí dodať vstupné dáta a spustiť jeden skript na prípravu predikcie bodov 1-7 \autoref{3-kostra} (teda až do spustenia FARFAR predikcie). Následne treba spustiť druhý skript, ktorý spustí predikciu FARFAR. Bolo by možné automaticky spustiť tento skript hneď po prvom, avšak v prípade, že by prvá časť skončila s chybami, máme možnosť ju prekontrolovať a nezahltiť tak metacentrum naplánovaním zbytočných taskov. Po dobehnutí predikcie nekonzervovaných úsekov je treba spustiť tretí skript, ktorý konvertuje výstupy FARFAR z internej reprezentácie do pdb súborov, a zároveň ich zmerguje do výslednej štruktúry. Nakoniec v prípade, že v priečinku s experimentálne získanými štruktúrami existuje predikovaná target štruktúra, môžeme spustiť štvrtý skript, ktorý s ňou porovná napredikovanú štruktúru pomocou programu PyMol a výsledok uloží.
 
 
 \indent V našom prediktore existuje mnoho konfigurovateľných parametrov, ktoré necheme vždy zadávať na vstupe a ani ich nechceme hardcodovať v rôznych scriptoch. Niektoré sa nachádzajú v shell scriptoch a niektoré v python scriptoch. Preto sme vytvorili konfiguračný súbor \url{Predictor/scripts/config.py}, ktorý obsahuje všetky relevantné parametre uložené prehľadne na jendom mieste \autoref{obr04:config}.
@@ -119,6 +98,40 @@ Target(len) & Template(len) & Sim(\%) & Trooper & ModeRNA\\
 \end{tabular}
 \caption{Porovnanie výsledkov predikcie vybraných dlhých štruktúr pomocou našeho algoritmu a pomocou ModeRNA. }\label{tab4.3}
 \end{table}
+
+
+\section{Automatické vyhľadanie tempalte štruktúry}
+V pôvodnej implementácii  algoritmus očakáva pripravený súbor target a template dvojíc, ktoré bude predikovať. To je vhodné pre účely testovania algoritmu, kedy je našim cieľom zadať vzťah medzi target a template sekvenciou (dĺžka, podobnosť, počet medzier v zarovnaní). V prípade, že by sme našu implementáciu chceli poskytnúť užívateľom tak, aby mohli pomocou nej napredikovať neznámu štruktúru, očakávame, že užívateľ nebude vedieť, akú štruktúru je vhodné použiť ako target. Preto sme naimplementovali možnosť zadať na vstup iba target sekvenciu a náš algoritmus sám určí vhodnú sadu template sekvencií, podľa ktorých by bolo možné cieľovú sekvenciu predikovať čo najlepšie. Počet template sekvencií dodáme algoritmu ako parameter \textit{returnFirstSuitableX} a uživateľovi to dáva teoretickú možnosť napredikovať jeden target podľa viacerých template štruktúr.
+
+
+\indent Pseudokód algoritmu vyhľadávajúceho template štruktúru:
+\lstset{numbers=left, numberstyle=\tiny, stepnumber=1, numbersep=5pt}
+\begin{lstlisting}
+SelectTemplates(targetSeq, returnFirstSuitableX)
+{
+   foundSeqs = []
+   foreach fastaSeq in allSequences 
+   {
+       if foundSeqs.Count() == returnFirstSuitable:
+	return foundSeqs
+       if fastaSeq not usable as template for targetSeq:
+          continue
+       align := CallEmbossAln(fastaSeq, targetSeq)
+       if fastaSeq is better than any of foundSeqs:
+          if fastaSeq not too similar to other foundSeqs:
+            foundSeq.Add(fastaSeq)
+   }		
+   return foundSeqs
+}
+\end{lstlisting}
+
+
+\indent Algoritmus sme naimplementovali v metóde SelectTemplates a pozostáva z toho, že v cykle postupne globálne zarovnávame target sekvenciu so sekvenciou z databázy sekvencií (v našom prípade zložka s fasta súbormi). Následne  zarovnanie validujeme viacerými validáciami. Najpv validujeme, či vôbec budeme môcť uvažovaný template použiť podľa toho, že neobsahuje príliš veľa neznámych nukleotidov (ak  bol fasta súbor generovaný z pdb, znamená to chýbajúce nukleotidy v pdb). My sme určili minimálny limit 95\% platných nukleotidov. Následne validujeme, podľa samotnej podobnosti target sekvencie a potencionálnej template sekvencie. Nami určený interval podobnosti je v tomto prípade 60\% - 90\% (minimum vychádza z pokusov z bakalárskej práce, maximum je nastavené empiricky tak, aby sa target a template dostatočne líšili). Nakoniec validujeme potencionálnu template sekvenciu medzi už vybranými template sekvenciami. S každou z nich môže mať podobnosť maximálne 90\%. Ak zarovnanie prejde validáciou, štruktúru si označíme ako vhodnú pre predikciu a pokračujeme v cykle. Štruktúru taktiež považujeme za vhodnú ako template iba vtedy, ak  žiadnu veľmi podobnú štruktúru už takto označenú nemáme (podobnosť maximálne 90\%). Ukončovacie kritérium pre cyklus je buď prejdenie všetkých štruktúr a vrátenie požadovaného počtu najlepších, alebo nájdenie prvých \textit{returnFirstSuitableX} štruktúr splňujúce parametre hľadania.
+
+
+\indent Takto môže užívateľ predikovať štruktúru podľa viacerých odlišných template štruktúr vo viacerých nezávislých predikciách, výsledky potom manuálne porovnať a vybrať ten najlepší. Nevýhodou vyhľadávania vhodných template štruktúr takýmto spôsobom je časová náročnosť, kedy vyhľadanie v našej databáze  môže trvať niekoľko minút, čo je výrazné spomalenie. Takýto problém by bolo možné vyriešiť použitím rýchleho heuristického zarovnania typu BLAST alebo FASTA, no vzhľadom na trvanie predikcie FARFAR a predpokladu, že táto funkcionalita nebude využívaná na hromadnú predikciu štruktúr, sme to nepovažovali za prioritu. Z pohľadu asymptotickej náročnosti platí všetko, čo sme o nej povedali v rozbore v tretej kapitole a okrem toho na začiatok pridáme zložitosť metódy SelectTemplates, ktorá je \textit{O(n$l^2$)}, kde \textit{n} označuje počet štruktúr v databáze a \textit{l} označuje dĺžku štruktúry v databáze. Celková asymtotická zložitosť algoritmu sa teda zvýšila na \textit{O(n$l^2$)}.
+
+
 
 
 \section{Úprava vstupných dát}
