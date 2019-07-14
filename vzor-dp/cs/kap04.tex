@@ -1,9 +1,11 @@
 \chapter{Automatizácia predikcie a porovnanie s ModeRNA}
 
-V tejto kapitole sa budeme venovať ďalšej automatizácii algoritmu a zjednodušeniu predikcie. Rozoberieme tiež časovú zložitosť pôvodného algoritmu a takisto doplníme funkcionalitu, vďaka ktorej algoritmus nájde vhodnú template štruktúru pre zadaný target. Okrem toho sme náš algoritmus porovnali s ďalším nástrojom na predikciu RNA štruktúr ModeRNA, ktorý funguje na podobnom princípe ako náš algoritmus, teda na princípe komparatívneho modelovania. Ďalej sme sa pokúsili riešiť problémy, ktoré vznikajú vďaka nezhode fasta sekvencií a sekvencií extrahovaných z odpovedajúcich pdb štruktúr. Pre implementáciu máme vytvorený repozitár na GitHub-e s adresou \url{https://github.com/galvaner/Trooper}.
+V tejto kapitole sa budeme venovať ďalšej automatizácii algoritmu, zjednodušeniu predikcie a implementácií. Pripomenieme výsledky bakalárskej práce a predstavíme dáta na ktorých budeme implementované algoritmy testovať. Okrem toho sme náš algoritmus porovnáme s ďalším nástrojom na predikciu RNA štruktúr ModeRNA, ktorý funguje na podobnom princípe ako náš algoritmus, teda na princípe komparatívneho modelovania. Ďalej doplníme funkcionalitu, vďaka ktorej algoritmus nájde vhodnú template štruktúru pre zadaný target. Nakoniec sa pokúsime riešiť datové problémy, ktoré vznikajú vďaka nezhode fasta sekvencií a sekvencií extrahovaných z odpovedajúcich pdb štruktúr. 
 
 \section{Dáta}
-Všetky testovacie dáta boli stiahnuté z webu ProteinDataBank \url{https://www.rcsb.org} \cite{PDB00}. Jedná sa o fasta a pdb súbory RNA molekúl, ktoré majú experimentálne získanú terciárnu štruktúru. Celkový počet molekúl je 1158. Odpovedajúce fasta súbory sme následne rozdelili podľa identifikátora vlákien \textit{(chain)} (jedna stiahnutá molekula môže obsahovať viacero štruktúr rozdelených do vlákien). Po tomto rozdelení fasta súborov sme získali 2081 sekvencií. Na tieto dáta budeme v práci ďalej odkazovať ako na \textit{databázu štruktúr}.
+Všetky testovacie dáta boli stiahnuté z webu ProteinDataBank \url{https://www.rcsb.org} \cite{PDB00}. Jedná sa o fasta a pdb súbory RNA molekúl, ktoré majú experimentálne získanú terciárnu štruktúru. Celkový počet molekúl je 1158. Fasta súbory sme ešte následne rozdelili podľa identifikátora vlákien \textit{(chain)} (jedna stiahnutá molekula môže obsahovať viacero štruktúr rozdelených do vlákien). Po tomto rozdelení fasta súborov sme získali 2081 sekvencií. Na tieto dáta budeme v práci ďalej odkazovať ako na \textit{databázu štruktúr}.
+
+\indent Pre testovanie algoritmu sme používali všetky stiahnuté štruktúry sekvencie dĺžky 50 a viac nukleotidov. Najprv sme ich rozdelili do priehradok podľa dĺžky (50-100nt, 101-500nt, 500-viac nt). Štruktúry v priehradkách sme následne spárovali každú s každou ako target - template dvojice a tieto dvojice rozdelili do skupín podľa podobnosti a pomeru medzier vzhľadom na zarovnanie. Takto pripravené dáta sme používali pre testovanie algoritmov z tejto práce.
 
 
 \section{RMSD}
@@ -11,13 +13,41 @@ V tejto sekcii si predstavíme mieru, ktorou budeme vyjadrovať presnosť získa
 $$RMSD = \sqrt{ \frac{1}{N} \sum_{i=1}^{N} \delta_i ^ {2}}$$, pričom $\delta$ je vzdialenosť medzi \textit{N} pármi ekvivalentných atómov. Hodnota je vyjadrená  v  jednotke \textit{Ångström (Å)}, ktorá je rovná  $10^{-10}m$. Na zarovnanie a samotný výpočet RMSD používame funkciu align v programe PyMol \cite{PyMOL}.
 
 
-\section{Automatizácia predikcie}
-V pôvodnej implementácii bežala časť algoritmu na OS Windows a časť na UNIXe. Medzi operačnými systémami bolo treba manuálne kopírovať súbory, čo je zbytočne zdĺhavé. Kvôli tomu sme algoritmus testovali iba na skupine vybraných dát. Upravili sme implementáciu tak, že dokáže bežať na jednom operačnom systéme a z hľadiska obsluhy sa predikcia skladá z nasledujúcich štyroch krokov:
+\section{Implementácia a automatizácia}
+V tejto sekcii vysvetlíme, kde je implementácia algoritmu Trooper dostupná a ako sá dá nainštalovať, použiť a porovnáme v nej tiež zmeny v automatizácií oproti stavu z bakalárskej práce.
+
+
+\indent Pre implementáciu máme vytvorený repozitár na GitHub-e s adresou \url{https://github.com/galvaner/Trooper}. Repozitár obsahuje viacero vetví. 
+Najaktuálnejšia je vetva \textit{multiple\_templates}, ktorá obsahuje aktuálny kód. Okrem toho za zmienku stojí vetva \textit{run\_on\_local\_pc}, kde je pripravená testovacia predikcia štruktúry 4QLM\_A.
+
+
+\indent Pre spustenie treba splniť nasledujúce software-ové požiadavky:
 \begin{enumerate}
-\item Príprava predikcie pre FARFAR.
-\item Predikcia FARFAR.
-\item Konverzia a spojenie výsledkov FARFAR do jedného pdb súbora.
-\item Vyhodnotenie predikcie.
+\item UNIX-ový operačný systém.
+\item Nainštalovať software Rosetta \url{https://www.rosettacommons.org/software/license-and-download}.
+\item Nainštalovať software Emboss \url{http://emboss.sourceforge.net/what/} (musí byť dostupný z príkazového riadku).
+\item Nainštalovať balík VienaRNA \url{https://www.tbi.univie.ac.at/RNA/} pri použití predikcie sekundárnej štruktúry (musí byť dostupný z príkazového riadku).
+\item Nainštalovať PyMOL (musí byť dostupný z príkazového riadku).
+\item Nainštalovať Python v2.7 (musí byť dostupný z príkazového riadku).
+\item Nainštalovať BioPython.
+\end{enumerate}
+
+
+\indent Pre spustenie treba dodať nasledujúce vstupné súbory:
+\begin{enumerate}
+\item Dodať súbory do priečinka pairs pomenované \textit{60-75s30-45g\_51\_100l.txt}, pričom čísla a písmená môžu byť zmenené. Každý riadok súboru znamená jednu predikciu a skladá sa z názvov target a template štruktúr. Názvy sú oddelené medzerou a zahŕňajú identifikátor vlákna oddelený od mena štruktúry podtržítkom, napríklad: \textit{4QLM\_A.fasta 4QK9\_A.fasta}.
+\item Dodať potrebné pdb súbory do priečinka \textit{pdbs}. 
+\item Dodať potrebné fasta súbory do priečinka \textit{fastas}.
+\item Dodať potrebné súbory obsahujúce sekundárne štruktúry do priečinka \textit{secondary\_structures}.
+\end{enumerate}
+
+
+\indent V pôvodnej implementácii bežala časť algoritmu na OS Windows a časť na UNIX-e. Medzi operačnými systémami bolo treba manuálne kopírovať súbory, čo je zbytočne zdĺhavé. Kvôli tomu sme algoritmus testovali iba na skupine vybraných dát. Upravili sme implementáciu tak, že dokáže bežať na jednom operačnom systéme a z hľadiska obsluhy sa predikcia skladá z nasledujúcich štyroch krokov (spustení štyroch skriptov):
+\begin{enumerate}
+\item Príprava predikcie pre FARFAR \textit{prepare\_rosetta\_prediction.sh}.
+\item Predikcia FARFAR \textit{startFARFAR.sh}.
+\item Konverzia a spojenie výsledkov FARFAR do jedného pdb súbora \textit{extract\_pdbs.sh}.
+\item Vyhodnotenie predikcie \textit{concat\_pdbs.sh}.
 \end{enumerate}
 
 \indent Rozhodli sme sa teda presunúť beh celého algoritmu na unixový systém. Prečo sme sa rozhodli pre Unix a nie Windows? Hlavným dôvodom je možnosť paralelizácie predikcie FARFAR v Metacentre a taktiež fakt, že Rosetta nie je na Windowse podporovaná. Algoritmus bol upravený tak, že pre predikciu stačí dodať vstupné dáta a spustiť jeden skript na prípravu predikcie bodov 1-7 \autoref{3-kostra} (teda až do spustenia FARFAR predikcie). Následne treba spustiť druhý skript, ktorý spustí predikciu FARFAR. Bolo by možné automaticky spustiť tento skript hneď po prvom, avšak v prípade, že by prvá časť skončila s chybami, máme možnosť ju prekontrolovať a nezahltiť tak metacentrum naplánovaním zbytočných taskov. Po dobehnutí predikcie nekonzervovaných úsekov je treba spustiť tretí skript, ktorý konvertuje výstupy FARFAR z internej reprezentácie do pdb súborov, a zároveň ich zmerguje do výslednej štruktúry. Nakoniec v prípade, že v priečinku s experimentálne získanými štruktúrami existuje predikovaná target štruktúra, môžeme spustiť štvrtý skript, ktorý s ňou porovná napredikovanú štruktúru pomocou programu PyMol a výsledok uloží.
@@ -32,18 +62,20 @@ V pôvodnej implementácii bežala časť algoritmu na OS Windows a časť na UN
 \end{figure}
 
 
-\indent Kroky potrebné vykonať pre kompletnú predikciu štruktúry:
-\begin{enumerate}
-\item Dodať vstupný súbor párov target - template
-\item Uistiť sa, že potrebné pdb a fasta súbory sa nachádzajú v rovnomenných priečinkoch.
-\item Spustiť skript prepare\_rosetta\_prediction.sh a uistiť sa, že dobehol.
-\item Spustiť skript startFARFAR.sh.
-\item Počkať, kým predikcia nekonzervovaných úsekov dobehne.
-\item Spustiť skript extract\_pdbs.sh.
-\item Spustiť skript concat\_pdbs.sh
-\end{enumerate}
+%\indent Kroky potrebné vykonať pre kompletnú predikciu štruktúry:
+%\begin{enumerate}
+%\item Dodať vstupný súbor párov target - template
+%\item Uistiť sa, že potrebné pdb a fasta súbory sa nachádzajú v rovnomenných priečinkoch.
+%\item Spustiť skript prepare\_rosetta\_prediction.sh a uistiť sa, že dobehol.
+%\item Spustiť skript startFARFAR.sh.
+%\item Počkať, kým predikcia nekonzervovaných úsekov dobehne.
+%\item Spustiť skript extract\_pdbs.sh.
+%\item Spustiť skript concat\_pdbs.sh
+%\end{enumerate}
 
-\indent Pre otestovanie algoritmu sme použili všetky stiahnuté štruktúry sekvencie dĺžky 50 a viac nukleotidov. Najprv sme ich rozdelili do priehradok podľa dĺžky (50-100nt, 101-500nt, 500-viac nt). Štruktúry v priehradkách sme následne spárovali každú s každou ako target - template dvojice a tieto dvojice rozdelili do skupín podľa podobnosti a pomeru medzier vzhľadom na zarovnanie. Z bakalárskej práce sme vedeli, že predikovať sekvenciu na základe štruktúry s podobnosťou menšou ako 60\% nie je vhodné, čo sa nám potvrdilo aj pri tomto pokuse. Naopak, pri podobnosti sekvencii väčšej ako 60\% sme schopní dosahovať presnosť predikcie pod 10Å. Tento výsledok je porovnateľný s algoritmom ModeRNA, ako ukážeme v nasledujúcej sekcii. Taktiež je to výrazné zlepšenie oproti de novo algoritmom, kde v článku \cite{Zhao2012} je uvádzaná priemerná RMSD používaných algoritmov pri predikcii štruktúr dĺžky 50-130 nukleotidov približne 20Å. Naše výsledky sme publikovali v článku \cite{7822808} a sú uvedené v tabuľke \autoref{tab4.1}. 
+\section{Výsledky pôvdného algoritmu}
+Pôvodne sme vďaka nedostatočnej automatizácií algoritmu predikovali iba niekoľko náhodne vybraných štruktúr a takto získané výsledky sme prezentovali v bakalárskej práci. Tieto výsledky tu uvedieme kvôli dvom pozorovaniam, ktoré z nich plynú a budú nás zaujímať pri výbere dát pre ďalšie testy v tejto práci.
+Prvé pozorovanie ukazuje, že predikovať sekvenciu na základe štruktúry s podobnosťou menšou ako 60\% nie je vhodné, ako vidno aj v tabuľke výsledkov\autoref{tab4.1}. Naopak druhé pozorovanie ukazuje, že pri podobnosti sekvencii väčšej ako 60\% sme schopní dosahovať presnosť predikcie pod 10Å. Tento výsledok je porovnateľný s algoritmom ModeRNA, ako ukážeme v nasledujúcej sekcii. Taktiež je to výrazné zlepšenie oproti de novo algoritmom, kde v článku \cite{Zhao2012} je uvádzaná priemerná RMSD používaných algoritmov pri predikcii štruktúr dĺžky 50-130 nukleotidov približne 20Å. 
 
 \begin{table}[b!]
 \centering
@@ -60,12 +92,12 @@ Podobnosť (\%) & Gap (\%)  & Priemer RMSD (Å) & Smerodatná odchýlka  (Å)\\
 75-90  & 15-30 &   6,93 & 4,45 \\
 \bottomrule
 \end{tabular}
-\caption{Výsledky predikcie pre target template páry dĺžky 50-500 nukleotidov. }\label{tab4.1}
+\caption{Výsledky predikcie pre target template páry dĺžky 50-500 nukleotidov z bakalárskej práce. }\label{tab4.1}
 \end{table}
 
 
 \section{Porovnanie s ModeRNA}
-V bakalárskej práci sme algoritmus porovnávali s algortimom FARFAR, ktorý z princípu nedokáže predikovať príliš dlhé štruktúry \textit{(autori uvádzajú, že FARFAR dosahuje vysokú presnosť len pri štruktúrach veľkosti do 12 nukleotidov)}. Teraz sme sa rozhodli porovnať náš algoritmus s komparatívnou predikciou ModeRNA. Pre porovnanie sme sa rozhodli napredikovať rovnaké sekvencie za pomoci rovnakých target štruktúr a porovnať výsledky z ModeRNA s výsledkami nášho algoritmu. Napísali sme skript \url{ModeRNA/moderRNA.py}, ktorý sa pokúša predikovať target - template páry poskytuté na vstupe. Predikcia v ModeRNA je výrazne rýchlejšia a vytvorenie jednej štruktúry sa väčšinou pohybuje v rádoch minút. Výsledky oboch algoritmov sme porovnali \autoref{tab4.2}, pričom sme uvažovali iba predikcie, ktoré úspešne vytvorili oba algoritmy. V tomto prípade sme rozlišovali dĺžky štruktúr, a to 50-100 nukleotidov a 101-500 nukleotidov. Kritérium na podobnosť tempate štruktúry bolo pre všetky dĺžky rovnaké, a to 60-90\%. Z výsledkov vyplýva, že ModeRNA bola úspešnejšia v predikovaní dlhších štruktúr, pričom naopak náš algoritmus si viedol lepšie pri predikovaní štruktúr kratších. Na druhej strane, ModeRNA dokázala napredikovať celkovo viac štruktúr oproti nášmu algoritmu, pretože dokázala lepšie zvládnuť nedokonalé vstupné dáta.
+V bakalárskej práci sme algoritmus porovnávali s algortimom FARFAR, ktorý z princípu nedokáže predikovať príliš dlhé štruktúry \textit{(autori uvádzajú, že FARFAR dosahuje vysokú presnosť len pri štruktúrach veľkosti do 12 nukleotidov)}. Teraz sme sa rozhodli porovnať náš algoritmus s komparatívnou predikciou ModeRNA. Pre porovnanie sme sa rozhodli napredikovať rovnaké sekvencie za pomoci rovnakých target štruktúr a porovnať výsledky z ModeRNA s výsledkami nášho algoritmu. Napísali sme skript \url{ModeRNA/moderRNA.py}, ktorý sa pokúša predikovať target - template páry poskytuté na vstupe. Predikcia v ModeRNA je výrazne rýchlejšia a vytvorenie jednej štruktúry sa väčšinou pohybuje v rádoch minút. Výsledky oboch algoritmov sme porovnali \autoref{tab4.2}, pričom sme uvažovali iba predikcie, ktoré úspešne vytvorili oba algoritmy. V tomto prípade sme rozlišovali dĺžky štruktúr, a to 50-100 nukleotidov a 101-500 nukleotidov. Kritérium na podobnosť tempate štruktúry bolo pre všetky dĺžky rovnaké, a to 60-90\%. Z výsledkov vyplýva, že ModeRNA bola úspešnejšia v predikovaní dlhších štruktúr, pričom naopak náš algoritmus si viedol lepšie pri predikovaní štruktúr kratších. Na druhej strane, ModeRNA dokázala napredikovať celkovo viac štruktúr oproti nášmu algoritmu, pretože dokázala lepšie zvládnuť nedokonalé vstupné dáta. Tieto výsledky sme publikovali v článku \cite{7822808}.
 
 \begin{table}[b!]
 \centering
