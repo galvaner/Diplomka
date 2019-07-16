@@ -1,12 +1,12 @@
-\chapter{Použitie viacerých template štruktúr pri predikcií}
+\chapter{Použitie viacerých template štruktúr pri predikcii}
 
-Ako druhé opatrenie, na zlepšenie rýchlosti a presnosti predikovania nekonzerovvaných úsekov sme navrhli  použiť viacero template štruktúr na predikciu jednej target štruktúry. Očakávali sme pritom, že sa nám podarí zmenšiť počet a dĺžku nekonzervovaných úsekov v predikovanej štruktúre a tým výrazne zjednosušiť ich predikciu algoritmom FARFAR.
+Ako druhé opatrenie, na zlepšenie rýchlosti a presnosti predikovania nekonzervovaných úsekov sme navrhli  použiť viacero template štruktúr na predikciu jednej target štruktúry tak, že ich použijeme spolu na vytvorenie jednej štruktúry konzervovaných úsekov. Očakávali sme pritom, že sa nám podarí zmenšiť počet a dĺžku nekonzervovaných úsekov v predikovanej štruktúre a tým výrazne zjednosušiť ich predikciu algoritmom FARFAR.
 
 \section{Výber sekundárnych template štruktúr}
 Hlavnou myšlienkou algoritmu je použiť viacero template štruktúr pre predikciu jednej target štruktúry. Tým môžeme dosiahnuť väčšiu percentuálnu mieru konzervovaných úsekov v štruktúre, čo by malo zjednodušiť následnu predikciu nekonzervovaných úsekov.
 
 
-\indent  Existuje viacero spôsobov, ktorými je možné predikovať target molekulu pomocou viacerých template molekúl. My sme sa aj vzhľadom na jednoduchšiu implementáciu do už existujúceho algoritmu rozhodli postupovať tak, že používame jednu template štruktúru ako primárnu (hlavnú) a ďalšie template štruktúry, ako sekundárne (vedľajšie), ktoré sú použité na vyplnenie dlhých nekonzervovaných úsekov (to sú tie, ktoré v pôvodnom algoritme vyčleňujeme do samostatných predikcií v metóde \textit{ProcessLongUnconservedParts}). Alternatívny prístup by mohol byť rozdeliť si target sekvenciu na regióny a pre predikciu každého regiónu použiť inú template štruktúru.   
+\indent  Existuje viacero spôsobov, ktorými je možné predikovať target molekulu pomocou viacerých template molekúl. Jeden prístup by mohol byť rozdeliť si target sekvenciu na regióny a pre predikciu každého regiónu použiť inú template štruktúru. My sme sa aj vzhľadom na jednoduchšiu implementáciu do už existujúceho algoritmu rozhodli postupovať tak, že používame jednu template štruktúru ako primárnu (hlavnú) a ďalšie template štruktúry, ako sekundárne (vedľajšie), ktoré sú použité na vyplnenie dlhých nekonzervovaných úsekov (to sú tie, ktoré v pôvodnom algoritme vyčleňujeme do samostatných predikcií v metóde \textit{ProcessLongUnconservedParts}).    
 
 
 \indent Potencionálne spôsoby ako nájsť vhodné sekundárne template štruktúry pre nekonzervované úseky sú: 
@@ -14,7 +14,7 @@ Hlavnou myšlienkou algoritmu je použiť viacero template štruktúr pre predik
 \item Globálne zarovnanie potenciálnych sekundárnych temeplate molekúl s target molekulou. 
 \item Lokálne zarovnanie potenciálnych sekundárnych template molekúl s target molekulou. 
 \item Semiglobálne zarovnanie potenciálnych sekundárnych temeplate molekúl s target molekulou. 
-\item Najprv zarovnať heuristickým algoritmom (BLAST, FASTA) a následne z takto vybranej skupiny najlepších štruktúr vybrať tú najvhodnejšiu za pomoci jedného z troch hore uvedených spôsobov.
+\item Najprv zarovnať heuristickým algoritmom (BLAST, FASTA) \cite{BLAST} a následne z takto vybranej skupiny najlepších štruktúr vybrať tú najvhodnejšiu za pomoci jedného z troch hore uvedených spôsobov.
 \end{enumerate}
 
 
@@ -35,8 +35,59 @@ Hlavnou myšlienkou algoritmu je použiť viacero template štruktúr pre predik
 \end{figure}
 
 
-\section{Pseudokód}
-V tejto sekcii uvádzame pseudokód algoritmu používajúceho viacero template štruktúr spolu s integráciou do pôvodného algoritmu. Pseudokód vychádza z pseudokódu algoritmu Trooper so sekundárnou štruktúrou predstaveného v piatej kapitole \autoref{kap5:pseudocode}.
+\section{Algoritmus}
+\indent Kroky algoritmu používajúceho viacero sekundárnych template štruktúr:
+\begin{enumerate}
+\item Nájdeme dlhé nekonzervované úseky \textit{IdentifyLongUnconservedRegions}.
+\item Otagujeme a vyfiltrujeme potenciálne template štruktúry sekvenčným prechodom všetkých štruktúr, uložíme  ich do poľa \textit{FindPotentialTemplates}.
+\item Pre každý nekonzervovaný úsek:
+\begin{enumerate}
+\item Upravíme nekonzervovaný úsek na rozšírený nekonzervovaný úsek (o úseky, ktorými budeme spájať s primárnou target štruktúrou) \textit{ExtendGap}.
+\item Pomocou semiglobálneho zarovnania nájdeme v indexovaných štruktúrach vhodnú sekundárnu štruktúru pre nekonzervovaný úsek \textit{FindTemplateForGap}.
+\item Namapujeme vybraný fragment sekundárnej target štruktúry na príslušné miesto v template štruktúre (preindexovanie nukleotidov v sekundárnej template štruktúre) \textit{MapTemplateToGap}.
+\item Vykonáme jeden z následujúcich dvoch krokov, podľa verzie algoritmu \textit{IntegrateNewTemplateStr}:
+\begin{enumerate}
+\item Dáme do superpozície štruktúru tvorenú konzervovanými úsekmi z primárnej template štruktúry a fragment zo sekundárnej template štruktúry.
+\item Uložíme fragment sekundárnej template štruktúry do separátneho súboru, ktorý potom poskytneme algoritmu FARFAR.
+\end{enumerate}
+\end{enumerate}
+\end{enumerate}
+
+
+\indent Logika algoritmu je naimplementovaná v metóde \textit{MultipleTemplateModule}. Superimposer použitý v metóde \textit{IntegrateNewTemplateStr} bol pôvodne inšpirovaný skriptom od Anders S. Christensen-a dostupného na \url{https://gist.github.com/andersx/6354971} a výrazne upravený.  
+
+
+\indent V prvom kroku sekvenčne prejdeme target štruktúru skladajúcu sa zatiaľ len z konzervovaných úsekov primárnej template štruktúry a vyhľadáme nekonzervované úseky dlhšie ako určitá hranica daná parametrom (momentálne nastavené na 7 nukleotirdov).
+
+
+\indent V druhom kroku si predpripravíme potenciálne template štruktúry tak, že odstránime tie, ktoré obsahujú viac ako 5\% neplatných nukleotidov (znaky iné ako A,C,G,U). Okrem toho si uložíme dĺžku každej sekvencie a v nasledujúcom kroku budeme na seba zarovnávať len dosť dlhé sekvencie vzhľadom k nekonzervovanému úseku (minimálne 0,8 násobok dĺžky úseku). Dôvody sú vyhnutie sa problémovým dátam a ušetrenie času pri zarovnávaní hlavne dlhších nekonzervovaných úsekov. Bolo by možné si potenciálne template sekvencie predpripraviť mimo algoritmu predikcie, potom by ale bolo treba takto pripravené dáta prepočítavať pri zmene v databázi. Vzhľadom na to, že celý tento proces trvá pár sekúnd rozhodli sme sa robiť to vždy odznova počas predikcie.
+
+
+\indent V ďalších krokoch iterujeme cez všetky vybrané nekonzervované úseky sekvencie a pre každý aplikujeme rovnaké kroky. Najprv si nekonzervovvaný úsek rozšírime. To znamená, že k nemu pridáme z oboch strán určitý počet nukleotidov (my používame parameter 5). Keďže pracujeme s nekonzervovaným úsekom musí existovať na každej strane minimálne 1 nukleotid, ktorý tento úsek ohraničuje (s výnimkou začiatku a konca sekvencie). Za pomoci týchto rozširujúcich nukleotidov sme schopní superpoziciovať (správne umiestniť) v nasledujúcich krokoch vybraný fragment sekundárnej template štruktúry do primárnej template štruktúry.
+
+
+\indent V  kroku 3b postupne zarovnávame rošírený nekonzervovaný úsek s vyhovujúcimi predpripravenými štruktúrami z druhého kroku. V prípade, že zarovnanie splňuje určené podmienky, vyberieme príslušnu štruktúru za sekundárny template  pre spracovávaný nekonzervovaný úsek a v prehľadávaní ďalej nepokračujeme. Podmienky pre výber používame nasledujúce: podobnosť zarovnania minimálne 70\% a maximálne 95\%. Maximálnu podobnosť volíme preto, aby sme ako template nepoužili štruktúru skoro úplne zhodnú s target štruktúrou. To by síce bolo žiaduce pri naozajstnej predikcii, kedy chcem dostať čo najlepší výsledok, ale nežiadúce pre testovanie funkčnosti predikcie, kedy by nám to zvyšok predikcie výrazne zjednodušilo. Pri predikcií neznámej štruktúry tiež typicky nepoznáme žiadnu veľmi podobnú štruktúru neznámej štruktúre, inak by sme ju použili ako primárny template. 
+
+
+\indent V ďalšom kroku musíme namapovať nukleotidy zo sekundárnej template štruktúry do nekonzervovaného úseku primárnej template štruktúry (ktorá je už namapovaná na target sekvenciu) podľa zarovnania. To znamená pre každý použitý nukleoti zistiť, na aký nukleotid bol v zarovnaní namapovaný a zmeniť jeho index v pdb súbore. Okrem toho musíme zmeniť aj chain ID v prípade, že sa nezhodujú chain ids primárnej a sekundárnej template štruktúry.
+
+
+\indent V poslednom kroku sme skúšali dva rôzne prístupy. 
+\begin{enumerate}
+\item Superpoziciovanie sekundárnych template štruktúr do dlhých nekonzervovaných úsekov primárnej template štruktúry.
+\item Uložiť fragmenty vypĺňajúce dlhé nekonzervované úseky do separátnych súborov.
+\end{enumerate}
+
+\indent Prvý spôsob je superpoziciovanie nukleotidov, ktorými sme rozšírili z oboch strán nekonzervovaný úsek a našli preň vhodnú sekundárnu template štruktúru.Tieto dodatočne pridané nukleotidy superpoziciujeme na odpovedajúce nukleotidy v primárnej template štruktúre. Inak povedané to znamená vhodným spôsobom rotovať a posúvať sekundárnu template štruktúru ako celok tak, aby sme minimalizovali RMSD nukleotidov, ktoré sa nachádzajú v oboch štruktúrach a majú rovnaké indexy. Na toto sme použili \textit{Superimposer} implementovaný v knižnici \textit{BioPython} \textit{https://biopython.org/}. Po vhodnej rotácií a translácií terciárnej template štruktúry z nej odstránime pridané rozširujúce úseky (pridané v metóde \textit{ExtendGap}) a nukleotidy čiastočne pokrývajúce nekonzervovaný úsek skopírujeme do primárnej template štruktúry. Takýmto spôsobom v ideálnom prípade vyplníme jeden dlhý nekonzervovaný úsek v primárnej template štruktúre, fragmentom štruktúry zo sekundárnej target štruktúry. Vo výsledku by sme pri použití tohoto prístupu mali template štruktúru, ktorá má dodatočne doplnené dlhé nekonzervované úseky vhodnými fragmentmi ostatných štruktúr. 
+
+
+\indent Druhý prístup je jednoduchší a pozostáva len z uloženia správne namapovaných fragmentov sekundárnej template štruktúry do separátneho pdb súboru. Vo výsledku by sme teda mali pdb súbor s primárnou template štruktúrou a pre každý dlhý nekonzervovaný úsek v tejto štruktúre, by sme mali pdb súbor s fragmentom so sekundárnej template štruktúry vypĺňajúcej tento nekonzervovaný úsek. Fragmenty sukundárnych template štruktúr obsahujú informáciu iba o  relatívnej polohe nukleotidov v jednom fragmente a poloha štruktúr v rôznych nekonzervovaných úsekov je nezávislá.
+
+
+\indent Posledná zmena, platná pri oboch dvoch prístupoch je, že vzhľadom nato, že sme našli sekundárne template štruktúry pre nekonzervované úseky nebudeme používať metódu \textit{ProcessLongUnconservedParts} z pôvodného algoritmu, ktorá vyčleňovala predikciu dlhých nekonzervovaných úsekov do samostatnej predikcie algoritmom FARFAR.
+
+
+\indent Pre lepšie vysvetlenie uvádzame pseudokód algoritmu používajúceho viacero template štruktúr spolu s integráciou do pôvodného algoritmu. Pseudokód vychádza z pseudokódu algoritmu Trooper so sekundárnou štruktúrou predstaveného v piatej kapitole \autoref{kap5:pseudocode}.
 \lstset{numbers=left, numberstyle=\tiny, stepnumber=1, numbersep=5pt}
 \begin{lstlisting}
 Main(fastaTarget, fastaTemplate
@@ -118,57 +169,6 @@ MultipleTemplatesModule(mappedConservedParts)
 
 \end{lstlisting}
 
-\section{Algoritmus}
-\indent Kroky algoritmu používajúceho viacero sekundárnych template štruktúr:
-\begin{enumerate}
-\item Nájdeme dlhé nekonzervované úseky \textit{IdentifyLongUnconservedRegions}.
-\item Otagujeme a vyfiltrujeme potenciálne template štruktúry sekvenčným prechodom všetkých štruktúr, uložíme  ich do poľa \textit{FindPotentialTemplates}.
-\item For each nekonzervovaný úsek:
-\begin{enumerate}
-\item Upravíme nekonzervovaný úsek na rozšírený nekonzervovaný úsek (o úseky, ktorými budeme spájať s primárnou target štruktúrou) \textit{ExtendGap}.
-\item Pomocou semiglobálneho zarovnania nájdeme v indexovaných štruktúrach vhodnú sekundárnu štruktúru pre nekonzervovaný úsek \textit{FindTemplateForGap}.
-\item Namapujeme vybraný fragment sekundárnej target štruktúry na príslušné miesto v template štruktúre (preindexovanie nukleotidov v sekundárnej template štruktúre) \textit{MapTemplateToGap}.
-\item Vykonáme jeden z následujúcich dvoch krokov, podľa verzie algoritmu \textit{IntegrateNewTemplateStr}:
-\begin{enumerate}
-\item Dáme do superpozície štruktúru tvorenú konzervovanými úsekmi z primárnej template štruktúry a fragment zo sekundárnej template štruktúry.
-\item Uložíme fragment sekundárnej template štruktúry do separátneho súboru, ktorý potom poskytneme algoritmu FARFAR.
-\end{enumerate}
-\end{enumerate}
-\end{enumerate}
-
-
-\indent Logika algoritmu je naimplementovaná v metóde \textit{MultipleTemplateModule}. Superimposer použitý v metóde \textit{IntegrateNewTemplateStr} bol pôvodne inšpirovaný skriptom od Anders S. Christensen-a dostupného na \url{https://gist.github.com/andersx/6354971} a výrazne upravený.  
-
-
-\indent V prvom kroku sekvenčne prejdeme target štruktúru skladajúcu sa zatiaľ len z konzervovaných úsekov primárnej template štruktúry a vyhľadáme nekonzervované úseky dlhšie ako určitá hranica daná parametrom (momentálne nastavené na 7 nukleotirdov).
-
-
-\indent V druhom kroku si predpripravíme potenciálne template štruktúry tak, že odstránime tie, ktoré obsahujú viac ako 5\% neplatných nukleotidov (znaky iné ako A,C,G,U). Okrem toho si uložíme dĺžku každej sekvencie a v nasledujúcom kroku budeme na seba zarovnávať len dosť dlhé sekvencie vzhľadom k nekonzervovanému úseku (minimálne 0,8 násobok dĺžky úseku). Dôvody sú vyhnutie sa problémovým dátam a ušetrenie času pri zarovnávaní hlavne dlhších nekonzervovaných úsekov. Bolo by možné si potenciálne tmepalte sekvencie predpripraviť mimo algoritmu predikcie, potom by ale bolo treba takto pripravené dáta prepočítavať pri zmene v databázi. Vzhľadom na to, že celý tento proces trvá pár sekúnd rozhodli sme sa robiť to vždy odznova počas predikcie.
-
-
-\indent V ďalších krokoch iterujeme cez všetky vybrané nekonzervované úseky algoritmu a pre každý aplikujeme rovnaké kroky. Najprv si nekonzervovvaný úsek rozšírime. To znamená, že k nemu pridáme z oboch strán určitý počet nukleotidov (my používame parameter 5). Keďže pracujeme s nekonzervovaným úsekom musí existovať na každej strane minimálne 1 nukleotid, ktorý tento úsek ohraničuje (s výnimkou začiatku a konca sekvencie). Za pomoci týchto rozširujúcich nukleotidov sme schopní superpoziciovať (správne umiestniť) v nasledujúcich krokoch vybraný fragment sekundárnej template štruktúry do primárnej template štruktúry.
-
-
-\indent V  kroku 3b postupne zarovnávame rošírený nekonzervovaný úsek s vyhovujúcimi predpripravenými štruktúrami z druhého kroku. V prípade, že zarovnanie splňuje určené podmienky, vyberieme príslušnu štruktúru za sekundárny template  pre spracovávaný nekonzervovaný úsek a v prehľadávaní ďalej nepokračujeme. Podmienky pre výber používame nasledujúce: podobnosť zarovnania minimálne 70\% a maximálne 95\%. Maximálnu podobnosť volíme preto, aby sme ako template nepoužili štruktúru skoro úplne zhodnú s target štruktúrou. To by síce bolo žiaduce pri naozajstnej predikcii, kedy chcem dostať čo najlepší výsledok, ale nežiadúce pre testovanie funkčnosti predikcie, kedy by nám to zvyšok predikcie výrazne zjednodušilo. Pri predikcií neznámej štruktúry tiež typicky nepoznáme žiadnu veľmi podobnú štruktúru neznámej štruktúre, inak by sme ju použili ako primárny template. 
-
-
-\indent V ďalšom kroku musíme namapovať nukleotidy zo sekundárnej template štruktúry do nekonzervovaného úseku primárnej template štruktúry (ktorá je už namapovaná na target sekvenciu) podľa zarovnania. To znamená pre každý použitý nukleoti zistiť, na aký nukleotid bol v zarovnaní namapovaný a zmeniť jeho index v pdb súbore. Okrem toho musíme zmeniť aj chain ID v prípade, že sa nezhodujú chain ids primárnej a sekundárnej template štruktúry.
-
-
-\indent V poslednom kroku sme skúšali dva rôzne prístupy. 
-\begin{enumerate}
-\item Superpoziciovanie sekundárnych template štruktúr do dlhých nekonzervovaných úsekov primárnej template štruktúry.
-\item Uložiť fragmenty vypĺňajúce dlhé nekonzervované úseky do separátnych súborov.
-\end{enumerate}
-
-\indent Prvý spôsob je superpoziciovanie nukleotidov, ktorými sme rozšírili z oboch strán nekonzervovaný úsek a našli preň vhodnú sekundárnu template štruktúru.Tieto dodatočne pridané nukleotidy superpoziciujeme na odpovedajúce nukleotidy v primárnej template štruktúre. Inak povedané to znamená vhodným spôsobom rotovať a posúvať sekundárnu template štruktúru ako celok tak, aby sme minimalizovali RMSD nukleotidov, ktoré sa nachádzajú v oboch štruktúrach a majú rovnaké indexy. Na toto sme použili Superimposer implementovaný v knižnici BioPython. Po vhodnej rotácií a translácií sekundárnej template štruktúry z nej odstránime pridané rozširujúce úseky (pridané v metóde \textit{ExtendGap}) a nukleotidy čiastočne pokrývajúce nekonzervovaný úsek skopírujeme do primárnej templae štruktúry. Takýmto spôsobom v ideálnom prípade vyplníme jeden dlhý nekonzervovaný úsek v primárnej template štruktúre, fragmentom štruktúry zo sekundárnej target štruktúry. Vo výsledku by sme pri použití tohoto prístupu mali template štruktúru, ktorá má dodatočne doplnené dlhé nekonzervované úseky vhodnými fragmentmi ostatných štruktúr. 
-
-
-\indent Druhý prístup je jednoduchší a pozostáva len z uloženia správne namapovaných fragmentov sekundárnej template štruktúry do separátneho pdb súboru. Vo výsledku by sme teda mali pdb súbor s primárnou template štruktúrou a pre každý dlhý nekonzervovaný úsek v tejto štruktúre, by sme mali pdb súbor s fragmentom so sekundárnej template štruktúry vypĺňajúcej tento nekonzervovaný úsek. Fragmenty sukundárnych template štruktúr obsahujú informáciu iba o  relatívnej polohe nukleotidov v jednom fragmente a poloha štruktúr v rôznych nekonzervovaných úsekov je nezávislá.
-
-
-\indent Posledná zmena, platná pri oboch dvoch prístupoch je, že vzhľadom nato, že sme našli sekundárne template štruktúry pre nekonzervované úseky nebudeme používať metódu \textit{ProcessLongUnconservedParts} z pôvodného algoritmu, ktorá vyčleňovala predikciu dlhých nekonzervovaných úsekov do samostatnej predikcie algoritmom FARFAR.
-
 \section{Integrácia do existujúceho algoritmu}
 Integácia do algoritmu si vyžiadala niekoľko úprav v pôvodnom algoritme a implementácií.
 
@@ -196,7 +196,7 @@ V tejto sekcií popíšeme, ako sa líši časová zložitosť od pôvodného al
 Z pohľadu asymptotickej zložitosti je zaujímavá hlavne metóda  \textit{FindTemplateForGap} slúžiaca na vyhľadanie sekundárnych template štruktúr. Metóda zarovnáva nekonzervovaný úsek na každú sekvenciu v databáze. Z toho vychádza časová zložitosť \textit{O(ng$l^2$)}, pričom \textit{n} je počet štruktúr v databáze, \textit{g} je počet nekonzervovaných úsekov (ich počet však bude funkčne závislý od dĺžky target štruktúry - čím dlhšia, tým viac nekonzervovaných úsekov)  a \textit{l} je dĺžka štruktúry v databázi. Vo výsledku sa nám teda asymptotická časová zložitosť zhoršila z \textit{O($l^2$)} na \textit{O(ng$l^2$)}.
 
 
-\indent Reálna dĺžka behu algoritmu výrazne narástla. Merali sme ju na počítači s procesorom Intel Core i5-6200Li 2,8GHz a jeden beh metódy \textit{FindTemplateForGap} trval približne 30 sekúnd. Celková dĺžka behu je potom závislá na počete dlhých nekonzervovaných úsekov, ktoré obsahuje. 
+\indent Reálna dĺžka behu algoritmu výrazne narástla. Merali sme ju na počítači s procesorom Intel Core i5-6200Li 2,8GHz a jeden beh metódy \textit{FindTemplateForGap} trval pri nekonzervovanom úseku dĺžky 7-25 nukleotidov približne 30 sekúnd, pričom sme ale gap zarovnávali na celú databázu štruktúr a nie len tie dĺžky 50-500 nukleotidov. Celková dĺžka behu je potom závislá na počete dlhých nekonzervovaných úsekov, ktoré predikovaná štruktúra obsahuje (pre štruktúry dĺžky 50-500 nukleotidov a podobnosti s primárnym template-om 60-90\% sú to  najčastejšie 0 až 3 úseky). 
 
 
 \indent Zvýšená časová náročnosť by sa možno dala riešiť použitím algoritmov FASTA alebo BLAST, ktoré používajú heuristické metódy na vyhľadanie najpodobnejších sekvencií. Vzhľadom na to, že predikcia predikcia algoritmom FARFAR trvá oveľa dlhšie, rozhodli sme sa tento problém neriešiť.
@@ -206,7 +206,19 @@ Z pohľadu asymptotickej zložitosti je zaujímavá hlavne metóda  \textit{Find
 Pre experiment sme volili rovnaké podmienky a vstupné parametre, ako pre predchádzajúce dva experimenty. Predikovali sme tiež s použitím sekundárnej štruktúry, pretože predikcia so sekundárnou štruktúrou, ako aj predikcia s viacerými template štruktúrami sú navzájom kompatibilné. Experimnety sme vykonávali na oboch variantách metódy \textit{IntegrateNewTemplateStr}.
 
 
-\indent Prvý spôsob predikcie vypĺňaním nekonzervovaných úsekov v primárnej template štruktúre sa nám nepodarilo dokončiť, pretože sme naše zásahy do štruktúry nedokázali zladiť s algoritmom FARFAR. Vzhľadom na to, že pre nás funguje ako čierna skrinka, a neexistuje podrobná dokumentácia, ktorá by vysvetľovala príčiny chýb, ktoré môžu nastať sme s týmto prístupom narazili na problém, kedy FARFAR hneď na začiaku spadne na chybu "FoldTree in pose does not have the right number of jumps to match chunk\_res". Podarilo sa nám len zistiť, že chyba nastáva pri prevode dodaného template pdb súboru do internej reprezentácie FARFAR-u, čo môže byť spôsobené pravdepodobne len superpoziciovaním sekundárnej template štruktúry.
+\indent Prvý spôsob predikcie vypĺňaním nekonzervovaných úsekov v primárnej template štruktúre sa nám nepodarilo dokončiť, pretože sme naše zásahy do štruktúry nedokázali zladiť s algoritmom FARFAR. Vzhľadom na to, že pre nás funguje ako čierna skrinka, a neexistuje podrobná dokumentácia, ktorá by vysvetľovala príčiny chýb, ktoré môžu nastať sme s týmto prístupom narazili na problém, kedy FARFAR hneď na začiaku spadne na chybu \textit{"FoldTree in pose does not have the right number of jumps to match chunk\_res"}. Podarilo sa nám len zistiť, že chyba nastáva pri prevode dodaného template pdb súboru do internej reprezentácie FARFAR-u, čo môže byť spôsobené pravdepodobne len superpoziciovaním sekundárnej template štruktúry.
 
 
-\indent Preto sme implementovali druhý, jednoduchší spôsob, v ktorom vynechávamé superpoziciovanie sekundárnej template štruktúry a dodávame ju v separátnych pdb súboroch. Tento prístup je horší v tom, že superpoziciovanie dodaných sekundárnych template štruktúr musí vykonať FARFAR bez informácie o okolitých nukleotidov sekundárnej template štruktúry, a preto nie je prehľadávaný priestor zmenšený tak, ako by tomu bolo v prvej variante algoritmu.
+\indent Preto sme implementovali druhý, jednoduchší spôsob, v ktorom vynechávamé superpoziciovanie sekundárnej template štruktúry a dodávame ju v separátnych pdb súboroch. Tento prístup je horší v tom, že superpoziciovanie dodaných sekundárnych template štruktúr musí vykonať FARFAR bez informácie o okolitých nukleotidov sekundárnej template štruktúry, a preto nie je prehľadávaný priestor zmenšený tak, ako by tomu bolo v prvej variante algoritmu. Pri tomto prístupe sa nám už podarilo časť štruktúr napredikovať, ale algoritmus stále trpel veľkou chybovosťou oproti verziám bez použitia viacerých template štruktúr. Napredikovali sme spolu \textit{219 štruktúr} (\textit{43\%} z počtu napredikovaných štruktúr pôvodnoým algoritmom) a z toho v 39 z nich sa predikovalo pomocou viacerých template štruktúr (pre ostatné štruktúry sa buď sekundárna template štruktúra nepodarila nájsť, alebo sa v predikovanej štruktúre nenachádzali dostatočne dlhé nekonzervované úseky). V týchto \textit{39} štruktúrah sme dosiahli priemernú RMSD na úrovni \textit{10,72Å}, čo predstavuje zhoršenie oproti pôvodnému algoritmu, ktorý na rovnakých štruktúrach dosiahol priemerné RMSD hodnoty \textit{6,16Å}. Napriek tomu, že celkový priemer predikcií sa zhoršil \autoref{obr06.02}, podarilo sa nám z 39 štruktúr napredikovať \textit{8}  s nižšou RMSD \autoref{obr06.01}.
+
+\begin{figure}%[p]\centering
+\includegraphics[width=\textwidth]{../img/loss}
+\caption{Príklad zhoršenia, v predikcií štruktúry 3L0U\_A pri použití template štruktúry 1FCW\_A spôsobeného použitím viacerých template štruktúr. Zelenou farbou je znázornená experimentálne získana štruktúra, modrou predikcia používajúca viacero template štruktúr (RMSD = 10,764Å) a červenou štruktúra napredikovaná algoritmom z kapitoly 5 (RMSD = 4,58Å). }
+\label{obr06.02}
+\end{figure}
+
+\begin{figure}%[p]\centering
+\includegraphics[width=\textwidth]{../img/success}
+\caption{Príklad zlepšenia, v predikcií štruktúry 4QLN\_A pri použití template štruktúry 4QK9\_A vďaka použitiu viacerých template štruktúr. Zelenou farbou je znázornená experimentálne získana štruktúra, modrou predikcia používajúca viacero template štruktúr (RMSD = 6,081Å) a červenou štruktúra napredikovaná algoritmom z kapitoly 5 (RMSD = 8,157Å). }
+\label{obr06.01}
+\end{figure}

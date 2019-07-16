@@ -96,7 +96,7 @@ Podobnosť (\%) & Gap (\%)  & Priemer RMSD (Å) & Smerodatná odchýlka  (Å)\\
 \end{table}
 
 
-\section{Porovnanie s ModeRNA}
+\section{Porovnanie s ModeRNA} \label{ModeRNA}
 V bakalárskej práci sme algoritmus porovnávali s algortimom FARFAR, ktorý z princípu nedokáže predikovať príliš dlhé štruktúry \textit{(autori uvádzajú, že FARFAR dosahuje vysokú presnosť len pri štruktúrach veľkosti do 12 nukleotidov)}. Teraz sme sa rozhodli porovnať náš algoritmus s komparatívnou predikciou ModeRNA. Pre porovnanie sme sa rozhodli napredikovať rovnaké sekvencie za pomoci rovnakých target štruktúr a porovnať výsledky z ModeRNA s výsledkami nášho algoritmu. Napísali sme skript \url{ModeRNA/moderRNA.py}, ktorý sa pokúša predikovať target - template páry poskytuté na vstupe. Predikcia v ModeRNA je výrazne rýchlejšia a vytvorenie jednej štruktúry sa väčšinou pohybuje v rádoch minút. Výsledky oboch algoritmov sme porovnali \autoref{tab4.2}, pričom sme uvažovali iba predikcie, ktoré úspešne vytvorili oba algoritmy. V tomto prípade sme rozlišovali dĺžky štruktúr, a to 50-100 nukleotidov a 101-500 nukleotidov. Kritérium na podobnosť tempate štruktúry bolo pre všetky dĺžky rovnaké, a to 60-90\%. Z výsledkov vyplýva, že ModeRNA bola úspešnejšia v predikovaní dlhších štruktúr, pričom naopak náš algoritmus si viedol lepšie pri predikovaní štruktúr kratších. Na druhej strane, ModeRNA dokázala napredikovať celkovo viac štruktúr oproti nášmu algoritmu, pretože dokázala lepšie zvládnuť nedokonalé vstupné dáta. Tieto výsledky sme publikovali v článku \cite{7822808}.
 
 \begin{table}[b!]

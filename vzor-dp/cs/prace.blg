@@ -98,6 +98,10 @@ Too many commas in name 1 of "Gruber AR, Lorenz R, Bernhart SH, Neuböck R, Hofa
 while executing---line 1429 of file czplainnat.bst
 Too many commas in name 1 of "Gruber AR, Lorenz R, Bernhart SH, Neuböck R, Hofacker IL" for entry RNAfold
 while executing---line 1429 of file czplainnat.bst
+Too many commas in name 1 of "Stephen F. Altschul, Mark S. Boguski, Warren Gish, John C. Wootton" for entry BLAST
+while executing---line 1429 of file czplainnat.bst
+Too many commas in name 1 of "Stephen F. Altschul, Mark S. Boguski, Warren Gish, John C. Wootton" for entry BLAST
+while executing---line 1429 of file czplainnat.bst
 Too many commas in name 1 of "Alberts B, Johnson A, Lewis J, a kol." for entry Alberts02
 while executing---line 1511 of file czplainnat.bst
 Too many commas in name 1 of "Alberts B, Johnson A, Lewis J, a kol." for entry Alberts02
@@ -182,6 +186,11 @@ Too many commas in name 1 of "Schudoma C., May P., Nikiforova V., Walther D." fo
 while executing---line 1511 of file czplainnat.bst
 Warning--there's a number but no volume in Schudoma10
 Warning--there's a number but no volume in Smith81
+Too many commas in name 1 of "Stephen F. Altschul, Mark S. Boguski, Warren Gish, John C. Wootton" for entry BLAST
+while executing---line 1511 of file czplainnat.bst
+Too many commas in name 1 of "Stephen F. Altschul, Mark S. Boguski, Warren Gish, John C. Wootton" for entry BLAST
+while executing---line 1511 of file czplainnat.bst
+Warning--there's a number but no volume in BLAST
 Too many commas in name 1 of "Yunjie Zhao, Yangyu Huang, Zhou Gong, Yanjie Wang, Jianfen Man & Yi Xiao" for entry Zhao2012
 while executing---line 1511 of file czplainnat.bst
 Too many commas in name 1 of "Yunjie Zhao, Yangyu Huang, Zhou Gong, Yanjie Wang, Jianfen Man & Yi Xiao" for entry Zhao2012
@@ -190,4 +199,4 @@ Too many commas in name 1 of "Yunjie Zhao, Yangyu Huang, Zhou Gong, Yanjie Wang,
 while executing---line 1511 of file czplainnat.bst
 Too many commas in name 1 of "Yunjie Zhao, Yangyu Huang, Zhou Gong, Yanjie Wang, Jianfen Man & Yi Xiao" for entry Zhao2012
 while executing---line 1511 of file czplainnat.bst
-(There were 78 error messages)
+(There were 82 error messages)

@@ -1,4 +1,4 @@
-\begin{thebibliography}{34}
+\begin{thebibliography}{35}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -245,6 +245,11 @@
 \newblock Identification of common molecular subsequences.
 \newblock \emph{Journal of Molecular Biology}, \penalty0 (147), \penalty0
   195--197.
+
+\bibitem[Stephen F.~Altschul(1994)]{BLAST}
+{\sc Stephen F.~Altschul, Mark S.~Boguski, W. G. J. C.~W.} (1994).
+\newblock Issues in searching molecular sequence databases.
+\newblock \emph{Nature Geneticsvolume}, \penalty0 (6), \penalty0 119--129.
 
 \bibitem[Yunjie~Zhao(2012)]{Zhao2012}
 {\sc Yunjie~Zhao, Yangyu~Huang, Z. G. Y. W. J. M. . Y.~X.} (2012).

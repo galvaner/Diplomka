@@ -14,7 +14,7 @@ Pretože algoritmus doplníme o komparatívne predikovanie sekundárnej štrukt�
 \end{figure}
 
 \section{Pseudokód}\label{kap5:pseudocode}
- Pseudokód algoritmu predikujúceho sekundárnu štruktúru spolu s integráciou do pôvodného algoritmu, ktorý vychádza z pseudokódu algoritmu Trooper v kapitole 3 \autoref{kap3:pseudocode}.
+ Pseudokód algoritmu predikujúceho sekundárnu štruktúru spolu s integráciou do pôvodného algoritmu, ktorý vychádza z pseudokódu algoritmu Trooper v kapitole 3 (\autoref{kap3:pseudocode}).
 \lstset{numbers=left, numberstyle=\tiny, stepnumber=1, numbersep=5pt}
 \begin{lstlisting}
 Main(fastaTarget, fastaTemplate
@@ -34,8 +34,10 @@ Main(fastaTarget, fastaTemplate
       (conservedParts, alignment2)
    conservedPartsSecStr := CopyConservedPartsSecStr
       (alignment2, secStrTemplate)
-   mappedConservedPartsSecStr := MapConservedPartsSecStr
+   cleanedConservedPartsSecStr := CleanConservedPartsSecStr
       (conservedPartsSecStr, alignment2)
+   mappedConservedPartsSecStr := MapConservedPartsSecStr
+      (cleanedConservedPartsSecStr, alignment2)
    predictedSecStr := PredictUnconservedSecStr
       (mappedConservedPartsSecStr)
    longParts[] := ProcessLongUnconservedParts
@@ -58,6 +60,12 @@ CopyConservedPartsSecStr(alignment, secStr)
          conservedParts += nucleotide
    }
    return conservedParts
+}
+
+CleanConservedPartsSecStr(conservedPartsSecStr, aln2)
+{
+   remove base-pairs from conservedPartsSecStr, which 
+   were aligned to gaps in target structure
 }
 
 MapConservedPartsSecStru(conservedPartsSecStr, alignment)
@@ -107,7 +115,14 @@ ProcessLongUnconservedParts
 Sekundárnu štruktúru predikujeme rovnakým spôsobom ako štruktúru terciárnu, teda komparatívnym modelovaním. Ako vstup potrebuje algoritmus dostať sekvenciu target molekuly, sekvenciu, sekundárnu  a terciárnu štruktúru template molekuly. 
 
 
-\indent  Používame rovnakú template štruktúru ako pre terciárnu predikciu, a preto sa algoritmus predikcie sekundárnej štruktúry zhoduje s algoritmom predikcie terciárnej štruktury až po získanie konzervovaných úsekov v zarovnaní (teda metódu \textit{ProcessGaps}). Následne potrebujeme na zarovnanie namapovať sekundárnu template štruktúru. Tu musíme riešiť nasledujúcu situáciu: ak práve jeden nukleotid z base-pair z template sekvencie je zarovnaný na medzeru v target sekvencii a druhý je zarovnaný na nukleotid, musíme v sekundárnej template štruktúre preznačiť oba nukleotidy ako nespárované, inak by namapovaná sekundárna štruktúra bola neplatná. Tiež to môžeme chápať tak, že sekundárnu štruktúru udržujeme stále správne uzátvorkovanú, čo znamená, že zátvorky rovnakého typu sa navzájom nekrížia, a máme stále rovnaký počet pravých aj ľavých zátvoriek v sekundárnej štruktúre.
+\indent  Používame rovnakú template štruktúru ako pre terciárnu predikciu, a preto sa algoritmus predikcie sekundárnej štruktúry zhoduje s algoritmom predikcie terciárnej štruktury až po získanie konzervovaných úsekov v zarovnaní (teda metódu \textit{ProcessGaps}). Následne potrebujeme na zarovnanie namapovať sekundárnu template štruktúru. Tu musíme riešiť nasledujúcu situáciu: ak práve jeden nukleotid z base-pair z template sekvencie je zarovnaný na medzeru v target sekvencii a druhý je zarovnaný na nukleotid, musíme v sekundárnej template štruktúre preznačiť oba nukleotidy ako nespárované, inak by namapovaná sekundárna štruktúra bola neplatná \autoref{obr5.0}. Tiež to môžeme chápať tak, že sekundárnu štruktúru udržujeme stále správne uzátvorkovanú, čo znamená, že zátvorky rovnakého typu sa navzájom nekrížia, a máme stále rovnaký počet pravých aj ľavých zátvoriek v sekundárnej štruktúre.
+
+
+\begin{figure}%[p]\centering
+\includegraphics[width=\textwidth]{../img/cleanStr}
+\caption{Príklad problému, ktorý môže nastať pri mapovaní sekundárnej štruktúry na zarovnanie. Z obrázku vidíme, že tretí a štvrtý nukleotid template štruktúry, sú zarovnané na medzery v target štruktúre. Sekundárna template štruktúra, ktorú potrebujeme namapovať na zarovnanú target štruktúru obsahuje base-pair tvorený tretím a piatym nukleotidom (vyznačené červenou farbou).  Z dôvodu, že tretí nukleotid template štruktúry je zarovnaný na medzeru v target štruktúre, musíme celý base pair so sekundárnej štruktúry odstrániť.}
+\label{obr5.0}
+\end{figure}
 
 
 \indent Namapovaním sekundárnej štruktúry na alignment získame neúplnú sekundárnu štruktúru target molekuly. Túto následne predáme spolu s target sekvenciou nástroju RNAfold \cite{RNAfold}, ktorý predikuje sekundárnu štruktúru vzhľadom na obmedzenia plynúce z dodanej sekundárnej štruktúry. 
@@ -125,7 +140,7 @@ Do konfiguračného súboru sme pridali nastavenie, ktoré určuje, či algoritm
 
 \section{Časová zložitosť}
 V tejto sekcií popíšeme, ako sa zmenila časová zložitosť v porovnaní s pôvodným algoritmom Trooper.
-Principiálne do predikcie pribudli len metódy prípravy predikcie sekundárnej štruktúry a samotná jej predikcia. Metódy pripravujúce predikciu sekundárnej štruktúry majú časovú zložitosť zhodnú s podobnými metódami z prípravy predikcie terciárnej štruktúry. Jediná odlišná metóda je PredictUnconservedSecStr, ktorá volá program RNAfold. Pri ňom autori na stránkach uvádzajú iba analýzu trvania predikcie na rôzne dlhých štruktúrach \autoref{obr5.15}. Asymptotickú zložitosť teda presne určiť nevieme, ale ak bude trend rastu časovej náročnosti v závislosti na dĺžke predikovanej molekuly pokračovať podľa obrázku, mal by sa algoritmus zmestiť do \textit{O($l^3$)}, kde \textit{l} označuje dĺžku predikovanej štruktúry. Z obrázku ďalej vidíme, že reálny čas potrebný na predikciu štruktúr dlhých 100-500 nukleotidov sa pohybuje do jednej sekundy. Zhrnúť to môžeme tak, že asymptotická časová náročnosť sa zhoršila z  \textit{O($l^2$)} na \textit{O($l^3$)}, ale reálna časová náročnosť pri predikcii štruktúr dlhých 50-500 nukleotridov sa zhoršila o pár jednotiek sekúnd.
+Principiálne do predikcie pribudli len metódy prípravy predikcie sekundárnej štruktúry a samotná jej predikcia. Metódy pripravujúce predikciu sekundárnej štruktúry majú časovú zložitosť zhodnú s podobnými metódami z prípravy predikcie terciárnej štruktúry. Jediná odlišná metóda je \textit{PredictUnconservedSecStr}, ktorá volá program RNAfold. Pri ňom autori na stránkach uvádzajú iba analýzu trvania predikcie na rôzne dlhých štruktúrach \autoref{obr5.15}. Asymptotickú zložitosť teda presne určiť nevieme, ale ak bude trend rastu časovej náročnosti v závislosti na dĺžke predikovanej molekuly pokračovať podľa obrázku, mal by sa algoritmus zmestiť do \textit{O($l^3$)}, kde \textit{l} označuje dĺžku predikovanej štruktúry. Z obrázku ďalej vidíme, že reálny čas potrebný na predikciu štruktúr dlhých 100-500 nukleotidov sa pohybuje do jednej sekundy. Zhrnúť to môžeme tak, že asymptotická časová náročnosť sa zhoršila z  \textit{O($l^2$)} na \textit{O($l^3$)}, ale reálna časová náročnosť pri predikcii štruktúr dlhých 50-500 nukleotridov sa zhoršila o pár jednotiek sekúnd.
 
 \begin{figure}%[p]\centering
 \includegraphics[width=\textwidth]{../img/rnafold}
@@ -135,7 +150,7 @@ Principiálne do predikcie pribudli len metódy prípravy predikcie sekundárnej
 
 
 \section{Experiment a Výsledky}
-Za účelom overenia vplyvu pridania predikcie sekundárnej štruktury do pôvodného algoritmu sme urobili rovnaké testovanie nad rovnakými dátami, ako pri porovnávaní pôvodného algoritmu s ModeRNA. Skúšali sme napredikovať všetky páry s podobnosťou medzi 60\% - 90\% a dĺžkou 50-100 a 101-500 nukleotidov najprv pôvodnou verziou algoritmu Trooper, verziou algoritmu vylepšenou o predikciu sekundárnej štruktúry a referenčnou predikciou ModeRNA. 
+Za účelom overenia vplyvu pridania predikcie sekundárnej štruktury do pôvodného algoritmu sme urobili rovnaké testovanie nad rovnakými dátami, ako pri porovnávaní pôvodného algoritmu s ModeRNA \autoref{ModeRNA}. Skúšali sme napredikovať všetky páry s podobnosťou medzi 60\% - 90\% a dĺžkou 50-100 a 101-500 nukleotidov najprv pôvodnou verziou algoritmu Trooper, verziou algoritmu vylepšenou o predikciu sekundárnej štruktúry a referenčnou predikciou ModeRNA. 
 
 
 \indent  Výsledky a porovnanie predikcií uvádzame v tabuľke \autoref{tab5.1}. Z výsledkov vidíme, že pridanie predikcie sekundárnej štruktúry spôsobilo, že priemerná RMSD pre štruktúry s dĺžkou medzi 50-100 nukleotidov na 413 úspešne napredikovaných pároch sa zhoršila z 5,80Å na 8,23Å, čo približne zodpovedá výsledku 8,53Å, ktoré na predikcii rovnakých štruktúr dosiahla ModeRNA. Pri predikcii štruktúr dĺžky 101-500 nukleotidov a 98 úspešne napredikovaných pároch sa naopak priemerné výsledky predikcie s pridaním predikcie sekundárnej štruktýry výrazne zlepšili a to z 6,91Å na 3,46Å, čo je o niečo lepšie než výsledky ModeRNA, ktorá pri rovnakých podmienkach dosiahla priemer 3,72Å. 
