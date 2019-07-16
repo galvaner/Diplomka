@@ -11,11 +11,6 @@ A level-1 auxiliary file: zaver.aux
 A level-1 auxiliary file: literatura.aux
 The style file: czplainnat.bst
 Database file #1: literatura.bib
-I was expecting a `,' or a `}'---line 148 of file literatura.bib
- : 
- : @BOOK{Jenny09,
-(Error may have been on previous line)
-I'm skipping whatever remains of this entry
 Repeated entry---line 316 of file literatura.bib
  : @article{Rother11
  :                  ,
@@ -102,6 +97,8 @@ Too many commas in name 1 of "Stephen F. Altschul, Mark S. Boguski, Warren Gish,
 while executing---line 1429 of file czplainnat.bst
 Too many commas in name 1 of "Stephen F. Altschul, Mark S. Boguski, Warren Gish, John C. Wootton" for entry BLAST
 while executing---line 1429 of file czplainnat.bst
+Warning--to sort, need author or key in BioPython
+Warning--empty year in BioPython
 Too many commas in name 1 of "Alberts B, Johnson A, Lewis J, a kol." for entry Alberts02
 while executing---line 1511 of file czplainnat.bst
 Too many commas in name 1 of "Alberts B, Johnson A, Lewis J, a kol." for entry Alberts02
@@ -146,6 +143,7 @@ Too many commas in name 1 of "Berman, H. M., Westbrook, J., Feng, Z., Gilliland,
 while executing---line 1511 of file czplainnat.bst
 Too many commas in name 1 of "Berman, H. M., Westbrook, J., Feng, Z., Gilliland, G., Bhat, N., Weissig, H. a Shindyalov, I. N." for entry PDB00
 while executing---line 1511 of file czplainnat.bst
+Warning--there's a number but no volume in PDB00
 Warning--can't use both author and editor fields in Biesiada2016
 Too many commas in name 1 of "Brudno, M; Malde, S; Poliakov, A" for entry Brudno03
 while executing---line 1511 of file czplainnat.bst
@@ -199,4 +197,4 @@ Too many commas in name 1 of "Yunjie Zhao, Yangyu Huang, Zhou Gong, Yanjie Wang,
 while executing---line 1511 of file czplainnat.bst
 Too many commas in name 1 of "Yunjie Zhao, Yangyu Huang, Zhou Gong, Yanjie Wang, Jianfen Man & Yi Xiao" for entry Zhao2012
 while executing---line 1511 of file czplainnat.bst
-(There were 82 error messages)
+(There were 81 error messages)

@@ -1,9 +1,14 @@
-\begin{thebibliography}{35}
+\begin{thebibliography}{36}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bio()]{BioPython}
+Biopython.
+\newblock \url{https://biopython.org/}.
+\newblock Accessed: 2019-07-10.
 
 \bibitem[Alberts~B(2002)]{Alberts02}
 {\sc Alberts~B, Johnson~A, L. J. a.~k.} (2002).
@@ -14,7 +19,7 @@
 \bibitem[Berman(2000)]{PDB00}
 {\sc Berman, H.~M., W. J. F. Z. G. G. B. N. W. H. a. S. I.~N.} (2000).
 \newblock The protein data bank.
-\newblock \emph{Nucleic Acids Research}, pages 235{242}, number = {28}.
+\newblock \emph{Nucleic Acids Research}, \penalty0 (28), \penalty0 235--242.
 
 \bibitem[Biesiada a~kol.(2016)Biesiada, Purzycka, Szachniuk, Blazewicz a
   Adamiak]{Biesiada2016}
